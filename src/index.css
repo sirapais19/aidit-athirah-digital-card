@@ -1,95 +1,72 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Montserrat:wght@300;400;500;600&family=Source+Code+Pro:wght@400;500&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
-
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --background: 36 33% 97%;
+    --foreground: 25 20% 16%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card: 38 40% 95%;
+    --card-foreground: 25 20% 16%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover: 36 33% 97%;
+    --popover-foreground: 25 20% 16%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 36 40% 48%;
+    --primary-foreground: 36 33% 97%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 30 25% 88%;
+    --secondary-foreground: 25 20% 20%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 35 20% 91%;
+    --muted-foreground: 25 10% 45%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 40 45% 70%;
+    --accent-foreground: 25 20% 16%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 35 25% 85%;
+    --input: 35 25% 85%;
+    --ring: 36 40% 48%;
 
-    --radius: 0.5rem;
+    --radius: 0.75rem;
+
+    /* Wedding-specific tokens */
+    --gold: 40 55% 55%;
+    --gold-light: 40 50% 75%;
+    --gold-dark: 36 45% 38%;
+    --champagne: 38 45% 90%;
+    --ivory: 40 40% 96%;
+    --cream: 36 35% 93%;
+    --warm-brown: 25 30% 30%;
+    --warm-brown-light: 25 20% 50%;
+    --blush: 15 40% 90%;
+    --passport-navy: 220 35% 20%;
+    --passport-navy-light: 220 25% 30%;
+    --stamp-red: 0 50% 45%;
+
+    /* Glassmorphism */
+    --glass-bg: 36 33% 97% / 0.7;
+    --glass-border: 35 25% 85% / 0.5;
+    --glass-shadow: 25 20% 16% / 0.08;
+
+    /* Gradients */
+    --gradient-gold: linear-gradient(135deg, hsl(40 55% 55%), hsl(36 45% 38%));
+    --gradient-warm: linear-gradient(180deg, hsl(38 45% 90%), hsl(36 33% 97%));
+    --gradient-passport: linear-gradient(135deg, hsl(220 35% 20%), hsl(220 25% 30%));
 
     --sidebar-background: 0 0% 98%;
-
     --sidebar-foreground: 240 5.3% 26.1%;
-
     --sidebar-primary: 240 5.9% 10%;
-
     --sidebar-primary-foreground: 0 0% 98%;
-
     --sidebar-accent: 240 4.8% 95.9%;
-
     --sidebar-accent-foreground: 240 5.9% 10%;
-
     --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
-  }
-
-  .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 }
@@ -100,6 +77,76 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-body antialiased;
   }
+
+  h1, h2, h3, h4 {
+    @apply font-display;
+  }
+}
+
+@layer components {
+  .glass-card {
+    @apply bg-card/70 backdrop-blur-md border border-border/50 shadow-lg;
+  }
+
+  .paper-card {
+    @apply bg-card rounded-xl shadow-md border border-border/30;
+    background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  }
+
+  .gold-text {
+    @apply text-gold;
+    text-shadow: 0 0 20px hsl(40 55% 55% / 0.2);
+  }
+
+  .passport-cover {
+    @apply bg-passport-navy text-primary-foreground;
+    background-image: 
+      radial-gradient(circle at 20% 80%, hsl(220 25% 30% / 0.5) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, hsl(220 25% 30% / 0.3) 0%, transparent 50%);
+  }
+
+  .boarding-pass {
+    @apply bg-ivory rounded-2xl overflow-hidden;
+    box-shadow: 0 8px 32px hsl(25 20% 16% / 0.1), 0 2px 8px hsl(25 20% 16% / 0.05);
+  }
+
+  .stamp-decoration {
+    @apply border-2 border-stamp-red/40 rounded-full px-3 py-1 text-stamp-red/60 uppercase tracking-widest text-xs;
+    transform: rotate(-12deg);
+  }
+
+  .section-divider {
+    @apply w-24 h-px bg-gradient-to-r from-transparent via-gold to-transparent mx-auto;
+  }
+
+  .scroll-progress-bar {
+    @apply fixed top-0 left-0 h-0.5 bg-gold z-50;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-track {
+  background: hsl(36 33% 97%);
+}
+::-webkit-scrollbar-thumb {
+  background: hsl(40 55% 55% / 0.4);
+  border-radius: 2px;
+}
+
+/* Perforated edge for boarding pass */
+.perforated-edge {
+  background-image: radial-gradient(circle, hsl(35 25% 85%) 2px, transparent 2px);
+  background-size: 12px 12px;
+  background-position: center;
 }
