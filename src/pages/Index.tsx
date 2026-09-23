@@ -1,5 +1,6 @@
 import { type FormEvent, useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import { supabase } from "@/lib/supabase";
 import {
   CalendarDays,
   Check,
@@ -25,7 +26,7 @@ import moment5 from "@/assets/moment-5.jpeg";
 import venueImg from "@/assets/venue.jpg";
 import weddingSong from "@/assets/boarding-pass-to-forever.mp3";
 
-type InfoKey = "calendar" | "location" | "rsvp" | "gallery" | "gift" | "contact";
+type InfoKey = "calendar" | "location" | "rsvp" | "gallery" | "gift" | "salamkaut" | "contact";
 
 const quickCards: Array<{
   id: InfoKey;
@@ -38,6 +39,7 @@ const quickCards: Array<{
   { id: "rsvp", title: "RSVP", caption: "Confirm seats", icon: MailCheck },
   { id: "gallery", title: "Moments", caption: "Our photos", icon: Images },
   { id: "gift", title: "Gift", caption: "Group gift", icon: Gift },
+  { id: "salamkaut", title: "Salam Kaut", caption: "Duit salam", icon: Heart },
   { id: "contact", title: "Contact", caption: "Ask family", icon: Phone },
 ];
 
@@ -87,8 +89,8 @@ const calendarLocation = encodeURIComponent("Moara Hall, Kota Bharu, Kelantan");
 const calendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${calendarText}&dates=${calendarDetails}&location=${calendarLocation}`;
 const mapUrl = "https://maps.app.goo.gl/Q6LWt8rn2ERBBBbr5";
 const weddingDateMs = new Date("2026-12-24T11:00:00+08:00").getTime();
-const rsvpStorageKey = "forever-pass-rsvp-wishes-v2";
 const giftStorageKey = "forever-pass-gift-contributions-v2";
+const salamKautStorageKey = "forever-pass-salamkaut-v1";
 
 const barcodeBars = Array.from({ length: 38 }, (_, index) => ({
   width: index % 4 === 0 || index % 9 === 0 ? 2 : 1,
@@ -101,7 +103,7 @@ const Index = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [activeInfo, setActiveInfo] = useState<InfoKey | null>(null);
   const [submitted, setSubmitted] = useState(false);
-  const [rsvpEntries, setRsvpEntries] = useState<RsvpEntry[]>([]);
+  const [wishesRefreshKey, setWishesRefreshKey] = useState(0);
 
   const activeCard = useMemo(
     () => quickCards.find((card) => card.id === activeInfo),
@@ -132,27 +134,28 @@ const Index = () => {
     };
   }, [isOpen]);
 
-  useEffect(() => {
-    window.localStorage.removeItem("forever-pass-rsvp-wishes");
-    window.localStorage.removeItem("forever-pass-rsvp-wishes-reset");
-    const saved = window.localStorage.getItem(rsvpStorageKey);
-    if (!saved) return;
-
-    try {
-      const parsed = JSON.parse(saved) as RsvpEntry[];
-      if (Array.isArray(parsed)) setRsvpEntries(parsed);
-    } catch {
-      setRsvpEntries([]);
-    }
-  }, []);
-
-  useEffect(() => {
-    window.localStorage.setItem(rsvpStorageKey, JSON.stringify(rsvpEntries));
-  }, [rsvpEntries]);
-
   const addRsvpEntry = (entry: RsvpEntry) => {
-    setRsvpEntries((current) => [entry, ...current]);
     setSubmitted(true);
+
+    void (async () => {
+      const { error: rsvpError } = await supabase.from("rsvp_entries").insert({
+        name: entry.name,
+        attendance: entry.attendance,
+        pax: entry.pax,
+        wishes: entry.wishes || null,
+      });
+      if (rsvpError) console.error("Failed to save RSVP:", rsvpError.message);
+
+      if (entry.wishes) {
+        const { error: wishError } = await supabase.from("wishes").insert({
+          name: entry.name,
+          message: entry.wishes,
+        });
+        if (wishError) console.error("Failed to save wish:", wishError.message);
+      }
+
+      setWishesRefreshKey((key) => key + 1);
+    })();
   };
 
   const playWeddingSong = () => {
@@ -287,7 +290,7 @@ const Index = () => {
 
                 <div className="mt-4 grid grid-cols-2 gap-3">
                   {quickCards
-                    .filter((card) => card.id === "gift" || card.id === "contact")
+                    .filter((card) => card.id === "gift" || card.id === "salamkaut" || card.id === "contact")
                     .map((card) => {
                     const Icon = card.icon;
                     return (
@@ -325,7 +328,7 @@ const Index = () => {
                   <Phone className="h-5 w-5" />
                   Contact Family
                 </button>
-                <GuestWishes entries={rsvpEntries} />
+                <GuestWishes refreshKey={wishesRefreshKey} />
               </section>
             </section>
 
@@ -489,41 +492,75 @@ const Timeline = () => (
   </div>
 );
 
-const GuestWishes = ({ entries }: { entries: RsvpEntry[] }) => (
-  <section className="mt-5 rounded-[26px] border border-slate-200 bg-white p-4">
-    <div className="mb-4 flex items-center justify-between gap-3">
-      <div>
-        <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-slate-400">
-          Guest Wishes
-        </p>
-        <h2 className="mt-1 font-display text-2xl text-slate-700">From Our Guests</h2>
-      </div>
-      <Heart className="h-5 w-5 fill-[#72809c]/20 text-[#72809c]" />
-    </div>
+type WishRow = {
+  id: string;
+  name: string | null;
+  message: string;
+  created_at: string;
+};
 
-    {entries.length > 0 ? (
-      <div className="space-y-3">
-        {entries.slice(0, 5).map((entry, index) => (
-          <article key={`${entry.name}-${index}`} className="rounded-[18px] bg-[#f4f6fb] p-4">
-            <div className="flex items-center justify-between gap-3">
-              <p className="font-display text-lg text-slate-700">{entry.name}</p>
-              <span className="rounded-full bg-[#72809c] px-3 py-1 text-[10px] font-medium text-white">
-                {entry.attendance}
-              </span>
-            </div>
-            <p className="mt-2 font-serif text-base italic leading-relaxed text-slate-600">
-              "{entry.wishes || "Sending love and prayers for your beautiful day."}"
-            </p>
-          </article>
-        ))}
+const GuestWishes = ({ refreshKey }: { refreshKey: number }) => {
+  const [wishes, setWishes] = useState<WishRow[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    const loadWishes = async () => {
+      const { data, error } = await supabase
+        .from("wishes")
+        .select("id, name, message, created_at")
+        .order("created_at", { ascending: false })
+        .limit(20);
+
+      if (cancelled) return;
+      if (error) {
+        console.error("Failed to load wishes:", error.message);
+      } else if (data) {
+        setWishes(data as WishRow[]);
+      }
+      setLoading(false);
+    };
+
+    void loadWishes();
+    return () => {
+      cancelled = true;
+    };
+  }, [refreshKey]);
+
+  return (
+    <section className="mt-5 rounded-[26px] border border-slate-200 bg-white p-4">
+      <div className="mb-4 flex items-center justify-between gap-3">
+        <div>
+          <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-slate-400">
+            Guest Wishes
+          </p>
+          <h2 className="mt-1 font-display text-2xl text-slate-700">From Our Guests</h2>
+        </div>
+        <Heart className="h-5 w-5 fill-[#72809c]/20 text-[#72809c]" />
       </div>
-    ) : (
-      <p className="rounded-[18px] bg-[#f4f6fb] p-4 font-serif text-base italic leading-relaxed text-slate-500">
-        Wishes from guests will appear here after they submit the RSVP form.
-      </p>
-    )}
-  </section>
-);
+
+      {wishes.length > 0 ? (
+        <div className="space-y-3">
+          {wishes.slice(0, 5).map((wish) => (
+            <article key={wish.id} className="rounded-[18px] bg-[#f4f6fb] p-4">
+              <p className="font-display text-lg text-slate-700">{wish.name || "Guest"}</p>
+              <p className="mt-2 font-serif text-base italic leading-relaxed text-slate-600">
+                "{wish.message}"
+              </p>
+            </article>
+          ))}
+        </div>
+      ) : (
+        <p className="rounded-[18px] bg-[#f4f6fb] p-4 font-serif text-base italic leading-relaxed text-slate-500">
+          {loading
+            ? "Loading wishes..."
+            : "Wishes from guests will appear here after they submit the RSVP form."}
+        </p>
+      )}
+    </section>
+  );
+};
 
 const MobileDock = ({ onSelect }: { onSelect: (info: InfoKey) => void }) => {
   const dockItems = quickCards.filter((card) =>
@@ -562,6 +599,7 @@ type Contribution = {
 type RsvpEntry = {
   name: string;
   attendance: string;
+  pax: number;
   wishes: string;
 };
 
@@ -613,14 +651,27 @@ const GiftContribution = () => {
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const safeAmount = Math.max(1, Math.min(amount, remaining || amount));
+    const finalName = contributorName.trim() || "Guest";
     setContributions((current) => [
       ...current,
       {
         itemId: selectedGift.id,
-        name: contributorName.trim() || "Guest",
+        name: finalName,
         amount: safeAmount,
       },
     ]);
+
+    void supabase
+      .from("donation_confirmations")
+      .insert({
+        name: finalName,
+        amount: String(safeAmount),
+        message: `Gift: ${selectedGift.title}`,
+      })
+      .then(({ error }) => {
+        if (error) console.error("Failed to save gift contribution:", error.message);
+      });
+
     setContributorName("");
     setAmount(100);
     setGiftSubmitted(true);
@@ -792,6 +843,186 @@ const GiftContribution = () => {
   );
 };
 
+type SalamKautEntry = {
+  name: string;
+  amount: number;
+};
+
+const SalamKaut = () => {
+  const [entries, setEntries] = useState<SalamKautEntry[]>([]);
+  const [contributorName, setContributorName] = useState("");
+  const [amount, setAmount] = useState(50);
+  const [submitted, setSubmitted] = useState(false);
+  const [accountCopied, setAccountCopied] = useState(false);
+
+  useEffect(() => {
+    const saved = window.localStorage.getItem(salamKautStorageKey);
+    if (!saved) return;
+
+    try {
+      const parsed = JSON.parse(saved) as SalamKautEntry[];
+      if (Array.isArray(parsed)) setEntries(parsed);
+    } catch {
+      setEntries([]);
+    }
+  }, []);
+
+  useEffect(() => {
+    window.localStorage.setItem(salamKautStorageKey, JSON.stringify(entries));
+  }, [entries]);
+
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const safeAmount = Math.max(1, amount);
+    const finalName = contributorName.trim() || "Guest";
+    setEntries((current) => [
+      ...current,
+      {
+        name: finalName,
+        amount: safeAmount,
+      },
+    ]);
+
+    void supabase
+      .from("donation_confirmations")
+      .insert({
+        name: finalName,
+        amount: String(safeAmount),
+        message: "Salam Kaut",
+      })
+      .then(({ error }) => {
+        if (error) console.error("Failed to save salam kaut:", error.message);
+      });
+
+    setContributorName("");
+    setAmount(50);
+    setSubmitted(true);
+    window.setTimeout(() => setSubmitted(false), 2200);
+  };
+
+  const copyAccount = () => {
+    navigator.clipboard?.writeText(giftBankAccount.account);
+    setAccountCopied(true);
+    window.setTimeout(() => setAccountCopied(false), 1800);
+  };
+
+  return (
+    <div className="space-y-4">
+      <div className="rounded-[20px] bg-white/65 p-4">
+        <p className="font-serif text-lg italic leading-relaxed text-slate-600">
+          Salam Kaut — contribute any amount from the heart (ikhlas).
+        </p>
+      </div>
+
+      <div className="rounded-[22px] bg-white/70 p-4">
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-slate-500">
+              Transfer Details
+            </p>
+            <h3 className="mt-2 font-display text-2xl text-slate-700">{giftBankAccount.bank}</h3>
+            <p className="mt-1 text-sm text-slate-500">{giftBankAccount.name}</p>
+          </div>
+          <Gift className="h-8 w-8 text-[#72809c]" />
+        </div>
+
+        <div className="mt-4 rounded-[18px] bg-white p-4">
+          <p className="font-mono text-xl tracking-[0.08em] text-slate-700">
+            {giftBankAccount.account}
+          </p>
+          <button
+            type="button"
+            onClick={copyAccount}
+            className="mt-3 inline-flex items-center gap-2 rounded-full bg-slate-700 px-4 py-2 text-xs font-medium text-white transition-colors hover:bg-slate-800"
+          >
+            <Copy className="h-3.5 w-3.5" />
+            {accountCopied ? "Copied" : "Copy account"}
+          </button>
+        </div>
+
+        <div className="mt-4 rounded-[18px] border border-dashed border-slate-300 bg-white/60 p-4 text-center">
+          <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-slate-500">
+            DuitNow QR
+          </p>
+          <p className="mt-2 text-sm leading-relaxed text-slate-500">
+            Send me the QR image file and I can place the exact scannable QR here.
+          </p>
+        </div>
+      </div>
+
+      <form onSubmit={handleSubmit} className="rounded-[22px] bg-white/70 p-4">
+        <div className="flex items-center justify-between gap-4">
+          <div>
+            <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-slate-500">
+              Contribution
+            </p>
+            <p className="mt-1 font-display text-2xl text-slate-700">
+              {currency.format(amount)}
+            </p>
+          </div>
+          <Heart className="h-8 w-8 text-[#72809c]" />
+        </div>
+
+        <label className="mt-4 block">
+          <span className="sr-only">Your name</span>
+          <input
+            value={contributorName}
+            onChange={(event) => setContributorName(event.target.value)}
+            className="w-full rounded-xl border-0 bg-white px-4 py-3 text-sm outline-none ring-1 ring-slate-200 focus:ring-2 focus:ring-slate-500"
+            placeholder="Your name"
+            required
+          />
+        </label>
+
+        <label className="mt-4 block">
+          <span className="mb-2 block text-xs font-medium text-slate-500">
+            Slide amount (ikhlas)
+          </span>
+          <input
+            type="range"
+            min={1}
+            max={500}
+            step={1}
+            value={amount}
+            onChange={(event) => setAmount(Number(event.target.value))}
+            className="w-full accent-slate-700"
+          />
+          <div className="mt-2 flex justify-between text-[10px] text-slate-500">
+            <span>RM1</span>
+            <span>RM500</span>
+          </div>
+        </label>
+
+        <label className="mt-4 block">
+          <span className="sr-only">Donation amount</span>
+          <input
+            type="number"
+            min={1}
+            value={amount}
+            onChange={(event) => setAmount(Number(event.target.value))}
+            className="w-full rounded-xl border-0 bg-white px-4 py-3 text-sm outline-none ring-1 ring-slate-200 focus:ring-2 focus:ring-slate-500"
+            placeholder="Amount"
+          />
+        </label>
+
+        <button
+          type="submit"
+          className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-slate-700 px-4 py-3 text-sm font-medium text-white transition-colors hover:bg-slate-800"
+        >
+          <Heart className="h-4 w-4" />
+          Send Salam Kaut
+        </button>
+
+        {submitted && (
+          <p className="mt-3 rounded-xl bg-emerald-50 px-4 py-3 text-center text-sm text-emerald-700">
+            Thank you. Your salam kaut has been added.
+          </p>
+        )}
+      </form>
+    </div>
+  );
+};
+
 const Barcode = ({ compact = false }: { compact?: boolean }) => (
   <div className={compact ? "mt-4" : "mt-5"}>
     <div className="flex items-end justify-center gap-[2px]" aria-hidden="true">
@@ -864,7 +1095,19 @@ const RsvpForm = ({
 }) => {
   const [name, setName] = useState("");
   const [attendance, setAttendance] = useState("Attending");
+  const [pax, setPax] = useState(1);
   const [wishes, setWishes] = useState("");
+
+  const isNotAttending = attendance === "Unable to attend";
+
+  const handleAttendanceChange = (value: string) => {
+    setAttendance(value);
+    if (value === "Unable to attend") {
+      setPax(0);
+    } else if (pax === 0) {
+      setPax(1);
+    }
+  };
 
   if (submitted) {
     return (
@@ -886,6 +1129,7 @@ const RsvpForm = ({
         onSubmitted({
           name: name.trim() || "Guest",
           attendance,
+          pax: isNotAttending ? 0 : Math.max(1, pax),
           wishes: wishes.trim(),
         });
       }}
@@ -899,13 +1143,33 @@ const RsvpForm = ({
       />
       <select
         value={attendance}
-        onChange={(event) => setAttendance(event.target.value)}
+        onChange={(event) => handleAttendanceChange(event.target.value)}
         className="w-full rounded-xl border-0 bg-white/70 px-4 py-3 text-sm outline-none"
       >
         <option>Attending</option>
         <option>Maybe</option>
         <option>Unable to attend</option>
       </select>
+      <div>
+        <label className="mb-1 block text-xs font-medium text-slate-500">
+          Number of Pax
+        </label>
+        <input
+          type="number"
+          min={isNotAttending ? 0 : 1}
+          max={isNotAttending ? 0 : 20}
+          value={pax}
+          disabled={isNotAttending}
+          onChange={(event) => setPax(Math.max(0, Number(event.target.value)))}
+          className={`w-full rounded-xl border-0 px-4 py-3 text-sm outline-none ${
+            isNotAttending
+              ? "bg-slate-200/60 text-slate-400 cursor-not-allowed"
+              : "bg-white/70"
+          }`}
+          placeholder="Number of guests"
+          required={!isNotAttending}
+        />
+      </div>
       <textarea
         value={wishes}
         onChange={(event) => setWishes(event.target.value)}
@@ -998,6 +1262,8 @@ function renderPopup(
       );
     case "gift":
       return <GiftContribution />;
+    case "salamkaut":
+      return <SalamKaut />;
     case "contact":
       return (
         <div className="space-y-3">
