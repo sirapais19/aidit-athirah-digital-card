@@ -68,9 +68,12 @@ const events = [
 
 const gallery = [moment1, moment2, moment3, moment4, moment5];
 
-const giftWishlist = [
-  { id: "microwave-tjean", title: "Microwave TJean", target: 500, collected: 0 },
-];
+type GiftItem = {
+  id: string;
+  title: string;
+  target_amount: number;
+  sort_order: number;
+};
 
 const giftBankAccount = {
   bank: "Maybank",
@@ -89,7 +92,6 @@ const calendarLocation = encodeURIComponent("Moara Hall, Kota Bharu, Kelantan");
 const calendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${calendarText}&dates=${calendarDetails}&location=${calendarLocation}`;
 const mapUrl = "https://maps.app.goo.gl/Q6LWt8rn2ERBBBbr5";
 const weddingDateMs = new Date("2026-12-24T11:00:00+08:00").getTime();
-const giftStorageKey = "forever-pass-gift-contributions-v2";
 const salamKautStorageKey = "forever-pass-salamkaut-v1";
 
 const barcodeBars = Array.from({ length: 38 }, (_, index) => ({
@@ -590,12 +592,6 @@ const MobileDock = ({ onSelect }: { onSelect: (info: InfoKey) => void }) => {
   );
 };
 
-type Contribution = {
-  itemId: string;
-  name: string;
-  amount: number;
-};
-
 type RsvpEntry = {
   name: string;
   attendance: string;
@@ -610,67 +606,98 @@ const currency = new Intl.NumberFormat("ms-MY", {
 });
 
 const GiftContribution = () => {
-  const [contributions, setContributions] = useState<Contribution[]>([]);
-  const [selectedItem, setSelectedItem] = useState(giftWishlist[0].id);
+  const [giftItems, setGiftItems] = useState<GiftItem[]>([]);
+  const [approvedTotals, setApprovedTotals] = useState<Record<string, number>>({});
+  const [selectedItem, setSelectedItem] = useState("");
+  const [giftsLoading, setGiftsLoading] = useState(true);
+  const [giftsError, setGiftsError] = useState("");
+  const [submitError, setSubmitError] = useState("");
   const [contributorName, setContributorName] = useState("");
   const [amount, setAmount] = useState(100);
   const [giftSubmitted, setGiftSubmitted] = useState(false);
   const [accountCopied, setAccountCopied] = useState(false);
 
   useEffect(() => {
-    window.localStorage.removeItem("forever-pass-gift-contributions");
-    window.localStorage.removeItem("forever-pass-gift-contributions-reset");
-    const saved = window.localStorage.getItem(giftStorageKey);
-    if (!saved) return;
+    let active = true;
 
-    try {
-      const parsed = JSON.parse(saved) as Contribution[];
-      if (Array.isArray(parsed)) setContributions(parsed);
-    } catch {
-      setContributions([]);
-    }
+    const loadGiftData = async () => {
+      setGiftsLoading(true);
+      setGiftsError("");
+      const [{ data: items, error: itemsError }, { data: totalsData, error: totalsError }] = await Promise.all([
+        supabase
+          .from("gift_items")
+          .select("id, title, target_amount, sort_order")
+          .eq("is_active", true)
+          .order("sort_order", { ascending: true }),
+        supabase.rpc("get_approved_gift_totals"),
+      ]);
+
+      if (!active) return;
+      if (itemsError || totalsError) {
+        console.error("Failed to load gift data:", itemsError?.message ?? totalsError?.message);
+        setGiftsError("Gift details are temporarily unavailable. Please try again later.");
+        setGiftsLoading(false);
+        return;
+      }
+
+      const gifts = (items ?? []) as GiftItem[];
+      const totals = (totalsData ?? []).reduce<Record<string, number>>((result, row) => {
+        const itemId = row.gift_item_id as string | null;
+        const value = Number(row.total_amount);
+        if (itemId && Number.isFinite(value)) result[itemId] = value;
+        return result;
+      }, {});
+      setGiftItems(gifts);
+      setApprovedTotals(totals);
+      setSelectedItem((current) => gifts.some((item) => item.id === current) ? current : gifts[0]?.id ?? "");
+      setGiftsLoading(false);
+    };
+
+    void loadGiftData();
+    return () => { active = false; };
   }, []);
 
-  useEffect(() => {
-    window.localStorage.setItem(giftStorageKey, JSON.stringify(contributions));
-  }, [contributions]);
-
-  const wishlistWithTotals = giftWishlist.map((item) => {
-    const extra = contributions
-      .filter((contribution) => contribution.itemId === item.id)
-      .reduce((sum, contribution) => sum + contribution.amount, 0);
-    const total = item.collected + extra;
-    const progress = Math.min(100, Math.round((total / item.target) * 100));
-    return { ...item, total, progress };
+  const wishlistWithTotals = giftItems.map((item) => {
+    const total = approvedTotals[item.id] ?? 0;
+    const progress = item.target_amount > 0
+      ? Math.min(100, Math.round((total / item.target_amount) * 100))
+      : 0;
+    return { ...item, target: item.target_amount, total, progress };
   });
 
-  const selectedGift = wishlistWithTotals.find((item) => item.id === selectedItem) ?? wishlistWithTotals[0];
+  const selectedGift = wishlistWithTotals.find((item) => item.id === selectedItem);
+  if (giftsLoading) {
+    return <p className="rounded-[20px] bg-white/65 p-4 text-sm text-slate-600">Loading gift wishlist…</p>;
+  }
+  if (giftsError) {
+    return <p className="rounded-[20px] bg-white/65 p-4 text-sm text-slate-600">{giftsError}</p>;
+  }
+  if (!selectedGift) {
+    return <p className="rounded-[20px] bg-white/65 p-4 text-sm text-slate-600">The gift wishlist will be available soon.</p>;
+  }
   const remaining = Math.max(0, selectedGift.target - selectedGift.total);
   const maxContribution = Math.max(50, Math.min(1000, remaining || selectedGift.target));
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (!selectedGift) return;
+    setSubmitError("");
     const safeAmount = Math.max(1, Math.min(amount, remaining || amount));
     const finalName = contributorName.trim() || "Guest";
-    setContributions((current) => [
-      ...current,
-      {
-        itemId: selectedGift.id,
-        name: finalName,
-        amount: safeAmount,
-      },
-    ]);
-
-    void supabase
+    const { error } = await supabase
       .from("donation_confirmations")
       .insert({
         name: finalName,
         amount: String(safeAmount),
         message: `Gift: ${selectedGift.title}`,
+        gift_item_id: selectedGift.id,
       })
-      .then(({ error }) => {
-        if (error) console.error("Failed to save gift contribution:", error.message);
-      });
+
+    if (error) {
+      console.error("Failed to save gift contribution:", error.message);
+      setSubmitError("We couldn't submit your contribution. Please try again.");
+      return;
+    }
 
     setContributorName("");
     setAmount(100);
@@ -832,6 +859,12 @@ const GiftContribution = () => {
           <Heart className="h-4 w-4" />
           Contribute Gift
         </button>
+
+        {submitError && (
+          <p role="alert" className="mt-3 rounded-xl bg-rose-50 px-4 py-3 text-center text-sm text-rose-700">
+            {submitError}
+          </p>
+        )}
 
         {giftSubmitted && (
           <p className="mt-3 rounded-xl bg-emerald-50 px-4 py-3 text-center text-sm text-emerald-700">
