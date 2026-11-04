@@ -4,7 +4,6 @@ import { supabase } from "@/lib/supabase";
 import {
   CalendarDays,
   Check,
-  Copy,
   Clock,
   Gift,
   Heart,
@@ -75,15 +74,11 @@ type GiftItem = {
   sort_order: number;
 };
 
-const giftBankAccount = {
-  bank: "Maybank",
-  account: "151146857958",
-  name: "Aidit",
-};
+const paymentUrl = "https://payment.tngdigital.com.my/sc/bDLob4bj0L";
 
 const contacts = [
-  { side: "Bride's Side", name: "Kak Sarah", phone: "+60123456789" },
-  { side: "Groom's Side", name: "Abang Hafiz", phone: "+60198765432" },
+  { side: "Groom", name: "Aidit", phone: "+60133694584", displayPhone: "013-369 4584" },
+  { side: "Bride", name: "Athirah", phone: "+60189067988", displayPhone: "018-906 7988" },
 ];
 
 const calendarDetails = "20261224T030000Z/20261224T080000Z";
@@ -662,7 +657,6 @@ const GiftContribution = () => {
   const [contributorName, setContributorName] = useState("");
   const [amount, setAmount] = useState(100);
   const [giftSubmitted, setGiftSubmitted] = useState(false);
-  const [accountCopied, setAccountCopied] = useState(false);
 
   useEffect(() => {
     let active = true;
@@ -752,12 +746,6 @@ const GiftContribution = () => {
     window.setTimeout(() => setGiftSubmitted(false), 2200);
   };
 
-  const copyAccount = () => {
-    navigator.clipboard?.writeText(giftBankAccount.account);
-    setAccountCopied(true);
-    window.setTimeout(() => setAccountCopied(false), 1800);
-  };
-
   return (
     <div className="space-y-4">
       <div className="rounded-[20px] bg-white/65 p-4">
@@ -807,41 +795,7 @@ const GiftContribution = () => {
         ))}
       </div>
 
-      <div className="rounded-[22px] bg-white/70 p-4">
-        <div className="flex items-start justify-between gap-4">
-          <div>
-            <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-slate-500">
-              Transfer Details
-            </p>
-            <h3 className="mt-2 font-display text-2xl text-slate-700">{giftBankAccount.bank}</h3>
-            <p className="mt-1 text-sm text-slate-500">{giftBankAccount.name}</p>
-          </div>
-          <Gift className="h-8 w-8 text-[#72809c]" />
-        </div>
-
-        <div className="mt-4 rounded-[18px] bg-white p-4">
-          <p className="font-mono text-xl tracking-[0.08em] text-slate-700">
-            {giftBankAccount.account}
-          </p>
-          <button
-            type="button"
-            onClick={copyAccount}
-            className="mt-3 inline-flex items-center gap-2 rounded-full bg-slate-700 px-4 py-2 text-xs font-medium text-white transition-colors hover:bg-slate-800"
-          >
-            <Copy className="h-3.5 w-3.5" />
-            {accountCopied ? "Copied" : "Copy account"}
-          </button>
-        </div>
-
-        <div className="mt-4 rounded-[18px] border border-dashed border-slate-300 bg-white/60 p-4 text-center">
-          <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-slate-500">
-            DuitNow QR
-          </p>
-          <p className="mt-2 text-sm leading-relaxed text-slate-500">
-            Send me the QR image file and I can place the exact scannable QR here.
-          </p>
-        </div>
-      </div>
+      <TransferDetails />
 
       <form onSubmit={handleSubmit} className="rounded-[22px] bg-white/70 p-4">
         <div className="flex items-center justify-between gap-4">
@@ -928,12 +882,34 @@ type SalamKautEntry = {
   amount: number;
 };
 
+const TransferDetails = () => (
+  <div className="rounded-[22px] bg-white/70 p-4">
+    <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-slate-500">
+      Transfer Details
+    </p>
+    <a
+      href={paymentUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="mt-3 flex min-h-12 items-center justify-center rounded-full bg-slate-700 px-4 py-3 text-sm font-medium text-white transition-colors hover:bg-slate-800"
+    >
+      Open Touch ’n Go payment link
+    </a>
+    <a href={paymentUrl} target="_blank" rel="noopener noreferrer" className="mt-4 block">
+      <img
+        src="/duitnow-qr.png"
+        alt="DuitNow QR code for payment"
+        className="mx-auto block h-auto w-full max-w-[260px] rounded-[18px]"
+      />
+    </a>
+  </div>
+);
+
 const SalamKaut = () => {
   const [entries, setEntries] = useState<SalamKautEntry[]>([]);
   const [contributorName, setContributorName] = useState("");
   const [amount, setAmount] = useState(50);
   const [submitted, setSubmitted] = useState(false);
-  const [accountCopied, setAccountCopied] = useState(false);
 
   useEffect(() => {
     const saved = window.localStorage.getItem(salamKautStorageKey);
@@ -980,12 +956,6 @@ const SalamKaut = () => {
     window.setTimeout(() => setSubmitted(false), 2200);
   };
 
-  const copyAccount = () => {
-    navigator.clipboard?.writeText(giftBankAccount.account);
-    setAccountCopied(true);
-    window.setTimeout(() => setAccountCopied(false), 1800);
-  };
-
   return (
     <div className="space-y-4">
       <div className="rounded-[20px] bg-white/65 p-4">
@@ -994,41 +964,7 @@ const SalamKaut = () => {
         </p>
       </div>
 
-      <div className="rounded-[22px] bg-white/70 p-4">
-        <div className="flex items-start justify-between gap-4">
-          <div>
-            <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-slate-500">
-              Transfer Details
-            </p>
-            <h3 className="mt-2 font-display text-2xl text-slate-700">{giftBankAccount.bank}</h3>
-            <p className="mt-1 text-sm text-slate-500">{giftBankAccount.name}</p>
-          </div>
-          <Gift className="h-8 w-8 text-[#72809c]" />
-        </div>
-
-        <div className="mt-4 rounded-[18px] bg-white p-4">
-          <p className="font-mono text-xl tracking-[0.08em] text-slate-700">
-            {giftBankAccount.account}
-          </p>
-          <button
-            type="button"
-            onClick={copyAccount}
-            className="mt-3 inline-flex items-center gap-2 rounded-full bg-slate-700 px-4 py-2 text-xs font-medium text-white transition-colors hover:bg-slate-800"
-          >
-            <Copy className="h-3.5 w-3.5" />
-            {accountCopied ? "Copied" : "Copy account"}
-          </button>
-        </div>
-
-        <div className="mt-4 rounded-[18px] border border-dashed border-slate-300 bg-white/60 p-4 text-center">
-          <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-slate-500">
-            DuitNow QR
-          </p>
-          <p className="mt-2 text-sm leading-relaxed text-slate-500">
-            Send me the QR image file and I can place the exact scannable QR here.
-          </p>
-        </div>
-      </div>
+      <TransferDetails />
 
       <form onSubmit={handleSubmit} className="rounded-[22px] bg-white/70 p-4">
         <div className="flex items-center justify-between gap-4">
