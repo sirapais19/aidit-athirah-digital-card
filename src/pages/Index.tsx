@@ -24,7 +24,7 @@ import moment3 from "@/assets/moment-3.jpeg";
 import moment4 from "@/assets/moment-4.jpeg";
 import moment5 from "@/assets/moment-5.jpeg";
 import venueImg from "@/assets/venue.jpg";
-import weddingSong from "@/assets/boarding-pass-to-forever.mp3";
+import weddingSong from "@/assets/river-flows-in-you.mp3";
 
 type InfoKey = "calendar" | "location" | "rsvp" | "gallery" | "gift" | "salamkaut" | "contact";
 
@@ -315,12 +315,7 @@ const Index = () => {
 
               <section className="mt-5 rounded-[30px] border border-white/80 bg-[#f9f7f1]/95 p-4 shadow-[0_24px_80px_rgba(80,88,110,0.13)] sm:rounded-[34px] sm:p-5">
                 <CountdownStrip />
-                <div className="mt-5 rounded-[24px] bg-[#72809c] p-5 text-white">
-                  <p className="font-serif text-lg italic leading-relaxed text-white/90">
-                    Dear family and friends, we invite you to celebrate the beginning of our
-                    forever. Your presence and prayers are the most meaningful gift.
-                  </p>
-                </div>
+                <MalayInvitationCard />
                 <Timeline />
                 <button
                   type="button"
@@ -348,6 +343,58 @@ const Index = () => {
     </main>
   );
 };
+
+const MalayInvitationCard = () => (
+  <article className="relative mt-5 overflow-hidden rounded-[24px] border border-[#dce0e9] bg-white px-5 py-6 text-center shadow-sm sm:px-6">
+    <div className="pointer-events-none absolute inset-2 rounded-[18px] border border-[#e8eaf0]" />
+    <div className="relative">
+      <p className="font-display text-lg leading-snug text-[#72809c] sm:text-xl">
+        💐 JEMPUTAN WALIMATULURUS 💐
+      </p>
+      <p className="mx-auto mt-4 max-w-[330px] font-serif text-sm leading-relaxed text-slate-600">
+        Assalamualaikum warahmatullahi wabarakatuh dan salam sejahtera,
+      </p>
+      <p className="mt-4 font-serif text-sm leading-relaxed text-slate-600">
+        Dengan penuh kesyukuran ke hadrat Allah SWT, kami
+      </p>
+      <div className="mt-3 rounded-[18px] bg-[#f4f5f8] px-3 py-3.5">
+        <p className="text-xs font-semibold tracking-[0.06em] text-slate-700">AZMI BIN MAT JUSOH</p>
+        <p className="my-1 font-serif text-sm italic text-[#72809c]">&amp;</p>
+        <p className="text-xs font-semibold tracking-[0.06em] text-slate-700">FARIDAH BINTI ABDUL HAMID</p>
+      </div>
+      <p className="mt-4 font-serif text-sm leading-relaxed text-slate-600">
+        dengan segala hormatnya menjemput Dato’/Datin/Tuan/Puan/Encik/Cik ke majlis
+        walimatulurus anakanda kami
+      </p>
+      <p className="mt-4 text-sm font-semibold tracking-[0.18em] text-[#72809c]">ATHIRAH</p>
+      <p className="mt-1 font-serif text-sm italic text-slate-500">bersama pilihannya,</p>
+      <p className="mt-1 text-sm font-semibold tracking-[0.18em] text-[#72809c]">AIDIT</p>
+
+      <div className="my-5 border-t border-dashed border-slate-300" />
+      <div className="space-y-3 text-left text-sm text-slate-600">
+        <div className="flex items-start gap-3">
+          <span aria-hidden="true">🗓️</span>
+          <p>Khamis, 24 Disember 2026</p>
+        </div>
+        <div className="flex items-start gap-3">
+          <span aria-hidden="true">🕛</span>
+          <p>12.00 tengah hari</p>
+        </div>
+        <div className="flex items-start gap-3">
+          <span aria-hidden="true">📍</span>
+          <p><span className="font-semibold text-slate-700">MOARA HALL</span><br />
+            Lot 418, Hujung Tanjung, Pulau Belanga,<br />
+            16100 Kota Bharu, Kelantan
+          </p>
+        </div>
+      </div>
+      <p className="mt-5 font-serif text-sm italic leading-relaxed text-slate-600">
+        Semoga kehadiran serta doa restu anda dapat menyerikan majlis dan menambahkan
+        keberkatan buat kedua-dua mempelai. Insya-Allah.
+      </p>
+    </div>
+  </article>
+);
 
 const PassportCover = ({ guestName, onOpen }: { guestName: string; onOpen: () => void }) => (
   <motion.section
