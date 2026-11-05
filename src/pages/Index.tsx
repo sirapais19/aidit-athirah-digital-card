@@ -266,7 +266,7 @@ const Index = () => {
 
                 <BoardingTicket guestName={guestName} />
 
-                <div className="relative mt-4 min-h-[188px] overflow-hidden rounded-[26px] border border-slate-200 bg-white p-4">
+                <div data-tour-target="venue" className="relative mt-4 min-h-[188px] overflow-hidden rounded-[26px] border border-slate-200 bg-white p-4">
                   <div className="absolute right-5 top-6 text-[#72809c]">
                     <Plane className="h-6 w-6 rotate-45" />
                   </div>
@@ -358,8 +358,8 @@ const Index = () => {
               transition={{ duration: 2.8, repeat: Infinity, ease: "easeInOut" }}
               onClick={() => setShowGuideTour(true)}
               className="fixed bottom-24 right-4 z-30 flex h-14 w-14 touch-none items-center justify-center rounded-full border border-white/80 bg-[#72809c] text-white shadow-[0_10px_30px_rgba(65,78,104,0.38)] sm:bottom-8 sm:right-8"
-              aria-label="Open invitation guide. Drag to move this button."
-              title="Invitation guide · drag to move"
+              aria-label="Buka panduan jemputan. Seret untuk alihkan butang."
+              title="Panduan jemputan · seret untuk alihkan"
             >
               <Plane className="h-6 w-6" />
             </motion.button>
@@ -382,23 +382,28 @@ const Index = () => {
 const guideSteps = [
   {
     target: "rsvp",
-    title: "RSVP",
-    detail: "Tap this boarding pass to confirm if you can attend. Enter your name, attendance, and number of guests.",
+    title: "Sahkan Kehadiran (RSVP)",
+    detail: "Tekan pas masuk ini untuk sahkan kehadiran. Isi nama, pilih sama ada hadir atau tidak, masukkan bilangan tetamu, kemudian tekan Hantar.",
   },
   {
     target: "wishes",
-    title: "Send a wish",
-    detail: "Write your message in the Wishes field inside the RSVP form. After you submit, guest wishes appear in this section.",
+    title: "Kirim Ucapan",
+    detail: "Untuk kirim ucapan, tulis mesej di ruangan Ucapan dalam borang RSVP, kemudian tekan Hantar. Ucapan yang dihantar akan dipaparkan di sini.",
+  },
+  {
+    target: "venue",
+    title: "Lokasi Majlis",
+    detail: "Tekan gambar dewan untuk melihat alamat majlis. Pilih Google Maps atau Waze untuk panduan perjalanan ke Moara Hall.",
   },
   {
     target: "gift",
-    title: "Wedding gift",
-    detail: "Open Gift to browse the wishlist and contribute. The Touch ’n Go payment link and QR are inside.",
+    title: "Hadiah Perkahwinan",
+    detail: "Tekan Hadiah untuk melihat senarai hadiah dan membuat sumbangan. Pautan Touch ’n Go dan kod QR bayaran ada di dalam.",
   },
   {
     target: "salamkaut",
     title: "Salam Kaut",
-    detail: "Open Salam Kaut to enter your name and amount. You can then pay using the Touch ’n Go link or QR.",
+    detail: "Tekan Salam Kaut, masukkan nama dan jumlah sumbangan. Kemudian, guna pautan Touch ’n Go atau imbas kod QR untuk membuat bayaran.",
   },
 ] as const;
 
@@ -440,7 +445,7 @@ const InvitationGuideTour = ({ onClose }: { onClose: () => void }) => {
     : 90;
 
   return (
-    <div className="fixed inset-0 z-[70]" role="dialog" aria-modal="true" aria-label="Invitation feature guide">
+    <div className="fixed inset-0 z-[70]" role="dialog" aria-modal="true" aria-label="Panduan penggunaan kad jemputan">
       <svg className="pointer-events-none fixed inset-0 h-full w-full" aria-hidden="true">
         <defs>
           <mask id="invitation-tour-mask">
@@ -486,9 +491,9 @@ const InvitationGuideTour = ({ onClose }: { onClose: () => void }) => {
         >
           <div className="flex items-center justify-between">
             <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-slate-400">
-              Invitation guide · {String(stepIndex + 1).padStart(2, "0")} / {String(guideSteps.length).padStart(2, "0")}
+              Panduan Jemputan · {String(stepIndex + 1).padStart(2, "0")} / {String(guideSteps.length).padStart(2, "0")}
             </p>
-            <button type="button" onClick={onClose} className="rounded-full px-2 py-1 text-xs text-slate-500">Skip</button>
+            <button type="button" onClick={onClose} className="rounded-full px-2 py-1 text-xs text-slate-500">Tutup</button>
           </div>
           <h2 className="mt-2 font-display text-2xl text-[#72809c]">{step.title}</h2>
           <p className="mt-2 text-sm leading-relaxed text-slate-600">{step.detail}</p>
@@ -499,14 +504,14 @@ const InvitationGuideTour = ({ onClose }: { onClose: () => void }) => {
               disabled={stepIndex === 0}
               className="rounded-full border border-slate-200 px-4 py-2 text-sm text-slate-600 disabled:opacity-40"
             >
-              Back
+              Kembali
             </button>
             <button
               type="button"
               onClick={() => stepIndex === guideSteps.length - 1 ? onClose() : setStepIndex((current) => current + 1)}
               className="rounded-full bg-[#72809c] px-5 py-2 text-sm font-medium text-white transition-colors hover:bg-[#64728e]"
             >
-              {stepIndex === guideSteps.length - 1 ? "Done" : "Next"}
+              {stepIndex === guideSteps.length - 1 ? "Selesai" : "Seterusnya"}
             </button>
           </div>
         </motion.section>
@@ -520,7 +525,7 @@ const MalayInvitationCard = () => (
     <div className="pointer-events-none absolute inset-2 rounded-[18px] border border-[#e8eaf0]" />
     <div className="relative">
       <p className="font-display text-lg leading-snug text-[#72809c] sm:text-xl">
-        💐 JEMPUTAN WALIMATULURUS 💐
+        JEMPUTAN WALIMATULURUS
       </p>
       <p className="mx-auto mt-4 max-w-[330px] font-serif text-sm leading-relaxed text-slate-600">
         Assalamualaikum warahmatullahi wabarakatuh dan salam sejahtera,
@@ -537,9 +542,13 @@ const MalayInvitationCard = () => (
         dengan segala hormatnya menjemput Dato’/Datin/Tuan/Puan/Encik/Cik ke majlis
         walimatulurus anakanda kami
       </p>
-      <p className="mt-4 text-sm font-semibold tracking-[0.18em] text-[#72809c]">ATHIRAH</p>
-      <p className="mt-1 font-serif text-sm italic text-slate-500">bersama pilihannya,</p>
-      <p className="mt-1 text-sm font-semibold tracking-[0.18em] text-[#72809c]">AIDIT</p>
+      <p className="mt-4 break-words text-sm font-semibold leading-relaxed tracking-[0.08em] text-[#72809c]">
+        NUR ATHIRAH BINTI AZMI
+      </p>
+      <p className="my-1 font-serif text-sm italic text-slate-500">&amp;</p>
+      <p className="break-words text-sm font-semibold leading-relaxed tracking-[0.08em] text-[#72809c]">
+        MUHAMAD AIDIT HAIKAL BIN ZAINUDDIN
+      </p>
 
       <div className="my-5 border-t border-dashed border-slate-300" />
       <div className="space-y-3 text-left text-sm text-slate-600">
