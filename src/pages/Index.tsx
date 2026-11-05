@@ -85,9 +85,11 @@ const calendarDetails = "20261224T030000Z/20261224T080000Z";
 const calendarText = encodeURIComponent("Aidit & Athirah Wedding Reception");
 const calendarLocation = encodeURIComponent("Moara Hall, Kota Bharu, Kelantan");
 const calendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${calendarText}&dates=${calendarDetails}&location=${calendarLocation}`;
-const mapUrl = "https://maps.app.goo.gl/Q6LWt8rn2ERBBBbr5";
+const mapUrl = "https://maps.app.goo.gl/pxRuAqg48ZSom6Cr9";
+const wazeUrl = "https://ul.waze.com/ul?place=ChIJS5t3JtmxtjERS174U4EmYdE&ll=6.13278620%2C102.31163470&navigate=yes&utm_campaign=live_map&utm_source=waze_website&utm_medium=lm_share_location";
 const weddingDateMs = new Date("2026-12-24T11:00:00+08:00").getTime();
 const salamKautStorageKey = "forever-pass-salamkaut-v1";
+const invitationGuideStorageKey = "forever-pass-guide-shown-v1";
 
 const barcodeBars = Array.from({ length: 38 }, (_, index) => ({
   width: index % 4 === 0 || index % 9 === 0 ? 2 : 1,
@@ -99,6 +101,8 @@ const Index = () => {
   const [guestName, setGuestName] = useState("Dear Guest");
   const [isOpen, setIsOpen] = useState(false);
   const [activeInfo, setActiveInfo] = useState<InfoKey | null>(null);
+  const [showGuideTour, setShowGuideTour] = useState(false);
+  const [shouldShowGuideAfterOpen, setShouldShowGuideAfterOpen] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [wishesRefreshKey, setWishesRefreshKey] = useState(0);
 
@@ -172,6 +176,9 @@ const Index = () => {
             onOpen={() => {
               setIsOpen(true);
               playWeddingSong();
+              if (window.localStorage.getItem(invitationGuideStorageKey) !== "shown") {
+                setShouldShowGuideAfterOpen(true);
+              }
             }}
           />
         )}
@@ -227,6 +234,7 @@ const Index = () => {
                   <button
                     type="button"
                     onClick={() => setActiveInfo("rsvp")}
+                    data-tour-target="rsvp"
                     className="rounded-[20px] border border-slate-200 bg-white p-3 text-left shadow-sm transition-transform duration-300 hover:-translate-y-0.5 sm:p-4"
                   >
                     <div className="mb-3 flex items-center justify-between">
@@ -295,6 +303,7 @@ const Index = () => {
                         key={card.id}
                         type="button"
                         onClick={() => setActiveInfo(card.id)}
+                        data-tour-target={card.id === "gift" || card.id === "salamkaut" ? card.id : undefined}
                         className="group min-h-[100px] rounded-[20px] border border-slate-200 bg-white p-4 text-left shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#f4f6fb]"
                       >
                         <span className="mb-3 flex h-10 w-10 items-center justify-center rounded-full bg-[#72809c] text-white transition-transform duration-300 group-hover:scale-105">
@@ -332,10 +341,177 @@ const Index = () => {
               onSubmitted={addRsvpEntry}
             />
             <MobileDock onSelect={setActiveInfo} />
+            <motion.button
+              type="button"
+              drag
+              dragMomentum={false}
+              dragElastic={0.08}
+              dragConstraints={{
+                left: -window.innerWidth + 68,
+                right: 0,
+                top: -window.innerHeight + 68,
+                bottom: 0,
+              }}
+              whileDrag={{ scale: 1.12 }}
+              whileTap={{ scale: 0.94 }}
+              animate={{ scale: [1, 1.04, 1] }}
+              transition={{ duration: 2.8, repeat: Infinity, ease: "easeInOut" }}
+              onClick={() => setShowGuideTour(true)}
+              className="fixed bottom-24 right-4 z-30 flex h-14 w-14 touch-none items-center justify-center rounded-full border border-white/80 bg-[#72809c] text-white shadow-[0_10px_30px_rgba(65,78,104,0.38)] sm:bottom-8 sm:right-8"
+              aria-label="Open invitation guide. Drag to move this button."
+              title="Invitation guide · drag to move"
+            >
+              <Plane className="h-6 w-6" />
+            </motion.button>
+            {(showGuideTour || shouldShowGuideAfterOpen) && (
+              <InvitationGuideTour
+                onClose={() => {
+                  setShowGuideTour(false);
+                  setShouldShowGuideAfterOpen(false);
+                  window.localStorage.setItem(invitationGuideStorageKey, "shown");
+                }}
+              />
+            )}
           </motion.div>
         )}
       </AnimatePresence>
     </main>
+  );
+};
+
+const guideSteps = [
+  {
+    target: "rsvp",
+    title: "RSVP",
+    detail: "Tap this boarding pass to confirm if you can attend. Enter your name, attendance, and number of guests.",
+  },
+  {
+    target: "wishes",
+    title: "Send a wish",
+    detail: "Write your message in the Wishes field inside the RSVP form. After you submit, guest wishes appear in this section.",
+  },
+  {
+    target: "gift",
+    title: "Wedding gift",
+    detail: "Open Gift to browse the wishlist and contribute. The Touch ’n Go payment link and QR are inside.",
+  },
+  {
+    target: "salamkaut",
+    title: "Salam Kaut",
+    detail: "Open Salam Kaut to enter your name and amount. You can then pay using the Touch ’n Go link or QR.",
+  },
+] as const;
+
+const InvitationGuideTour = ({ onClose }: { onClose: () => void }) => {
+  const [stepIndex, setStepIndex] = useState(0);
+  const [spotlight, setSpotlight] = useState<DOMRect | null>(null);
+  const step = guideSteps[stepIndex];
+
+  useEffect(() => {
+    const target = document.querySelector<HTMLElement>(`[data-tour-target="${step.target}"]`);
+    if (!target) return;
+
+    target.scrollIntoView({ behavior: "smooth", block: "center" });
+    const timer = window.setTimeout(() => setSpotlight(target.getBoundingClientRect()), 450);
+    const updatePosition = () => setSpotlight(target.getBoundingClientRect());
+    window.addEventListener("scroll", updatePosition, { passive: true });
+    window.addEventListener("resize", updatePosition);
+    return () => {
+      window.clearTimeout(timer);
+      window.removeEventListener("scroll", updatePosition);
+      window.removeEventListener("resize", updatePosition);
+    };
+  }, [step.target]);
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [onClose]);
+
+  const width = Math.min(320, window.innerWidth - 32);
+  const left = spotlight
+    ? Math.max(16, Math.min(window.innerWidth - width - 16, spotlight.left + spotlight.width / 2 - width / 2))
+    : 16;
+  const top = spotlight
+    ? Math.max(16, Math.min(window.innerHeight - 210, spotlight.top > window.innerHeight * 0.58 ? spotlight.top - 190 : spotlight.bottom + 18))
+    : 90;
+
+  return (
+    <div className="fixed inset-0 z-[70]" role="dialog" aria-modal="true" aria-label="Invitation feature guide">
+      <svg className="pointer-events-none fixed inset-0 h-full w-full" aria-hidden="true">
+        <defs>
+          <mask id="invitation-tour-mask">
+            <rect width="100%" height="100%" fill="white" />
+            {spotlight && (
+              <rect
+                x={Math.max(4, spotlight.left - 8)}
+                y={Math.max(4, spotlight.top - 8)}
+                width={spotlight.width + 16}
+                height={spotlight.height + 16}
+                rx="24"
+                fill="black"
+                style={{ transition: "all 350ms ease" }}
+              />
+            )}
+          </mask>
+        </defs>
+        <rect width="100%" height="100%" fill="rgba(25, 34, 50, .72)" mask="url(#invitation-tour-mask)" />
+        {spotlight && (
+          <rect
+            x={Math.max(4, spotlight.left - 8)}
+            y={Math.max(4, spotlight.top - 8)}
+            width={spotlight.width + 16}
+            height={spotlight.height + 16}
+            rx="24"
+            fill="none"
+            stroke="rgba(255,255,255,.95)"
+            strokeWidth="2"
+            style={{ transition: "all 350ms ease" }}
+          />
+        )}
+      </svg>
+
+      <AnimatePresence mode="wait">
+        <motion.section
+          key={step.target}
+          initial={{ opacity: 0, y: 12, scale: 0.97 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          exit={{ opacity: 0, y: -8, scale: 0.98 }}
+          transition={{ duration: 0.22 }}
+          className="fixed rounded-[24px] border border-white/80 bg-[#f9f7f1] p-5 text-slate-700 shadow-[0_24px_80px_rgba(20,28,40,.35)]"
+          style={{ top, left, width }}
+        >
+          <div className="flex items-center justify-between">
+            <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-slate-400">
+              Invitation guide · {String(stepIndex + 1).padStart(2, "0")} / {String(guideSteps.length).padStart(2, "0")}
+            </p>
+            <button type="button" onClick={onClose} className="rounded-full px-2 py-1 text-xs text-slate-500">Skip</button>
+          </div>
+          <h2 className="mt-2 font-display text-2xl text-[#72809c]">{step.title}</h2>
+          <p className="mt-2 text-sm leading-relaxed text-slate-600">{step.detail}</p>
+          <div className="mt-5 flex items-center justify-between gap-3">
+            <button
+              type="button"
+              onClick={() => setStepIndex((current) => Math.max(0, current - 1))}
+              disabled={stepIndex === 0}
+              className="rounded-full border border-slate-200 px-4 py-2 text-sm text-slate-600 disabled:opacity-40"
+            >
+              Back
+            </button>
+            <button
+              type="button"
+              onClick={() => stepIndex === guideSteps.length - 1 ? onClose() : setStepIndex((current) => current + 1)}
+              className="rounded-full bg-[#72809c] px-5 py-2 text-sm font-medium text-white transition-colors hover:bg-[#64728e]"
+            >
+              {stepIndex === guideSteps.length - 1 ? "Done" : "Next"}
+            </button>
+          </div>
+        </motion.section>
+      </AnimatePresence>
+    </div>
   );
 };
 
@@ -573,7 +749,7 @@ const GuestWishes = ({ refreshKey }: { refreshKey: number }) => {
   }, [refreshKey]);
 
   return (
-    <section className="mt-5 rounded-[26px] border border-slate-200 bg-white p-4">
+    <section data-tour-target="wishes" className="mt-5 rounded-[26px] border border-slate-200 bg-white p-4">
       <div className="mb-4 flex items-center justify-between gap-3">
         <div>
           <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-slate-400">
@@ -1237,7 +1413,8 @@ function renderPopup(
           <img src={venueImg} alt="Wedding venue" className="h-40 w-full rounded-[18px] object-cover" />
           <h3 className="font-display text-xl">Moara Hall</h3>
           <p className="text-sm leading-relaxed text-slate-600">
-            Kota Bharu, Kelantan.
+            Lot 418, Hujung Tanjung, Pulau Belanga,<br />
+            16100 Kota Bharu, Kelantan.
           </p>
           <div className="grid grid-cols-2 gap-3">
             <a
@@ -1247,16 +1424,16 @@ function renderPopup(
               className="inline-flex items-center justify-center gap-2 rounded-full bg-white/70 px-4 py-3 text-sm font-medium"
             >
               <Navigation className="h-4 w-4" />
-              Open Map
+              Google Maps
             </a>
             <a
-              href={mapUrl}
+              href={wazeUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center gap-2 rounded-full bg-white/70 px-4 py-3 text-sm font-medium"
             >
               <Navigation className="h-4 w-4" />
-              Maps
+              Waze
             </a>
           </div>
         </div>
