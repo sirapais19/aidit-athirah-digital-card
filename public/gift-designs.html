@@ -1,0 +1,2100 @@
+<!doctype html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gift Registry · 10 Design Concepts</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Source+Code+Pro:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --cream: #f9f7f1;
+      --paper: #fffdf8;
+      --slate: #72809c;
+      --slate-dark: #5c6982;
+      --slate-deep: #3f4a5f;
+      --periwinkle: #c7d0e4;
+      --gold: #c9a86a;
+      --gold-dark: #a8895e;
+      --ink: #3f4a5f;
+      --muted: #7c8494;
+      --line: #e4dccb;
+      --display: "Playfair Display", serif;
+      --serif: "Cormorant Garamond", serif;
+      --mono: "Source Code Pro", monospace;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      background: #eef0f4;
+      font-family: var(--serif);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at 18% 8%, rgba(255,255,255,.92), transparent 34%),
+        radial-gradient(circle at 86% 18%, rgba(114,128,156,.18), transparent 32%),
+        linear-gradient(180deg, #eef0f4, #f7f3ed);
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: .05;
+      background-image: radial-gradient(rgba(15,23,42,.85) 1px, transparent 1px);
+      background-size: 26px 26px;
+    }
+
+    body.modal-open { overflow: hidden; }
+
+    .svg-sprite { position: absolute; width: 0; height: 0; overflow: hidden; }
+
+    .icon {
+      width: 18px;
+      height: 18px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      padding: 16px 20px 12px;
+      background: rgba(238,240,244,.88);
+      border-bottom: 1px solid rgba(255,255,255,.85);
+      backdrop-filter: blur(14px);
+    }
+
+    .topbar-inner {
+      max-width: 980px;
+      margin: 0 auto;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    .eyebrow {
+      margin: 0 0 4px;
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: .28em;
+      text-transform: uppercase;
+      color: #98a0b2;
+    }
+
+    .topbar h1 {
+      margin: 0;
+      font-family: var(--display);
+      font-size: clamp(22px, 3vw, 30px);
+      font-weight: 500;
+      letter-spacing: -.02em;
+      color: var(--ink);
+    }
+
+    .topbar h1 em {
+      font-family: var(--serif);
+      font-size: .72em;
+      font-weight: 400;
+      color: var(--slate);
+    }
+
+    .counter {
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: .18em;
+      color: #98a0b2;
+      white-space: nowrap;
+      padding-bottom: 5px;
+    }
+
+    .tabs {
+      max-width: 980px;
+      margin: 14px auto 0;
+      display: flex;
+      gap: 7px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      scrollbar-width: none;
+    }
+
+    .tabs::-webkit-scrollbar { display: none; }
+
+    .tab {
+      flex: 0 0 auto;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.9);
+      background: rgba(255,255,255,.6);
+      color: #6f7787;
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: .05em;
+      cursor: pointer;
+      transition: .2s ease;
+    }
+
+    .tab b { font-size: 8px; font-weight: 600; color: #a9afbc; }
+    .tab:hover { background: #fff; color: var(--ink); }
+    .tab.active { background: var(--slate); border-color: var(--slate); color: #fff; box-shadow: 0 6px 16px rgba(80,95,125,.22); }
+    .tab.active b { color: rgba(255,255,255,.65); }
+
+    main {
+      position: relative;
+      z-index: 1;
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 20px 16px 80px;
+    }
+
+    .feature-strip {
+      max-width: 980px;
+      margin: 0 auto 18px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .feature-strip span {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 5px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(114,128,156,.14);
+      background: rgba(255,255,255,.52);
+      font-family: var(--mono);
+      font-size: 7px;
+      letter-spacing: .04em;
+      color: #8a92a3;
+    }
+
+    .feature-strip span::before { content: "✓"; color: var(--gold-dark); }
+
+    .design { display: none; animation: fadeUp .45s ease both; }
+    .design.active { display: block; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(14px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .design-head {
+      max-width: 430px;
+      margin: 0 auto 16px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .design-num {
+      flex: 0 0 auto;
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      border: 1px solid rgba(114,128,156,.3);
+      background: rgba(255,255,255,.55);
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--slate);
+    }
+
+    .design-head h2 {
+      margin: 0;
+      font-family: var(--display);
+      font-size: 22px;
+      font-weight: 500;
+      color: var(--ink);
+      line-height: 1.1;
+    }
+
+    .design-head p {
+      margin: 5px 0 0;
+      font-family: var(--serif);
+      font-size: 14px;
+      font-style: italic;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+
+    .stage {
+      position: relative;
+      max-width: 430px;
+      margin: 0 auto;
+      padding: 25px 20px 24px;
+      border-radius: 32px;
+      border: 1px solid rgba(255,255,255,.9);
+      background: var(--cream);
+      box-shadow: 0 26px 80px rgba(80,88,110,.17);
+      overflow: hidden;
+    }
+
+    .stage::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: .28;
+      background-image: radial-gradient(rgba(90,75,55,.16) .7px, transparent .8px);
+      background-size: 20px 20px;
+    }
+
+    .stage > * { position: relative; z-index: 1; }
+
+    .stage-kicker {
+      margin: 0;
+      text-align: center;
+      font-family: var(--mono);
+      font-size: 8px;
+      letter-spacing: .26em;
+      text-transform: uppercase;
+      color: #a29a8a;
+    }
+
+    .stage-title {
+      margin: 5px 0 0;
+      text-align: center;
+      font-family: var(--display);
+      font-size: 27px;
+      font-weight: 500;
+      color: var(--ink);
+      line-height: 1.1;
+    }
+
+    .stage-sub {
+      margin: 5px 0 0;
+      text-align: center;
+      font-family: var(--serif);
+      font-size: 14px;
+      font-style: italic;
+      color: var(--muted);
+    }
+
+    .divider {
+      width: 52px;
+      height: 1px;
+      margin: 14px auto 18px;
+      background: linear-gradient(90deg, transparent, rgba(201,168,106,.7), transparent);
+    }
+
+    /* Shared gift UI */
+    .gift-toolbar { display: flex; flex-direction: column; gap: 7px; margin-bottom: 12px; }
+    .gift-search-row { display: flex; align-items: center; gap: 8px; }
+
+    .gift-search {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.68);
+    }
+
+    .gift-search .icon { width: 13px; height: 13px; color: var(--slate); flex: 0 0 auto; }
+    .gift-search input {
+      width: 100%;
+      border: 0;
+      outline: 0;
+      background: transparent;
+      font-family: var(--serif);
+      font-size: 13px;
+      color: var(--ink);
+    }
+    .gift-search input::placeholder { color: #b0a792; }
+
+    .gift-sort {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255,255,255,.68);
+      padding: 8px 8px;
+      font-family: var(--mono);
+      font-size: 7px;
+      color: var(--slate-dark);
+      outline: 0;
+    }
+
+    .gift-chips { display: flex; gap: 5px; overflow-x: auto; scrollbar-width: none; }
+    .gift-chips::-webkit-scrollbar { display: none; }
+
+    .gift-chip {
+      flex: 0 0 auto;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.62);
+      border-radius: 999px;
+      padding: 5px 9px;
+      font-family: var(--mono);
+      font-size: 6.5px;
+      letter-spacing: .06em;
+      color: #8a8170;
+      cursor: pointer;
+      transition: .2s ease;
+    }
+    .gift-chip:hover { background: #fff; }
+    .gift-chip.active { background: var(--slate); border-color: var(--slate); color: #fff; }
+
+    .gift-summary {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      padding: 10px 0;
+      margin: 0 0 14px;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+    .gift-summary div { text-align: center; }
+    .gift-summary b {
+      display: block;
+      font-family: var(--display);
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--slate-dark);
+      line-height: 1;
+    }
+    .gift-summary span {
+      display: block;
+      margin-top: 4px;
+      font-family: var(--mono);
+      font-size: 5.5px;
+      letter-spacing: .13em;
+      text-transform: uppercase;
+      color: #a29a8a;
+    }
+
+    .gift-grid { display: grid; grid-template-columns: 1fr; gap: 13px; }
+
+    .gift-card {
+      position: relative;
+      display: grid;
+      grid-template-columns: 92px 1fr;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      background: var(--paper);
+      box-shadow: 0 10px 24px rgba(90,95,110,.07);
+      overflow: hidden;
+    }
+
+    .gift-visual {
+      position: relative;
+      display: grid;
+      place-items: center;
+      min-height: 100%;
+      background: linear-gradient(145deg, #e9e0d0, #c9bfa8);
+      color: rgba(63,74,95,.72);
+      overflow: hidden;
+    }
+    .gift-visual::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      opacity: .22;
+      background-image: radial-gradient(rgba(255,255,255,.9) .7px, transparent .8px);
+      background-size: 8px 8px;
+    }
+    .gift-icon { width: 32px; height: 32px; position: relative; z-index: 1; }
+
+    .gift-card[data-category="Home"] .gift-visual { background: linear-gradient(145deg, #eee4d4, #cbbca3); }
+    .gift-card[data-category="Kitchen"] .gift-visual { background: linear-gradient(145deg, #e1e6ef, #b3bfd3); }
+    .gift-card[data-category="Travel"] .gift-visual { background: linear-gradient(145deg, #e5e2d6, #b8c2b2); }
+    .gift-card[data-category="Memories"] .gift-visual { background: linear-gradient(145deg, #eadfdf, #c5aeb0); }
+    .gift-card[data-category="Cash"] .gift-visual { background: linear-gradient(145deg, #f0e3c9, #d6b87b); }
+
+    .gift-cat {
+      position: absolute;
+      left: 8px;
+      top: 8px;
+      z-index: 2;
+      padding: 3px 5px;
+      border-radius: 3px;
+      border: 1px solid rgba(63,74,95,.15);
+      background: rgba(255,253,248,.55);
+      font-family: var(--mono);
+      font-size: 5px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: rgba(63,74,95,.65);
+      backdrop-filter: blur(3px);
+    }
+
+    .gift-body { padding: 12px 12px 11px; min-width: 0; }
+
+    .gift-chips {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+      margin-bottom: 5px;
+    }
+
+    .gift-type,
+    .gift-status {
+      padding: 2px 5px;
+      border-radius: 3px;
+      border: 1px solid rgba(114,128,156,.25);
+      font-family: var(--mono);
+      font-size: 5.5px;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      color: var(--slate);
+      white-space: nowrap;
+    }
+    .gift-type { border-color: var(--line); color: #a8895e; }
+    .gift-status.done { border-color: rgba(120,150,125,.4); color: #6d8b72; background: rgba(120,150,125,.08); }
+
+    .gift-kicker {
+      display: none;
+      margin: 0 0 3px;
+      font-family: var(--mono);
+      font-size: 6px;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      color: #b0a792;
+    }
+
+    .gift-card h3 {
+      margin: 0 0 3px;
+      font-family: var(--display);
+      font-size: 16px;
+      font-weight: 500;
+      line-height: 1.15;
+      color: var(--ink);
+    }
+
+    .gift-desc {
+      margin: 0;
+      font-family: var(--serif);
+      font-size: 13px;
+      font-style: italic;
+      line-height: 1.3;
+      color: var(--muted);
+    }
+
+    .gift-progress {
+      height: 5px;
+      margin-top: 10px;
+      border-radius: 999px;
+      background: #ece5d7;
+      overflow: hidden;
+    }
+    .gift-progress span {
+      display: block;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--slate), var(--gold));
+      transition: width .35s ease;
+    }
+
+    .gift-money {
+      display: flex;
+      justify-content: space-between;
+      gap: 6px;
+      margin-top: 5px;
+      font-family: var(--mono);
+      font-size: 6px;
+      letter-spacing: .02em;
+      color: #a29a8a;
+    }
+    .gift-money b { color: var(--slate-dark); font-weight: 600; }
+
+    .gift-foot {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-top: 9px;
+      padding-top: 8px;
+      border-top: 1px dashed var(--line);
+    }
+    .gift-guests { font-family: var(--mono); font-size: 5.5px; letter-spacing: .08em; color: #b0a792; }
+
+    .gift-reserve {
+      border: 0;
+      border-radius: 999px;
+      background: var(--slate);
+      color: #fff;
+      padding: 7px 12px;
+      font-family: var(--mono);
+      font-size: 6.5px;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: .2s ease;
+      white-space: nowrap;
+    }
+    .gift-reserve:hover { background: var(--slate-dark); transform: translateY(-1px); }
+    .gift-reserve:disabled { background: #ddd5c5; color: #a29a8a; cursor: not-allowed; transform: none; }
+
+    .gift-stub { display: none; }
+
+    .gift-note {
+      margin: 14px 0 0;
+      padding-top: 10px;
+      border-top: 1px dashed var(--line);
+      text-align: center;
+      font-family: var(--serif);
+      font-size: 12px;
+      font-style: italic;
+      line-height: 1.45;
+      color: #9a9182;
+    }
+
+    .gift-empty {
+      grid-column: 1 / -1;
+      padding: 22px 14px;
+      text-align: center;
+      font-family: var(--serif);
+      font-size: 14px;
+      font-style: italic;
+      color: #9a9182;
+      border: 1px dashed var(--line);
+      border-radius: 12px;
+    }
+
+    /* 01 — Boarding pass */
+    .d1 .gift-card {
+      grid-template-columns: 88px 1fr 48px;
+      border-radius: 14px;
+      transform: rotate(-.3deg);
+    }
+    .d1 .gift-card:nth-child(even) { transform: rotate(.35deg); }
+    .d1 .gift-visual { border-right: 1px dashed #d8d0be; }
+    .d1 .gift-kicker { display: block; }
+    .d1 .gift-body { padding-right: 10px; }
+    .d1 .gift-stub {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      padding: 7px 4px;
+      border-left: 1px dashed #d8d0be;
+      background: rgba(243,238,227,.58);
+    }
+    .d1 .gift-stub .icon { width: 13px; height: 13px; color: var(--slate); transform: rotate(45deg); }
+    .d1 .gift-barcode {
+      width: 18px;
+      height: 23px;
+      background: repeating-linear-gradient(90deg, #6c788d 0 1px, transparent 1px 3px);
+      opacity: .9;
+    }
+    .d1 .gift-stub .gift-reserve {
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+      border-radius: 4px;
+      padding: 7px 4px;
+      font-size: 5.5px;
+      letter-spacing: .16em;
+    }
+    .d1 .gift-foot .gift-reserve { display: none; }
+    .d1 .gift-card::before,
+    .d1 .gift-card::after {
+      content: "";
+      position: absolute;
+      left: 87px;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--cream);
+      border: 1px solid var(--line);
+      z-index: 3;
+    }
+    .d1 .gift-card::before { top: -6px; }
+    .d1 .gift-card::after { bottom: -6px; }
+
+    /* 02 — Passport stamp */
+    .d2 .gift-grid { gap: 15px; }
+    .d2 .gift-card {
+      grid-template-columns: 76px 1fr;
+      border: 2px solid rgba(114,128,156,.45);
+      border-radius: 9px;
+      background: rgba(255,253,248,.5);
+      box-shadow: inset 0 0 0 4px rgba(255,253,248,.65), inset 0 0 0 5px rgba(114,128,156,.16), 0 10px 22px rgba(90,95,110,.05);
+      transform: rotate(-.8deg);
+    }
+    .d2 .gift-card:nth-child(even) {
+      transform: rotate(.9deg);
+      border-color: rgba(201,168,106,.55);
+      box-shadow: inset 0 0 0 4px rgba(255,253,248,.65), inset 0 0 0 5px rgba(201,168,106,.2), 0 10px 22px rgba(90,95,110,.05);
+    }
+    .d2 .gift-visual { background: transparent; border-right: 1px dashed rgba(114,128,156,.25); }
+    .d2 .gift-visual::after { display: none; }
+    .d2 .gift-icon { width: 28px; height: 28px; color: rgba(114,128,156,.65); }
+    .d2 .gift-cat { position: static; justify-self: center; margin-top: 5px; border: 0; background: transparent; padding: 0; font-size: 4.5px; color: rgba(114,128,156,.55); }
+    .d2 .gift-type { border-color: rgba(201,168,106,.3); color: var(--gold-dark); }
+    .d2 .gift-status { transform: rotate(-2deg); }
+    .d2 .gift-reserve {
+      background: transparent;
+      color: var(--slate);
+      border-bottom: 1px solid var(--slate);
+      border-radius: 0;
+      padding: 3px 0;
+    }
+    .d2 .gift-reserve:hover { background: transparent; color: var(--gold-dark); border-color: var(--gold-dark); }
+
+    /* 03 — Departure board */
+    .d3 .gift-toolbar { margin-bottom: 10px; }
+    .board-shell {
+      border-radius: 17px;
+      background: linear-gradient(180deg, #46536a, #364154);
+      padding: 13px 13px 5px;
+      color: #f4f0e7;
+      box-shadow: 0 18px 36px rgba(48,57,76,.28);
+    }
+    .d3 .gift-summary { border-color: rgba(255,255,255,.14); margin-bottom: 2px; padding: 8px 0 11px; }
+    .d3 .gift-summary b { color: #f0b35f; font-size: 15px; }
+    .d3 .gift-summary span { color: #98a7bf; }
+    .d3 .gift-grid { gap: 0; }
+    .d3 .gift-card {
+      display: grid;
+      grid-template-columns: 40px 1fr;
+      gap: 7px;
+      border: 0;
+      border-bottom: 1px dashed rgba(255,255,255,.13);
+      border-radius: 0;
+      background: transparent;
+      box-shadow: none;
+      overflow: visible;
+    }
+    .d3 .gift-card:last-child { border-bottom: 0; }
+    .d3 .gift-visual { background: transparent; min-height: 0; align-self: start; padding-top: 13px; }
+    .d3 .gift-visual::after { display: none; }
+    .d3 .gift-icon { width: 18px; height: 18px; color: #f0b35f; }
+    .d3 .gift-cat { display: none; }
+    .d3 .gift-body { padding: 10px 0 11px; }
+    .d3 .gift-chips { justify-content: flex-start; gap: 5px; margin-bottom: 3px; }
+    .d3 .gift-type { border-color: rgba(255,255,255,.15); color: #b9c3d6; }
+    .d3 .gift-status { border-color: rgba(143,211,176,.35); color: #9ad9b8; background: transparent; }
+    .d3 .gift-status.done { border-color: rgba(143,211,176,.45); color: #9ad9b8; }
+    .d3 .gift-card h3 { color: #fff; font-size: 16px; }
+    .d3 .gift-desc { color: #c4cedd; }
+    .d3 .gift-progress { background: rgba(255,255,255,.14); height: 4px; margin-top: 8px; }
+    .d3 .gift-progress span { background: linear-gradient(90deg, #c9a86a, #f0b35f); }
+    .d3 .gift-money { color: #b9c3d6; }
+    .d3 .gift-money b { color: #f0b35f; }
+    .d3 .gift-foot { border-top-color: rgba(255,255,255,.12); margin-top: 7px; padding-top: 7px; }
+    .d3 .gift-guests { color: #98a7bf; }
+    .d3 .gift-reserve { background: #c9a86a; color: #2f3a4f; padding: 6px 9px; font-size: 6px; }
+    .d3 .gift-note { color: #aeb9cb; border-color: rgba(255,255,255,.14); }
+
+    /* 04 — Airmail postcards */
+    .d4 .gift-grid { grid-template-columns: 1fr 1fr; gap: 11px; }
+    .d4 .gift-card {
+      display: block;
+      padding: 3px;
+      border: 4px solid transparent;
+      border-radius: 6px;
+      background:
+        linear-gradient(var(--paper), var(--paper)) padding-box,
+        repeating-linear-gradient(45deg, #72809c 0 7px, #f9f7f1 7px 14px, #c9a86a 14px 21px) border-box;
+      box-shadow: 0 9px 20px rgba(90,95,110,.08);
+      transform: rotate(-.5deg);
+    }
+    .d4 .gift-card:nth-child(even) { transform: rotate(.6deg); }
+    .d4 .gift-visual { min-height: 66px; border-radius: 2px; }
+    .d4 .gift-icon { width: 25px; height: 25px; }
+    .d4 .gift-cat { font-size: 4.5px; }
+    .d4 .gift-body { padding: 9px 7px 8px; }
+    .d4 .gift-chips { margin-bottom: 3px; }
+    .d4 .gift-type, .d4 .gift-status { font-size: 4.5px; padding: 1px 3px; }
+    .d4 .gift-card h3 { font-size: 14px; }
+    .d4 .gift-desc { font-size: 12px; }
+    .d4 .gift-money { font-size: 5px; }
+    .d4 .gift-foot { margin-top: 7px; padding-top: 6px; }
+    .d4 .gift-guests { display: none; }
+    .d4 .gift-reserve { background: transparent; color: var(--slate); padding: 2px 0; border-bottom: 1px solid var(--slate); border-radius: 0; font-size: 5.5px; }
+
+    /* 05 — Film strip */
+    .film-shell {
+      position: relative;
+      border-radius: 13px;
+      background: #2b2b2b;
+      padding: 17px 0 16px;
+      overflow: hidden;
+      box-shadow: 0 16px 34px rgba(40,40,40,.22);
+    }
+    .film-shell::before,
+    .film-shell::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 11px;
+      background-image: radial-gradient(circle at 5px 5px, #f9f7f1 0 3px, transparent 3.5px);
+      background-size: 16px 11px;
+      opacity: .85;
+    }
+    .film-shell::before { top: 0; }
+    .film-shell::after { bottom: 0; }
+    .film-head {
+      margin: 0 13px 7px;
+      display: flex;
+      justify-content: space-between;
+      color: #d7c8a9;
+      font-family: var(--mono);
+      font-size: 6px;
+      letter-spacing: .16em;
+    }
+    .d5 .gift-grid {
+      display: flex;
+      gap: 11px;
+      overflow-x: auto;
+      padding: 4px 13px 5px;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+    }
+    .d5 .gift-grid::-webkit-scrollbar { display: none; }
+    .d5 .gift-card {
+      flex: 0 0 236px;
+      display: block;
+      scroll-snap-align: center;
+      border-radius: 5px;
+      background: #f8f2e5;
+      border: 0;
+      box-shadow: 0 8px 18px rgba(0,0,0,.25);
+      padding: 9px;
+    }
+    .d5 .gift-visual { height: 66px; min-height: 0; border-radius: 3px; }
+    .d5 .gift-visual::after { opacity: .18; }
+    .d5 .gift-icon { width: 24px; height: 24px; }
+    .d5 .gift-body { padding: 8px 2px 2px; }
+    .d5 .gift-kicker { display: block; }
+    .d5 .gift-type, .d5 .gift-status { font-size: 4.5px; }
+    .d5 .gift-card h3 { font-size: 15px; }
+    .d5 .gift-desc { font-size: 12px; }
+    .d5 .gift-money { font-size: 5.5px; }
+    .d5 .gift-foot { margin-top: 7px; padding-top: 6px; }
+    .d5 .gift-guests { display: none; }
+    .d5 .gift-reserve { padding: 5px 8px; font-size: 5.5px; }
+    .film-hint {
+      margin-top: 7px;
+      text-align: center;
+      font-family: var(--mono);
+      font-size: 5.5px;
+      letter-spacing: .2em;
+      color: #a29a8a;
+    }
+
+    /* 06 — Route map */
+    .route-wrap { position: relative; padding-top: 4px; }
+    .route-svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      overflow: visible;
+    }
+    .d6 .gift-summary { position: relative; z-index: 1; }
+    .d6 .gift-grid { position: relative; gap: 20px; }
+    .d6 .gift-card {
+      width: 86%;
+      grid-template-columns: 72px 1fr;
+      border-radius: 13px;
+      transform: rotate(-.5deg);
+    }
+    .d6 .gift-card:nth-child(even) { margin-left: auto; transform: rotate(.5deg); }
+    .d6 .gift-card::before {
+      content: "";
+      position: absolute;
+      left: -8px;
+      top: 18px;
+      width: 9px;
+      height: 9px;
+      border-radius: 50% 50% 50% 0;
+      background: var(--gold);
+      border: 1px solid #a8895e;
+      transform: rotate(-45deg);
+      z-index: 3;
+    }
+    .d6 .gift-card:nth-child(even)::before { left: auto; right: -8px; transform: rotate(135deg); }
+    .d6 .gift-visual { border-right: 1px dashed var(--line); }
+    .d6 .gift-icon { width: 25px; height: 25px; }
+    .d6 .gift-body { padding: 10px 11px; }
+    .d6 .gift-card h3 { font-size: 15px; }
+    .d6 .gift-desc { font-size: 12px; }
+    .d6 .gift-money { font-size: 5.5px; }
+    .d6 .gift-reserve { padding: 6px 10px; font-size: 6px; }
+    .route-legend {
+      position: relative;
+      z-index: 2;
+      width: fit-content;
+      margin: 14px auto 0;
+      padding: 5px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(228,220,203,.75);
+      background: rgba(249,247,241,.92);
+      display: flex;
+      gap: 13px;
+      font-family: var(--mono);
+      font-size: 5.5px;
+      letter-spacing: .12em;
+      color: #a29a8a;
+    }
+
+    /* 07 — Constellation */
+    .d7.stage {
+      background:
+        radial-gradient(circle at 18% 8%, rgba(255,255,255,.13), transparent 24%),
+        radial-gradient(circle at 84% 20%, rgba(201,168,106,.16), transparent 26%),
+        linear-gradient(170deg, #46546d, #2f3a4f 62%, #293346);
+      color: #f7f1e5;
+    }
+    .d7.stage::before {
+      opacity: .55;
+      background-image: radial-gradient(#fff .6px, transparent .8px);
+      background-size: 23px 23px;
+    }
+    .d7.stage::after {
+      content: "";
+      position: absolute;
+      right: 24px;
+      top: 18px;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      box-shadow: inset -8px 3px 0 0 #f0d394;
+      opacity: .9;
+      transform: rotate(-18deg);
+      pointer-events: none;
+    }
+    .d7 .stage-kicker, .d7 .stage-sub { color: #bdc7d7; }
+    .d7 .stage-title { color: #fffaf0; }
+    .d7 .divider { background: linear-gradient(90deg, transparent, #e6c98c, transparent); }
+    .d7 .gift-search { background: rgba(255,255,255,.08); border-color: rgba(255,255,255,.14); }
+    .d7 .gift-search .icon { color: #e6c98c; }
+    .d7 .gift-search input { color: #fff; }
+    .d7 .gift-search input::placeholder { color: #b8c3d6; opacity: 1; }
+    .d7 .gift-sort { background: rgba(255,255,255,.08); border-color: rgba(255,255,255,.14); color: #e6c98c; }
+    .d7 .gift-chip { background: rgba(255,255,255,.08); border-color: rgba(255,255,255,.14); color: #c7d1e0; }
+    .d7 .gift-chip.active { background: #c9a86a; border-color: #c9a86a; color: #2f3a4f; }
+    .d7 .gift-summary { border-color: rgba(255,255,255,.14); }
+    .d7 .gift-summary b { color: #f4d79a; }
+    .d7 .gift-summary span { color: #9daac0; }
+    .d7 .gift-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+    .d7 .gift-card { display: block; background: rgba(255,255,255,.055); border-color: rgba(255,255,255,.14); box-shadow: 0 12px 26px rgba(20,28,44,.18); }
+    .d7 .gift-card[data-category] .gift-visual { background: rgba(255,255,255,.055); }
+    .d7 .gift-card[data-category] .gift-icon { color: #f4d79a; }
+    .d7 .gift-visual { height: 72px; min-height: 0; background: rgba(255,255,255,.045); }
+    .d7 .gift-visual::after { opacity: .2; }
+    .d7 .gift-icon { width: 24px; height: 24px; color: #f4d79a; }
+    .d7 .gift-cat { background: rgba(47,58,79,.55); border-color: rgba(255,255,255,.14); color: #c7d1e0; }
+    .d7 .gift-body { padding: 9px; }
+    .d7 .gift-type { border-color: rgba(255,255,255,.14); color: #d9c192; }
+    .d7 .gift-status { border-color: rgba(244,215,154,.28); color: #f4d79a; }
+    .d7 .gift-card h3 { color: #fffaf0; font-size: 14px; }
+    .d7 .gift-desc { color: #bdc7d7; font-size: 12px; }
+    .d7 .gift-progress { background: rgba(255,255,255,.14); }
+    .d7 .gift-progress span { background: linear-gradient(90deg, #c9a86a, #f0d394); }
+    .d7 .gift-money { color: #9daac0; font-size: 5.5px; }
+    .d7 .gift-money b { color: #f4d79a; }
+    .d7 .gift-foot { border-color: rgba(255,255,255,.12); }
+    .d7 .gift-guests { color: #8f9db3; }
+    .d7 .gift-reserve { background: #c9a86a; color: #2f3a4f; padding: 5px 8px; font-size: 5.5px; }
+    .d7 .gift-note { color: #9daac0; border-color: rgba(255,255,255,.12); }
+    .d7 .gift-empty { color: #bdc7d7; border-color: rgba(255,255,255,.16); }
+
+    /* 08 — Luggage tags */
+    .d8 .gift-grid { position: relative; gap: 19px; padding-left: 10px; }
+    .d8 .gift-grid::before {
+      content: "";
+      position: absolute;
+      left: 15px;
+      top: 10px;
+      bottom: 10px;
+      width: 1px;
+      background: linear-gradient(180deg, transparent, #d3c5ad 8%, #d3c5ad 92%, transparent);
+    }
+    .d8 .gift-card {
+      margin-left: 14px;
+      grid-template-columns: 70px 1fr;
+      border-radius: 11px;
+      border-color: #dccfb8;
+      background: linear-gradient(180deg, #fdf8ec, #f5edda);
+      box-shadow: 0 10px 22px rgba(120,100,70,.1);
+      transform: rotate(-.8deg);
+    }
+    .d8 .gift-card:nth-child(even) { margin-left: 28px; transform: rotate(.9deg); }
+    .d8 .gift-card::before {
+      content: "";
+      position: absolute;
+      left: 6px;
+      top: 50%;
+      width: 8px;
+      height: 8px;
+      border: 1px solid #c9b99d;
+      border-radius: 50%;
+      background: var(--cream);
+      box-shadow: inset 0 1px 2px rgba(0,0,0,.08);
+      transform: translateY(-50%);
+      z-index: 3;
+    }
+    .d8 .gift-card::after {
+      content: "";
+      position: absolute;
+      left: -13px;
+      top: 50%;
+      width: 12px;
+      height: 1px;
+      background: #d3c5ad;
+    }
+    .d8 .gift-visual { background: transparent; border-right: 1px dashed #dccfb8; }
+    .d8 .gift-visual::after { display: none; }
+    .d8 .gift-icon { width: 26px; height: 26px; color: #a8895e; }
+    .d8 .gift-cat { position: static; justify-self: center; margin-top: 4px; border: 0; background: transparent; padding: 0; font-size: 4.5px; color: #a8987b; }
+    .d8 .gift-type { border-color: #dccfb8; color: #a8895e; }
+    .d8 .gift-status { border-color: #dccfb8; color: #8a8170; }
+    .d8 .gift-money { font-size: 5.5px; }
+    .d8 .gift-reserve { background: #b79a6a; padding: 6px 9px; font-size: 5.5px; }
+
+    /* 09 — Editorial minimal */
+    .d9 .gift-grid { gap: 0; }
+    .d9 .gift-card {
+      display: block;
+      border: 0;
+      border-top: 1px solid #ddd5c5;
+      border-radius: 0;
+      background: transparent;
+      box-shadow: none;
+      padding: 14px 0;
+    }
+    .d9 .gift-visual { display: none; }
+    .d9 .gift-body { padding: 0 86px 0 0; position: static; }
+    .d9 .gift-card h3 { font-size: 18px; }
+    .d9 .gift-desc { font-size: 13px; }
+    .d9 .gift-progress { margin-top: 9px; height: 3px; }
+    .d9 .gift-money { position: absolute; right: 0; top: 14px; display: block; text-align: right; font-size: 5.5px; }
+    .d9 .gift-money span { display: block; }
+    .d9 .gift-money b { font-family: var(--display); font-size: 16px; font-weight: 500; }
+    .d9 .gift-type, .d9 .gift-status { font-size: 5px; }
+    .d9 .gift-foot { position: absolute; right: 0; bottom: 14px; border: 0; padding: 0; margin: 0; }
+    .d9 .gift-guests { display: none; }
+    .d9 .gift-reserve { background: transparent; color: var(--slate); padding: 2px 0; border-bottom: 1px solid var(--slate); border-radius: 0; font-size: 6px; }
+    .d9 .gift-reserve:hover { background: transparent; color: var(--gold-dark); border-color: var(--gold-dark); }
+    .d9 .gift-grid .gift-card:last-child { border-bottom: 1px solid #ddd5c5; }
+    .d9 .gift-note { text-align: left; }
+
+    /* 10 — Ribbon & wax seal */
+    .d10 .gift-grid { position: relative; gap: 19px; }
+    .d10 .gift-grid::before {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 0;
+      bottom: 0;
+      width: 38px;
+      transform: translateX(-50%);
+      background: linear-gradient(90deg, #5c6982, #72809c 34%, #8b98b2 50%, #66738d 66%, #55617a);
+      box-shadow: 0 0 0 1px rgba(63,74,95,.14), 0 8px 18px rgba(80,95,125,.18);
+    }
+    .d10 .gift-card {
+      width: 82%;
+      grid-template-columns: 64px 1fr;
+      border-radius: 12px;
+      background: rgba(255,253,248,.95);
+      transform: rotate(-.5deg);
+      padding-right: 28px;
+    }
+    .d10 .gift-card:nth-child(even) {
+      margin-left: auto;
+      transform: rotate(.5deg);
+      padding-right: 0;
+      padding-left: 28px;
+    }
+    .d10 .gift-card::after {
+      content: "A&A";
+      position: absolute;
+      right: 5px;
+      top: 50%;
+      width: 32px;
+      height: 32px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: radial-gradient(circle at 34% 28%, #e8cd98, #c9a86a 56%, #9f7d48 100%);
+      box-shadow: inset 0 0 0 2px rgba(255,255,255,.25), inset 0 -2px 4px rgba(80,55,20,.24), 0 4px 9px rgba(90,65,30,.25);
+      font-family: var(--display);
+      font-size: 8px;
+      color: #5e4a2c;
+      transform: translateY(-50%);
+      z-index: 3;
+    }
+    .d10 .gift-card:nth-child(even)::after { right: auto; left: 5px; }
+    .d10 .gift-visual { border-right: 1px dashed var(--line); }
+    .d10 .gift-icon { width: 24px; height: 24px; }
+    .d10 .gift-body { padding: 10px; }
+    .d10 .gift-card h3 { font-size: 15px; }
+    .d10 .gift-desc { font-size: 12px; }
+    .d10 .gift-money { font-size: 5.5px; }
+    .d10 .gift-guests { display: none; }
+    .d10 .gift-reserve { background: var(--gold-dark); padding: 5px 8px; font-size: 5.5px; }
+
+    /* Pager */
+    .pager {
+      max-width: 430px;
+      margin: 18px auto 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .pager button {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 9px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(114,128,156,.2);
+      background: rgba(255,255,255,.7);
+      color: #5f6d88;
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: .06em;
+      cursor: pointer;
+      transition: .2s ease;
+    }
+    .pager button:hover { background: #fff; color: var(--ink); }
+    .pager button:disabled { opacity: .35; cursor: default; }
+    .pager span { font-family: var(--mono); font-size: 8px; letter-spacing: .16em; color: #9aa2b2; }
+
+    /* Booking modal */
+    .modal { position: fixed; inset: 0; z-index: 100; display: flex; align-items: flex-end; justify-content: center; padding: 0; }
+    .modal[hidden] { display: none; }
+    .modal-backdrop { position: absolute; inset: 0; background: rgba(30,38,52,.55); backdrop-filter: blur(5px); }
+    .modal-panel {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 430px;
+      max-height: 92vh;
+      overflow-y: auto;
+      border-radius: 28px 28px 0 0;
+      border: 1px solid rgba(255,255,255,.85);
+      background: var(--cream);
+      padding: 20px 18px calc(18px + env(safe-area-inset-bottom));
+      box-shadow: 0 -20px 60px rgba(20,28,40,.28);
+      animation: sheetUp .3s ease both;
+    }
+    @keyframes sheetUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .modal-close {
+      position: absolute;
+      right: 14px;
+      top: 14px;
+      width: 32px;
+      height: 32px;
+      display: grid;
+      place-items: center;
+      border: 0;
+      border-radius: 50%;
+      background: rgba(255,255,255,.7);
+      color: #7c8494;
+      cursor: pointer;
+    }
+    .modal-kicker { margin: 0; font-family: var(--mono); font-size: 8px; letter-spacing: .24em; text-transform: uppercase; color: #a29a8a; }
+    .modal-panel h2 { margin: 5px 0 0; font-family: var(--display); font-size: 24px; font-weight: 500; color: var(--ink); }
+
+    .modal-gift {
+      display: grid;
+      grid-template-columns: 64px 1fr;
+      gap: 11px;
+      align-items: center;
+      margin: 13px 0;
+      padding: 10px;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.58);
+    }
+    .modal-visual {
+      height: 64px;
+      display: grid;
+      place-items: center;
+      border-radius: 10px;
+      background: linear-gradient(145deg, #e9e0d0, #c9bfa8);
+      color: rgba(63,74,95,.72);
+    }
+    .modal-visual .icon { width: 25px; height: 25px; }
+    .modal-gift h3 { margin: 0 0 2px; font-family: var(--display); font-size: 16px; font-weight: 500; }
+    .modal-gift p { margin: 0; font-family: var(--serif); font-size: 12.5px; font-style: italic; color: var(--muted); }
+    .modal-gift .gift-type { display: inline-block; margin-top: 5px; }
+
+    .modal-progress { height: 5px; margin: 4px 0 14px; border-radius: 999px; background: #ece5d7; overflow: hidden; }
+    .modal-progress span { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--slate), var(--gold)); }
+
+    .modal-form { display: grid; gap: 10px; }
+    .modal-form label, .modal-form fieldset { display: block; margin: 0; }
+    .modal-form .label-text { display: block; margin-bottom: 4px; font-family: var(--mono); font-size: 6.5px; letter-spacing: .12em; text-transform: uppercase; color: #9a9182; }
+    .modal-form input[type="text"], .modal-form input[type="number"], .modal-form textarea {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: rgba(255,255,255,.8);
+      padding: 9px 10px;
+      font-family: var(--serif);
+      font-size: 14px;
+      color: var(--ink);
+      outline: 0;
+    }
+    .modal-form input:focus, .modal-form textarea:focus { border-color: rgba(114,128,156,.55); }
+    .modal-form textarea { resize: none; }
+    .preset-row { display: flex; gap: 6px; margin-top: 6px; }
+    .preset-row button {
+      flex: 1;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255,255,255,.65);
+      padding: 6px 4px;
+      font-family: var(--mono);
+      font-size: 6.5px;
+      color: var(--slate-dark);
+      cursor: pointer;
+    }
+    .preset-row button:hover { background: #fff; }
+    .payment-row { display: flex; gap: 6px; flex-wrap: wrap; }
+    .payment-row label {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255,255,255,.55);
+      padding: 6px 9px;
+      font-family: var(--mono);
+      font-size: 6.5px;
+      color: var(--slate-dark);
+      cursor: pointer;
+    }
+    .payment-row input { accent-color: var(--slate); }
+    .modal-submit {
+      width: 100%;
+      border: 0;
+      border-radius: 999px;
+      background: var(--slate);
+      color: #fff;
+      padding: 11px 16px;
+      font-family: var(--mono);
+      font-size: 8px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      cursor: pointer;
+      margin-top: 2px;
+    }
+    .modal-submit:hover { background: var(--slate-dark); }
+    .modal-note { margin: 0; text-align: center; font-family: var(--serif); font-size: 11px; font-style: italic; color: #a29a8a; }
+
+    .modal-success { padding: 22px 6px 8px; text-align: center; }
+    .modal-success .success-icon {
+      width: 48px;
+      height: 48px;
+      margin: 0 auto 10px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      border: 1px solid #cfe0d1;
+      background: #edf5ee;
+      color: #6d8b72;
+    }
+    .modal-success .success-icon .icon { width: 22px; height: 22px; }
+    .modal-success h3 { margin: 0; font-family: var(--display); font-size: 22px; font-weight: 500; }
+    .modal-success p { margin: 5px 0 0; font-family: var(--serif); font-size: 14px; font-style: italic; color: var(--muted); line-height: 1.45; }
+
+    @media (max-width: 520px) {
+      .topbar { padding: 13px 14px 10px; }
+      .topbar-inner { align-items: flex-start; }
+      .counter { display: none; }
+      main { padding: 16px 10px 60px; }
+      .stage { padding: 22px 15px 20px; border-radius: 26px; }
+      .stage-title { font-size: 24px; }
+      .design-head { padding: 0 6px; }
+      .design-head h2 { font-size: 19px; }
+      .design-head p { font-size: 13px; }
+      .feature-strip { justify-content: flex-start; flex-wrap: nowrap; overflow-x: auto; padding-bottom: 5px; }
+      .feature-strip span { flex: 0 0 auto; }
+      .d4 .gift-grid { grid-template-columns: 1fr; }
+      .d7 .gift-grid { grid-template-columns: 1fr; }
+      .modal { align-items: flex-end; padding: 0; }
+      .modal-panel { border-radius: 24px 24px 0 0; }
+    }
+
+    @media print {
+      body { background: #fff; }
+      body::before, body::after, .topbar, .pager, .feature-strip { display: none; }
+      main { max-width: none; padding: 0; }
+      .design { display: block !important; page-break-after: always; }
+      .design-head { margin-bottom: 10px; }
+      .stage { box-shadow: none; }
+      .modal { display: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <svg class="svg-sprite" aria-hidden="true">
+    <symbol id="i-gift" viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13M5 12v9h14v-9M12 8s-2-4-4-4a2 2 0 0 0 0 4M12 8s2-4 4-4a2 2 0 0 1 0 4"/></symbol>
+    <symbol id="i-coffee" viewBox="0 0 24 24"><path d="M4 8h12v6a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5V8Z"/><path d="M16 10h2a2 2 0 0 1 0 4h-2M6 2v2M10 2v2M14 2v2"/></symbol>
+    <symbol id="i-plate" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><path d="M4 3v4M20 3v4"/></symbol>
+    <symbol id="i-blender" viewBox="0 0 24 24"><path d="M6 3h12l-1 8H7L6 3Z"/><path d="M8 11h8v5a4 4 0 0 1-8 0v-5ZM10 20h4"/></symbol>
+    <symbol id="i-bed" viewBox="0 0 24 24"><path d="M3 18v-7h18v7M3 18h18M5 11V7h6v4M13 11V6h4a2 2 0 0 1 2 2v3"/></symbol>
+    <symbol id="i-luggage" viewBox="0 0 24 24"><rect x="5" y="7" width="14" height="13" rx="2"/><path d="M9 7V4h6v3M9 20v2M15 20v2M8 11v5M16 11v5"/></symbol>
+    <symbol id="i-camera" viewBox="0 0 24 24"><path d="M4 7h3l2-3h6l2 3h3v12H4V7Z"/><circle cx="12" cy="13" r="4"/></symbol>
+    <symbol id="i-sparkles" viewBox="0 0 24 24"><path d="m12 3 1.8 4.8L18.5 9.5l-4.7 1.7L12 16l-1.8-4.8L5.5 9.5l4.7-1.7L12 3ZM19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8L19 15Z"/></symbol>
+    <symbol id="i-plane" viewBox="0 0 24 24"><path d="M17.8 19.2 16 11l3.5-3.5a2.1 2.1 0 0 0-3-3L13 8 4.8 6.2a1 1 0 0 0-.9 1.6l4.5 4.5-2 2-2.5-.4a1 1 0 0 0-.9 1.6l2.8 2.8 2.8 2.8a1 1 0 0 0 1.6-.9l-.4-2.5 2-2 4.5 4.5a1 1 0 0 0 1.6-.9Z"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></symbol>
+    <symbol id="i-heart" viewBox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1.1L12 21l7.8-7.5 1.1-1.1a5.5 5.5 0 0 0 0-7.8Z"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+    <symbol id="i-card" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></symbol>
+    <symbol id="i-qr" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><path d="M14 14h3v3h-3zM18 18h3v3h-3z"/></symbol>
+  </svg>
+
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div>
+        <p class="eyebrow">Aidit &amp; Athirah · 24.12.2026</p>
+        <h1>Gift Registry <em>· 10 design concepts</em></h1>
+      </div>
+      <div class="counter" id="counter">01 / 10</div>
+    </div>
+    <nav class="tabs" aria-label="Pilih design gift registry">
+      <button class="tab active" data-target="1"><b>01</b> Boarding Pass</button>
+      <button class="tab" data-target="2"><b>02</b> Passport Stamp</button>
+      <button class="tab" data-target="3"><b>03</b> Departure Board</button>
+      <button class="tab" data-target="4"><b>04</b> Airmail</button>
+      <button class="tab" data-target="5"><b>05</b> Film Strip</button>
+      <button class="tab" data-target="6"><b>06</b> Route Map</button>
+      <button class="tab" data-target="7"><b>07</b> Constellation</button>
+      <button class="tab" data-target="8"><b>08</b> Luggage Tags</button>
+      <button class="tab" data-target="9"><b>09</b> Editorial</button>
+      <button class="tab" data-target="10"><b>10</b> Wax Seal</button>
+    </nav>
+  </header>
+
+  <main>
+    <div class="feature-strip" aria-label="Ciri-ciri gift registry">
+      <span>Database gift list</span>
+      <span>Search + filter</span>
+      <span>Progress &amp; remaining</span>
+      <span>Reserve / contribute</span>
+      <span>Guest details</span>
+      <span>TnG / QR payment</span>
+      <span>Status &amp; quantity</span>
+      <span>Confirmation</span>
+    </div>
+
+    <!-- 01 -->
+    <section class="design active" data-design="1">
+      <div class="design-head">
+        <span class="design-num">01</span>
+        <div>
+          <h2>Boarding Pass Gift Registry</h2>
+          <p>Setiap hadiah jadi tiket boarding — paling padan dengan tema passport.</p>
+        </div>
+      </div>
+      <div class="stage gift-stage d1">
+        <p class="stage-kicker">Boarding · Gift registry</p>
+        <h2 class="stage-title">Our wishlist</h2>
+        <p class="stage-sub">Pilih hadiah, kami uruskan selebihnya</p>
+        <div class="divider"></div>
+        <div class="gift-toolbar">
+          <div class="gift-search-row">
+            <label class="gift-search"><svg class="icon"><use href="#i-search"/></svg><input class="gift-search-input" type="search" placeholder="Cari hadiah..." /></label>
+            <select class="gift-sort" aria-label="Susun hadiah"><option value="popular">Popular</option><option value="low">Harga rendah</option><option value="high">Harga tinggi</option></select>
+          </div>
+          <div class="gift-chips">
+            <button class="gift-chip active" data-category="all">Semua</button>
+            <button class="gift-chip" data-category="Home">Home</button>
+            <button class="gift-chip" data-category="Kitchen">Kitchen</button>
+            <button class="gift-chip" data-category="Travel">Travel</button>
+            <button class="gift-chip" data-category="Memories">Memories</button>
+            <button class="gift-chip" data-category="Cash">Cash</button>
+          </div>
+        </div>
+        <div class="gift-summary">
+          <div><b class="js-total-gifts">0</b><span>Hadiah</span></div>
+          <div><b class="js-collected">RM0</b><span>Terkumpul</span></div>
+          <div><b class="js-remaining">RM0</b><span>Baki</span></div>
+        </div>
+        <div class="gift-grid" data-gift-grid></div>
+        <p class="gift-note">Cara: Pilih hadiah → Tempah / sumbang → Bayar melalui TnG atau QR → Kami uruskan. Tempahan akan disahkan oleh pengantin.</p>
+      </div>
+    </section>
+
+    <!-- 02 -->
+    <section class="design" data-design="2">
+      <div class="design-head">
+        <span class="design-num">02</span>
+        <div>
+          <h2>Passport Stamp Gift Registry</h2>
+          <p>Hadiah dicop macam passport — vintage journal, personal dan handmade.</p>
+        </div>
+      </div>
+      <div class="stage gift-stage d2">
+        <p class="stage-kicker">Passport control · Gift registry</p>
+        <h2 class="stage-title">Stamps of love</h2>
+        <p class="stage-sub">Every gift is a little stamp in our story</p>
+        <div class="divider"></div>
+        <div class="gift-toolbar">
+          <div class="gift-search-row">
+            <label class="gift-search"><svg class="icon"><use href="#i-search"/></svg><input class="gift-search-input" type="search" placeholder="Cari hadiah..." /></label>
+            <select class="gift-sort" aria-label="Susun hadiah"><option value="popular">Popular</option><option value="low">Harga rendah</option><option value="high">Harga tinggi</option></select>
+          </div>
+          <div class="gift-chips">
+            <button class="gift-chip active" data-category="all">Semua</button>
+            <button class="gift-chip" data-category="Home">Home</button>
+            <button class="gift-chip" data-category="Kitchen">Kitchen</button>
+            <button class="gift-chip" data-category="Travel">Travel</button>
+            <button class="gift-chip" data-category="Memories">Memories</button>
+            <button class="gift-chip" data-category="Cash">Cash</button>
+          </div>
+        </div>
+        <div class="gift-summary">
+          <div><b class="js-total-gifts">0</b><span>Hadiah</span></div>
+          <div><b class="js-collected">RM0</b><span>Terkumpul</span></div>
+          <div><b class="js-remaining">RM0</b><span>Baki</span></div>
+        </div>
+        <div class="gift-grid" data-gift-grid></div>
+        <p class="gift-note">Setiap sumbangan akan dicatat dalam buku kecil kami. Terima kasih kerana menjadi sebahagian dari cerita ini.</p>
+      </div>
+    </section>
+
+    <!-- 03 -->
+    <section class="design" data-design="3">
+      <div class="design-head">
+        <span class="design-num">03</span>
+        <div>
+          <h2>Departure Board Gift Registry</h2>
+          <p>Dark board + mono type — senang scan, rasa macam airport.</p>
+        </div>
+      </div>
+      <div class="stage gift-stage d3">
+        <p class="stage-kicker">Wedding AA · Gift board</p>
+        <h2 class="stage-title">Gift departures</h2>
+        <p class="stage-sub">Choose your gate, leave a little love</p>
+        <div class="divider"></div>
+        <div class="gift-toolbar">
+          <div class="gift-search-row">
+            <label class="gift-search"><svg class="icon"><use href="#i-search"/></svg><input class="gift-search-input" type="search" placeholder="Cari hadiah..." /></label>
+            <select class="gift-sort" aria-label="Susun hadiah"><option value="popular">Popular</option><option value="low">Harga rendah</option><option value="high">Harga tinggi</option></select>
+          </div>
+          <div class="gift-chips">
+            <button class="gift-chip active" data-category="all">Semua</button>
+            <button class="gift-chip" data-category="Home">Home</button>
+            <button class="gift-chip" data-category="Kitchen">Kitchen</button>
+            <button class="gift-chip" data-category="Travel">Travel</button>
+            <button class="gift-chip" data-category="Memories">Memories</button>
+            <button class="gift-chip" data-category="Cash">Cash</button>
+          </div>
+        </div>
+        <div class="board-shell">
+          <div class="gift-summary">
+            <div><b class="js-total-gifts">0</b><span>Hadiah</span></div>
+            <div><b class="js-collected">RM0</b><span>Terkumpul</span></div>
+            <div><b class="js-remaining">RM0</b><span>Baki</span></div>
+          </div>
+          <div class="gift-grid" data-gift-grid></div>
+        </div>
+        <p class="gift-note">Pilih hadiah yang anda berminat, tekan Tempah, dan kami akan update statusnya. Mudah macam check-in flight.</p>
+      </div>
+    </section>
+
+    <!-- 04 -->
+    <section class="design" data-design="4">
+      <div class="design-head">
+        <span class="design-num">04</span>
+        <div>
+          <h2>Airmail Gift Postcards</h2>
+          <p>Postcard berbingkai airmail — catalogue travel yang romantic.</p>
+        </div>
+      </div>
+      <div class="stage gift-stage d4">
+        <p class="stage-kicker">Par avion · Gift registry</p>
+        <h2 class="stage-title">Airmail wishlist</h2>
+        <p class="stage-sub">A little something, sent with love</p>
+        <div class="divider"></div>
+        <div class="gift-toolbar">
+          <div class="gift-search-row">
+            <label class="gift-search"><svg class="icon"><use href="#i-search"/></svg><input class="gift-search-input" type="search" placeholder="Cari hadiah..." /></label>
+            <select class="gift-sort" aria-label="Susun hadiah"><option value="popular">Popular</option><option value="low">Harga rendah</option><option value="high">Harga tinggi</option></select>
+          </div>
+          <div class="gift-chips">
+            <button class="gift-chip active" data-category="all">Semua</button>
+            <button class="gift-chip" data-category="Home">Home</button>
+            <button class="gift-chip" data-category="Kitchen">Kitchen</button>
+            <button class="gift-chip" data-category="Travel">Travel</button>
+            <button class="gift-chip" data-category="Memories">Memories</button>
+            <button class="gift-chip" data-category="Cash">Cash</button>
+          </div>
+        </div>
+        <div class="gift-summary">
+          <div><b class="js-total-gifts">0</b><span>Hadiah</span></div>
+          <div><b class="js-collected">RM0</b><span>Terkumpul</span></div>
+          <div><b class="js-remaining">RM0</b><span>Baki</span></div>
+        </div>
+        <div class="gift-grid" data-gift-grid></div>
+        <p class="gift-note">Setiap hadiah datang dengan postcard kecil dari kami. Pilih yang anda suka, dan biar ia sampai ke rumah baru kami.</p>
+      </div>
+    </section>
+
+    <!-- 05 -->
+    <section class="design" data-design="5">
+      <div class="design-head">
+        <span class="design-num">05</span>
+        <div>
+          <h2>Film Strip Gift Reel</h2>
+          <p>Horizontal scroll macam filem lama — sesuai untuk mobile dan browsing santai.</p>
+        </div>
+      </div>
+      <div class="stage gift-stage d5">
+        <p class="stage-kicker">Wedding day · Gift reel</p>
+        <h2 class="stage-title">The gift reel</h2>
+        <p class="stage-sub">Swipe through our little wishlist</p>
+        <div class="divider"></div>
+        <div class="gift-toolbar">
+          <div class="gift-search-row">
+            <label class="gift-search"><svg class="icon"><use href="#i-search"/></svg><input class="gift-search-input" type="search" placeholder="Cari hadiah..." /></label>
+            <select class="gift-sort" aria-label="Susun hadiah"><option value="popular">Popular</option><option value="low">Harga rendah</option><option value="high">Harga tinggi</option></select>
+          </div>
+          <div class="gift-chips">
+            <button class="gift-chip active" data-category="all">Semua</button>
+            <button class="gift-chip" data-category="Home">Home</button>
+            <button class="gift-chip" data-category="Kitchen">Kitchen</button>
+            <button class="gift-chip" data-category="Travel">Travel</button>
+            <button class="gift-chip" data-category="Memories">Memories</button>
+            <button class="gift-chip" data-category="Cash">Cash</button>
+          </div>
+        </div>
+        <div class="gift-summary">
+          <div><b class="js-total-gifts">0</b><span>Hadiah</span></div>
+          <div><b class="js-collected">RM0</b><span>Terkumpul</span></div>
+          <div><b class="js-remaining">RM0</b><span>Baki</span></div>
+        </div>
+        <div class="film-shell">
+          <div class="film-head"><span>AIDIT &amp; ATHIRAH</span><span>GIFT REEL · 01</span></div>
+          <div class="gift-grid" data-gift-grid></div>
+          <div class="film-hint">SWIPE TO EXPLORE →</div>
+        </div>
+        <p class="gift-note">Tekan hadiah untuk tempah. Setiap frame adalah satu memori yang anda bantu wujudkan.</p>
+      </div>
+    </section>
+
+    <!-- 06 -->
+    <section class="design" data-design="6">
+      <div class="design-head">
+        <span class="design-num">06</span>
+        <div>
+          <h2>Route Map Gift Registry</h2>
+          <p>Jalan berliku + pin — sambung tema Memory Journey dan travel.</p>
+        </div>
+      </div>
+      <div class="stage gift-stage d6">
+        <p class="stage-kicker">The registry route</p>
+        <h2 class="stage-title">Follow the gifts</h2>
+        <p class="stage-sub">Every stop is a little wish</p>
+        <div class="divider"></div>
+        <div class="gift-toolbar">
+          <div class="gift-search-row">
+            <label class="gift-search"><svg class="icon"><use href="#i-search"/></svg><input class="gift-search-input" type="search" placeholder="Cari hadiah..." /></label>
+            <select class="gift-sort" aria-label="Susun hadiah"><option value="popular">Popular</option><option value="low">Harga rendah</option><option value="high">Harga tinggi</option></select>
+          </div>
+          <div class="gift-chips">
+            <button class="gift-chip active" data-category="all">Semua</button>
+            <button class="gift-chip" data-category="Home">Home</button>
+            <button class="gift-chip" data-category="Kitchen">Kitchen</button>
+            <button class="gift-chip" data-category="Travel">Travel</button>
+            <button class="gift-chip" data-category="Memories">Memories</button>
+            <button class="gift-chip" data-category="Cash">Cash</button>
+          </div>
+        </div>
+        <div class="route-wrap">
+          <svg class="route-svg" viewBox="0 0 340 780" preserveAspectRatio="none" aria-hidden="true">
+            <path d="M 170 -30 C 15 70, 15 180, 170 250 C 325 320, 325 430, 170 500 C 15 570, 15 680, 170 810" fill="none" stroke="#eee2c9" stroke-width="17" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
+            <path d="M 170 -30 C 15 70, 15 180, 170 250 C 325 320, 325 430, 170 500 C 15 570, 15 680, 170 810" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-dasharray="5 13" vector-effect="non-scaling-stroke"/>
+          </svg>
+          <div class="gift-summary">
+            <div><b class="js-total-gifts">0</b><span>Hadiah</span></div>
+            <div><b class="js-collected">RM0</b><span>Terkumpul</span></div>
+            <div><b class="js-remaining">RM0</b><span>Baki</span></div>
+          </div>
+          <div class="gift-grid" data-gift-grid></div>
+          <div class="route-legend"><span>PIN = HADIAH</span><span>ROAD = CERITA</span></div>
+        </div>
+        <p class="gift-note">Ikut route, pilih hadiah yang anda nak tempah. Setiap pin adalah satu kenangan yang akan datang.</p>
+      </div>
+    </section>
+
+    <!-- 07 -->
+    <section class="design" data-design="7">
+      <div class="design-head">
+        <span class="design-num">07</span>
+        <div>
+          <h2>Constellation Gift Registry</h2>
+          <p>Dark night sky + bintang — dramatic dan romantic.</p>
+        </div>
+      </div>
+      <div class="stage gift-stage d7">
+        <p class="stage-kicker">Written in the stars</p>
+        <h2 class="stage-title">Wishlist constellation</h2>
+        <p class="stage-sub">Every gift is a little star</p>
+        <div class="divider"></div>
+        <div class="gift-toolbar">
+          <div class="gift-search-row">
+            <label class="gift-search"><svg class="icon"><use href="#i-search"/></svg><input class="gift-search-input" type="search" placeholder="Cari hadiah..." /></label>
+            <select class="gift-sort" aria-label="Susun hadiah"><option value="popular">Popular</option><option value="low">Harga rendah</option><option value="high">Harga tinggi</option></select>
+          </div>
+          <div class="gift-chips">
+            <button class="gift-chip active" data-category="all">Semua</button>
+            <button class="gift-chip" data-category="Home">Home</button>
+            <button class="gift-chip" data-category="Kitchen">Kitchen</button>
+            <button class="gift-chip" data-category="Travel">Travel</button>
+            <button class="gift-chip" data-category="Memories">Memories</button>
+            <button class="gift-chip" data-category="Cash">Cash</button>
+          </div>
+        </div>
+        <div class="gift-summary">
+          <div><b class="js-total-gifts">0</b><span>Hadiah</span></div>
+          <div><b class="js-collected">RM0</b><span>Terkumpul</span></div>
+          <div><b class="js-remaining">RM0</b><span>Baki</span></div>
+        </div>
+        <div class="gift-grid" data-gift-grid></div>
+        <p class="gift-note">Pilih bintang anda. Setiap sumbangan akan menjadi sebahagian dari langit cerita kami.</p>
+      </div>
+    </section>
+
+    <!-- 08 -->
+    <section class="design" data-design="8">
+      <div class="design-head">
+        <span class="design-num">08</span>
+        <div>
+          <h2>Luggage Tag Gift Registry</h2>
+          <p>Tag bagasi dengan tali dan lubang — travel theme yang handmade.</p>
+        </div>
+      </div>
+      <div class="stage gift-stage d8">
+        <p class="stage-kicker">Baggage claim · Gift registry</p>
+        <h2 class="stage-title">Tagged with love</h2>
+        <p class="stage-sub">Collect moments, not things</p>
+        <div class="divider"></div>
+        <div class="gift-toolbar">
+          <div class="gift-search-row">
+            <label class="gift-search"><svg class="icon"><use href="#i-search"/></svg><input class="gift-search-input" type="search" placeholder="Cari hadiah..." /></label>
+            <select class="gift-sort" aria-label="Susun hadiah"><option value="popular">Popular</option><option value="low">Harga rendah</option><option value="high">Harga tinggi</option></select>
+          </div>
+          <div class="gift-chips">
+            <button class="gift-chip active" data-category="all">Semua</button>
+            <button class="gift-chip" data-category="Home">Home</button>
+            <button class="gift-chip" data-category="Kitchen">Kitchen</button>
+            <button class="gift-chip" data-category="Travel">Travel</button>
+            <button class="gift-chip" data-category="Memories">Memories</button>
+            <button class="gift-chip" data-category="Cash">Cash</button>
+          </div>
+        </div>
+        <div class="gift-summary">
+          <div><b class="js-total-gifts">0</b><span>Hadiah</span></div>
+          <div><b class="js-collected">RM0</b><span>Terkumpul</span></div>
+          <div><b class="js-remaining">RM0</b><span>Baki</span></div>
+        </div>
+        <div class="gift-grid" data-gift-grid></div>
+        <p class="gift-note">Tempah hadiah yang anda suka, dan kami akan tag ia dengan nama anda dalam buku kenangan kami.</p>
+      </div>
+    </section>
+
+    <!-- 09 -->
+    <section class="design" data-design="9">
+      <div class="design-head">
+        <span class="design-num">09</span>
+        <div>
+          <h2>Editorial Minimal Gift Registry</h2>
+          <p>Typography besar, hairline dan whitespace — premium magazine.</p>
+        </div>
+      </div>
+      <div class="stage gift-stage d9">
+        <p class="stage-kicker">The registry</p>
+        <h2 class="stage-title">Gift list</h2>
+        <p class="stage-sub">A curated little wishlist</p>
+        <div class="divider"></div>
+        <div class="gift-toolbar">
+          <div class="gift-search-row">
+            <label class="gift-search"><svg class="icon"><use href="#i-search"/></svg><input class="gift-search-input" type="search" placeholder="Cari hadiah..." /></label>
+            <select class="gift-sort" aria-label="Susun hadiah"><option value="popular">Popular</option><option value="low">Harga rendah</option><option value="high">Harga tinggi</option></select>
+          </div>
+          <div class="gift-chips">
+            <button class="gift-chip active" data-category="all">Semua</button>
+            <button class="gift-chip" data-category="Home">Home</button>
+            <button class="gift-chip" data-category="Kitchen">Kitchen</button>
+            <button class="gift-chip" data-category="Travel">Travel</button>
+            <button class="gift-chip" data-category="Memories">Memories</button>
+            <button class="gift-chip" data-category="Cash">Cash</button>
+          </div>
+        </div>
+        <div class="gift-summary">
+          <div><b class="js-total-gifts">0</b><span>Hadiah</span></div>
+          <div><b class="js-collected">RM0</b><span>Terkumpul</span></div>
+          <div><b class="js-remaining">RM0</b><span>Baki</span></div>
+        </div>
+        <div class="gift-grid" data-gift-grid></div>
+        <p class="gift-note">Pilih hadiah, tinggalkan nama dan ucapan. Kami akan pastikan setiap hadiah sampai ke tangan yang betul.</p>
+      </div>
+    </section>
+
+    <!-- 10 -->
+    <section class="design" data-design="10">
+      <div class="design-head">
+        <span class="design-num">10</span>
+        <div>
+          <h2>Ribbon &amp; Wax Seal Gift Registry</h2>
+          <p>Ribbon slate + wax seal gold — classic wedding, sangat personal.</p>
+        </div>
+      </div>
+      <div class="stage gift-stage d10">
+        <p class="stage-kicker">Sealed with love</p>
+        <h2 class="stage-title">The sealed wishlist</h2>
+        <p class="stage-sub">A list tied with ribbon and love</p>
+        <div class="divider"></div>
+        <div class="gift-toolbar">
+          <div class="gift-search-row">
+            <label class="gift-search"><svg class="icon"><use href="#i-search"/></svg><input class="gift-search-input" type="search" placeholder="Cari hadiah..." /></label>
+            <select class="gift-sort" aria-label="Susun hadiah"><option value="popular">Popular</option><option value="low">Harga rendah</option><option value="high">Harga tinggi</option></select>
+          </div>
+          <div class="gift-chips">
+            <button class="gift-chip active" data-category="all">Semua</button>
+            <button class="gift-chip" data-category="Home">Home</button>
+            <button class="gift-chip" data-category="Kitchen">Kitchen</button>
+            <button class="gift-chip" data-category="Travel">Travel</button>
+            <button class="gift-chip" data-category="Memories">Memories</button>
+            <button class="gift-chip" data-category="Cash">Cash</button>
+          </div>
+        </div>
+        <div class="gift-summary">
+          <div><b class="js-total-gifts">0</b><span>Hadiah</span></div>
+          <div><b class="js-collected">RM0</b><span>Terkumpul</span></div>
+          <div><b class="js-remaining">RM0</b><span>Baki</span></div>
+        </div>
+        <div class="gift-grid" data-gift-grid></div>
+        <p class="gift-note">Pilih hadiah, tempah, dan kami akan simpan dengan penuh kasih. Terima kasih kerana meraikan bersama kami.</p>
+      </div>
+    </section>
+
+    <div class="pager">
+      <button id="prev" type="button">← Sebelum</button>
+      <span id="pager-label">Design 01 / 10</span>
+      <button id="next" type="button">Seterusnya →</button>
+    </div>
+  </main>
+
+  <div class="modal" id="gift-modal" hidden>
+    <div class="modal-backdrop" data-close></div>
+    <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <button class="modal-close" type="button" data-close aria-label="Tutup"><svg class="icon"><use href="#i-close"/></svg></button>
+      <div id="modal-booking">
+        <p class="modal-kicker">Tempahan hadiah</p>
+        <h2 id="modal-title">Tempah hadiah</h2>
+
+        <div class="modal-gift">
+          <div class="modal-visual"><svg class="icon" id="modal-icon"><use href="#i-gift"/></svg></div>
+          <div>
+            <h3 id="modal-gift-title">-</h3>
+            <p id="modal-gift-desc">-</p>
+            <span class="gift-type" id="modal-gift-type">Group gift</span>
+          </div>
+        </div>
+
+        <div class="modal-progress"><span id="modal-progress-fill" style="width:0%"></span></div>
+        <div class="gift-money" style="margin-top:-8px;margin-bottom:10px;">
+          <span id="modal-collected">RM0 collected</span>
+          <span id="modal-remaining">RM0 left</span>
+        </div>
+
+        <form class="modal-form" id="gift-form">
+          <label>
+            <span class="label-text">Jumlah tempahan / sumbangan</span>
+            <input type="number" id="modal-amount" min="1" step="1" required />
+            <div class="preset-row">
+              <button type="button" data-amount="50">RM50</button>
+              <button type="button" data-amount="100">RM100</button>
+              <button type="button" data-amount="250">RM250</button>
+              <button type="button" data-amount="full">Penuh</button>
+            </div>
+          </label>
+
+          <label>
+            <span class="label-text">Nama anda</span>
+            <input type="text" id="modal-name" placeholder="Contoh: Pakcik Din & Keluarga" required />
+          </label>
+
+          <label>
+            <span class="label-text">Ucapan &amp; doa (pilihan)</span>
+            <textarea id="modal-message" rows="2" placeholder="Tahniah pengantin baru..."></textarea>
+          </label>
+
+          <fieldset>
+            <span class="label-text">Cara bayaran</span>
+            <div class="payment-row">
+              <label><input type="radio" name="payment" value="TnG" checked /> Touch ’n Go</label>
+              <label><input type="radio" name="payment" value="QR" /> DuitNow QR</label>
+              <label><input type="radio" name="payment" value="Bank" /> Bank transfer</label>
+            </div>
+          </fieldset>
+
+          <button class="modal-submit" type="submit">Sahkan tempahan</button>
+          <p class="modal-note">Preview design sahaja — tiada bayaran sebenar dibuat.</p>
+        </form>
+      </div>
+
+      <div class="modal-success" id="modal-success" hidden>
+        <div class="success-icon"><svg class="icon"><use href="#i-check"/></svg></div>
+        <h3>Tempahan diterima!</h3>
+        <p id="success-message">Terima kasih. Pengantin akan mengesahkan tempahan anda tidak lama lagi.</p>
+        <button class="modal-submit" type="button" id="success-close" style="margin-top:16px;">Tutup</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ============================================================
+    //  UBAH SENARAI HADIAH DI SINI
+    // ------------------------------------------------------------
+    //  Untuk tambah hadiah: copy satu block { ... } dan letak
+    //  dalam array gifts di bawah. Icon boleh guna:
+    //  coffee, plate, blender, bed, luggage, camera, sparkles, gift.
+    // ============================================================
+    const gifts = [
+      {
+        id: "coffee",
+        title: "Espresso Coffee Machine",
+        category: "Home",
+        icon: "coffee",
+        desc: "For our slow Sunday mornings at home.",
+        target: 1299,
+        collected: 720,
+        type: "Group gift",
+        guests: 4,
+        action: "Tempah",
+      },
+      {
+        id: "dinner",
+        title: "Stoneware Dinner Set",
+        category: "Kitchen",
+        icon: "plate",
+        desc: "A table set for family and friends.",
+        target: 480,
+        collected: 480,
+        type: "Group gift",
+        guests: 3,
+        action: "Tempah",
+      },
+      {
+        id: "airfryer",
+        title: "Air Fryer",
+        category: "Kitchen",
+        icon: "sparkles",
+        desc: "Quick dinners for our busy weeknights.",
+        target: 599,
+        collected: 210,
+        type: "Group gift",
+        guests: 2,
+        action: "Tempah",
+      },
+      {
+        id: "luggage",
+        title: "Honeymoon Luggage Set",
+        category: "Travel",
+        icon: "luggage",
+        desc: "For the trips we have been dreaming of.",
+        target: 850,
+        collected: 500,
+        type: "Group gift",
+        guests: 5,
+        action: "Tempah",
+      },
+      {
+        id: "bedding",
+        title: "Linen Bedding Set",
+        category: "Home",
+        icon: "bed",
+        desc: "Soft linen for our little home.",
+        target: 620,
+        collected: 150,
+        type: "Group gift",
+        guests: 1,
+        action: "Tempah",
+      },
+      {
+        id: "camera",
+        title: "Instant Camera",
+        category: "Memories",
+        icon: "camera",
+        desc: "To capture all the little moments.",
+        target: 750,
+        collected: 300,
+        type: "Group gift",
+        guests: 2,
+        action: "Tempah",
+      },
+      {
+        id: "cash",
+        title: "Salam Kaut / Cash Gift",
+        category: "Cash",
+        icon: "gift",
+        desc: "Any amount, from the heart.",
+        target: 3000,
+        collected: 1250,
+        type: "Cash gift",
+        guests: 8,
+        action: "Sumbang",
+      },
+    ];
+
+    const money = (value) => "RM" + Number(value).toLocaleString("en-MY");
+    const progressOf = (gift) => Math.min(100, Math.round((gift.collected / gift.target) * 100));
+
+    function giftCard(gift, index) {
+      const progress = progressOf(gift);
+      const remaining = Math.max(0, gift.target - gift.collected);
+      const status = progress >= 100 ? "Fully funded" : progress >= 70 ? "Almost there" : "Available";
+      const action = progress >= 100 ? "Fully funded" : gift.action;
+
+      return `
+        <article class="gift-card" data-category="${gift.category}" data-title="${(gift.title + " " + gift.desc + " " + gift.category).toLowerCase()}" data-id="${gift.id}" data-price="${gift.target}">
+          <div class="gift-visual">
+            <svg class="icon gift-icon"><use href="#i-${gift.icon}"/></svg>
+            <span class="gift-cat">${gift.category}</span>
+          </div>
+          <div class="gift-body">
+            <p class="gift-kicker">Gift · ${String(index + 1).padStart(2, "0")}</p>
+            <div class="gift-chips">
+              <span class="gift-type">${gift.type}</span>
+              <span class="gift-status ${progress >= 100 ? "done" : ""}">${status}</span>
+            </div>
+            <h3>${gift.title}</h3>
+            <p class="gift-desc">${gift.desc}</p>
+            <div class="gift-progress"><span style="width:${progress}%"></span></div>
+            <div class="gift-money">
+              <span><b>${money(gift.collected)}</b> collected</span>
+              <span>${remaining === 0 ? "Goal reached" : money(remaining) + " left"}</span>
+            </div>
+            <div class="gift-foot">
+              <span class="gift-guests">${gift.guests} guests</span>
+              <button class="gift-reserve" type="button" data-gift="${gift.id}" ${progress >= 100 ? "disabled" : ""}>${action}</button>
+            </div>
+          </div>
+          <div class="gift-stub">
+            <svg class="icon"><use href="#i-plane"/></svg>
+            <span class="gift-barcode"></span>
+            <button class="gift-reserve" type="button" data-gift="${gift.id}" ${progress >= 100 ? "disabled" : ""}>${action}</button>
+          </div>
+        </article>
+      `;
+    }
+
+    document.querySelectorAll("[data-gift-grid]").forEach((grid) => {
+      grid.innerHTML = gifts.map(giftCard).join("");
+    });
+
+    const totalGifts = gifts.length;
+    const totalCollected = gifts.reduce((sum, gift) => sum + gift.collected, 0);
+    const totalRemaining = gifts.reduce((sum, gift) => sum + Math.max(0, gift.target - gift.collected), 0);
+    document.querySelectorAll(".js-total-gifts").forEach((el) => (el.textContent = totalGifts));
+    document.querySelectorAll(".js-collected").forEach((el) => (el.textContent = money(totalCollected)));
+    document.querySelectorAll(".js-remaining").forEach((el) => (el.textContent = money(totalRemaining)));
+
+    // Tabs & pager
+    const designs = Array.from(document.querySelectorAll(".design"));
+    const tabs = Array.from(document.querySelectorAll(".tab"));
+    const counter = document.getElementById("counter");
+    const pagerLabel = document.getElementById("pager-label");
+    const prev = document.getElementById("prev");
+    const next = document.getElementById("next");
+    let current = 0;
+
+    function show(index, updateHash = true) {
+      current = (index + designs.length) % designs.length;
+      designs.forEach((section, i) => section.classList.toggle("active", i === current));
+      tabs.forEach((tab, i) => {
+        tab.classList.toggle("active", i === current);
+        if (i === current) tab.scrollIntoView({ inline: "center", block: "nearest", behavior: "smooth" });
+      });
+      const number = String(current + 1).padStart(2, "0");
+      counter.textContent = number + " / 10";
+      pagerLabel.textContent = "Design " + number + " / 10";
+      prev.disabled = current === 0;
+      next.disabled = current === designs.length - 1;
+      if (updateHash) history.replaceState(null, "", "#design-" + (current + 1));
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    tabs.forEach((tab, index) => tab.addEventListener("click", () => show(index)));
+    prev.addEventListener("click", () => show(current - 1));
+    next.addEventListener("click", () => show(current + 1));
+    document.addEventListener("keydown", (event) => {
+      if (event.target.matches("input, textarea, select")) return;
+      if (event.key === "ArrowLeft") show(current - 1);
+      if (event.key === "ArrowRight") show(current + 1);
+    });
+
+    const fromHash = Number((location.hash.match(/design-(\d+)/) || [])[1]);
+    show(Number.isFinite(fromHash) && fromHash > 0 ? fromHash - 1 : 0, false);
+
+    // Search, filter, sort
+    function filterStage(stage) {
+      const search = (stage.querySelector(".gift-search-input")?.value || "").toLowerCase().trim();
+      const activeChip = stage.querySelector(".gift-chip.active");
+      const category = activeChip?.dataset.category || "all";
+      const cards = Array.from(stage.querySelectorAll(".gift-card"));
+      let visible = 0;
+
+      cards.forEach((card) => {
+        const matchesCategory = category === "all" || card.dataset.category === category;
+        const matchesSearch = !search || card.dataset.title.includes(search);
+        const showCard = matchesCategory && matchesSearch;
+        card.style.display = showCard ? "" : "none";
+        if (showCard) visible += 1;
+      });
+
+      let empty = stage.querySelector(".gift-empty");
+      if (!empty) {
+        empty = document.createElement("p");
+        empty.className = "gift-empty";
+        empty.textContent = "Tiada hadiah dijumpai. Cuba search atau filter lain.";
+        stage.querySelector(".gift-grid")?.appendChild(empty);
+      }
+      empty.hidden = visible !== 0;
+    }
+
+    document.querySelectorAll(".gift-stage").forEach((stage) => {
+      stage.querySelector(".gift-search-input")?.addEventListener("input", () => filterStage(stage));
+      stage.querySelectorAll(".gift-chip").forEach((chip) => {
+        chip.addEventListener("click", () => {
+          stage.querySelectorAll(".gift-chip").forEach((item) => item.classList.remove("active"));
+          chip.classList.add("active");
+          filterStage(stage);
+        });
+      });
+      stage.querySelector(".gift-sort")?.addEventListener("change", (event) => {
+        const grid = stage.querySelector(".gift-grid");
+        if (!grid) return;
+        const cards = Array.from(grid.querySelectorAll(".gift-card"));
+        const mode = event.target.value;
+        cards.sort((a, b) => {
+          const priceA = Number(a.dataset.price);
+          const priceB = Number(b.dataset.price);
+          if (mode === "low") return priceA - priceB;
+          if (mode === "high") return priceB - priceA;
+          return gifts.findIndex((gift) => gift.id === a.dataset.id) - gifts.findIndex((gift) => gift.id === b.dataset.id);
+        });
+        cards.forEach((card) => grid.appendChild(card));
+        const empty = grid.querySelector(".gift-empty");
+        if (empty) grid.appendChild(empty);
+      });
+    });
+
+    // Booking modal
+    const modal = document.getElementById("gift-modal");
+    const modalBooking = document.getElementById("modal-booking");
+    const modalSuccess = document.getElementById("modal-success");
+    const modalAmount = document.getElementById("modal-amount");
+    const modalName = document.getElementById("modal-name");
+    const modalMessage = document.getElementById("modal-message");
+    const modalTitle = document.getElementById("modal-title");
+    const modalGiftTitle = document.getElementById("modal-gift-title");
+    const modalGiftDesc = document.getElementById("modal-gift-desc");
+    const modalGiftType = document.getElementById("modal-gift-type");
+    const modalIcon = document.getElementById("modal-icon");
+    const modalProgressFill = document.getElementById("modal-progress-fill");
+    const modalCollected = document.getElementById("modal-collected");
+    const modalRemaining = document.getElementById("modal-remaining");
+    const modalForm = document.getElementById("gift-form");
+    const successMessage = document.getElementById("success-message");
+    let selectedGift = null;
+
+    function openGift(giftId) {
+      const gift = gifts.find((item) => item.id === giftId);
+      if (!gift) return;
+      selectedGift = gift;
+      const progress = progressOf(gift);
+      const remaining = Math.max(0, gift.target - gift.collected);
+
+      modalTitle.textContent = gift.action === "Sumbang" ? "Sumbang hadiah" : "Tempah hadiah";
+      modalGiftTitle.textContent = gift.title;
+      modalGiftDesc.textContent = gift.desc;
+      modalGiftType.textContent = gift.type;
+      modalIcon.innerHTML = `<use href="#i-${gift.icon}"/>`;
+      modalProgressFill.style.width = progress + "%";
+      modalCollected.textContent = money(gift.collected) + " collected";
+      modalRemaining.textContent = remaining === 0 ? "Goal reached" : money(remaining) + " left";
+      modalAmount.value = remaining === 0 ? gift.target : remaining;
+      modalAmount.max = remaining === 0 ? gift.target : remaining;
+      modalName.value = "";
+      modalMessage.value = "";
+      modalBooking.hidden = false;
+      modalSuccess.hidden = true;
+      modal.hidden = false;
+      document.body.classList.add("modal-open");
+      window.setTimeout(() => modalName.focus(), 200);
+    }
+
+    function closeModal() {
+      modal.hidden = true;
+      document.body.classList.remove("modal-open");
+      selectedGift = null;
+    }
+
+    document.addEventListener("click", (event) => {
+      const reserve = event.target.closest(".gift-reserve");
+      if (reserve) {
+        event.preventDefault();
+        openGift(reserve.dataset.gift);
+        return;
+      }
+      const preset = event.target.closest("[data-amount]");
+      if (preset && selectedGift) {
+        const remaining = Math.max(0, selectedGift.target - selectedGift.collected);
+        const value = preset.dataset.amount === "full" ? remaining : Number(preset.dataset.amount);
+        modalAmount.value = Math.max(1, Math.min(value, remaining || selectedGift.target));
+      }
+      if (event.target.closest("[data-close]")) closeModal();
+    });
+
+    document.getElementById("success-close").addEventListener("click", closeModal);
+
+    modalForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      if (!selectedGift) return;
+      const amount = Number(modalAmount.value);
+      const name = modalName.value.trim() || "Tetamu";
+      const method = new FormData(modalForm).get("payment") || "TnG";
+      successMessage.textContent = `${name}, tempahan ${selectedGift.title} sebanyak ${money(amount)} melalui ${method} telah diterima. Pengantin akan mengesahkan tidak lama lagi.`;
+      modalBooking.hidden = true;
+      modalSuccess.hidden = false;
+      if (modalSuccess.scrollIntoView) modalSuccess.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && !modal.hidden) closeModal();
+    });
+  </script>
+</body>
+</html>
