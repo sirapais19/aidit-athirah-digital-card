@@ -8,10 +8,14 @@ create table if not exists public.wishes (
   name text,
   message text not null,
   is_visible boolean not null default true,
+  is_approved boolean not null default true,
   created_at timestamptz not null default now()
 );
 
 alter table public.wishes add column if not exists is_visible boolean not null default true;
+-- Older projects use is_approved. Keep the app's is_visible filter in sync with it.
+alter table public.wishes add column if not exists is_approved boolean not null default true;
+update public.wishes set is_visible = is_approved where is_visible is distinct from is_approved;
 
 create index if not exists wishes_created_at_idx
   on public.wishes (created_at desc);
@@ -30,7 +34,7 @@ create policy "Guests can leave a wish"
   on public.wishes
   for insert
   to anon, authenticated
-  with check (true);
+  with check (is_approved = false);
 
 grant select, insert on public.wishes to anon, authenticated;
 

@@ -42,17 +42,19 @@ update public.guest_photos set is_visible = false where id = '<photo-id>';
 ## Gift registry
 
 1. Run [`supabase/gift_registry.sql`](supabase/gift_registry.sql) in the Supabase SQL Editor.
-   This adds gift details, creates `gift_reservations`, exposes the `get_gift_registry()` RPC, and seeds 7 starter gifts.
+   This is safe to run with the existing `gift_items` table, creates `gift_reservations`, exposes the `get_gift_registry()` RPC, and seeds 7 starter gifts.
 2. Add or edit gifts in **Table Editor → `gift_items`**:
    - `title`, `description`, `category`
    - `icon` — `coffee`, `plate`, `blender`, `bed`, `luggage`, `camera`, `sparkles`, or `gift`
    - `target_amount`, `gift_mode` (`group`, `reserve`, or `cash`)
    - `quantity`, `sort_order`, `is_active`
-3. Guests reserve gifts from the **Gift** card. New reservations are saved as `pending`.
-4. Approve reservations in **Table Editor → `gift_reservations`** by setting `status` to `confirmed`.
-   Confirmed amounts count toward the progress bar; pending reservations count toward the reserved/guest count.
+3. Guests reserve gifts from the **Gift** card. New reservations are saved as `confirmed` in `gift_reservations` and count immediately toward registry totals.
 
 > The registry uses category icons as product visuals. If you want real product photos, add an `image_url` column and update the gift card in `src/components/wedding/GiftRegistry.tsx`.
+
+### Existing Supabase project reports `PGRST205` for `gift_reservations`
+
+Run `supabase/gift_registry.sql` in the SQL Editor for the same Supabase project configured by `VITE_SUPABASE_URL`. The app's current gift form writes to `gift_reservations`; `donation_confirmations` is a separate legacy table and does not replace it. The script creates the missing table and asks PostgREST to reload its schema cache. If the API still reports the table missing after the SQL succeeds, wait briefly and retry the request or reload the schema cache from Supabase dashboard settings.
 
 ## Guest wishes
 

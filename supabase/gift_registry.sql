@@ -1,7 +1,18 @@
 -- ============================================================================
--- Gift registry upgrade for Aidit & Athirah
--- Run this once in Supabase Dashboard > SQL Editor.
+-- Gift registry for Aidit & Athirah
+-- Safe to run on the existing gift_items table shown in the project schema.
+-- Run in Supabase Dashboard > SQL Editor.
 -- ============================================================================
+
+-- Ensure the base table exists on new projects; on existing projects this is a no-op.
+create table if not exists public.gift_items (
+  id uuid primary key default gen_random_uuid(),
+  title text not null,
+  target_amount numeric(10, 2) not null check (target_amount > 0),
+  is_active boolean not null default true,
+  sort_order integer not null default 0,
+  created_at timestamptz not null default now()
+);
 
 -- 1. Add the fields needed by the gift registry UI
 alter table public.gift_items add column if not exists description text;
@@ -42,6 +53,20 @@ create table if not exists public.gift_reservations (
   created_at timestamptz not null default now()
 );
 
+grant insert on public.gift_reservations to anon, authenticated;
+grant select, insert, update, delete on public.gift_items to anon, authenticated;
+
+alter table public.gift_items enable row level security;
+drop policy if exists "Anyone can view active gift items" on public.gift_items;
+create policy "Anyone can view active gift items"
+  on public.gift_items
+  for select
+  to anon, authenticated
+  using (is_active = true);
+
+-- Public submissions are automatically confirmed. No public read or update
+-- policies are created, so guest details stay private.
+
 create index if not exists gift_reservations_item_idx
   on public.gift_reservations (gift_item_id, status);
 create index if not exists gift_reservations_created_idx
@@ -49,14 +74,21 @@ create index if not exists gift_reservations_created_idx
 
 alter table public.gift_reservations enable row level security;
 
--- Guests can submit a pending reservation. Only the couple (dashboard) should
--- change the status to confirmed/cancelled.
+-- Convert existing pending reservations now that submissions are auto-confirmed.
+update public.gift_reservations
+set status = 'confirmed'
+where status = 'pending';
+
+-- Guests can submit confirmed reservations. They cannot read or modify rows.
 drop policy if exists "Guests can create pending gift reservations" on public.gift_reservations;
-create policy "Guests can create pending gift reservations"
+drop policy if exists "Guests can create confirmed gift reservations" on public.gift_reservations;
+create policy "Guests can create confirmed gift reservations"
   on public.gift_reservations
   for insert
   to anon, authenticated
-  with check (status = 'pending');
+  with check (status = 'confirmed');
+
+grant insert on public.gift_reservations to anon, authenticated;
 
 -- 3. Public registry view: totals + reserved counts, without exposing guest data
 create or replace function public.get_gift_registry()
@@ -101,6 +133,9 @@ $$;
 
 revoke all on function public.get_gift_registry() from public;
 grant execute on function public.get_gift_registry() to anon, authenticated;
+
+-- Make the new table/function visible to PostgREST without waiting for its cache TTL.
+notify pgrst, 'reload schema';
 
 -- 4. Starter gift list (edit / add more in Table Editor)
 insert into public.gift_items

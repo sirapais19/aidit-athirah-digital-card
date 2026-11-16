@@ -282,7 +282,7 @@ const GiftRegistry = ({ paymentUrl }: { paymentUrl: string }) => {
       amount: safeAmount,
       message: message.trim() || null,
       payment_method: paymentMethod,
-      status: "pending",
+      status: "confirmed",
     });
 
     if (error) {
