@@ -1,0 +1,1249 @@
+<!doctype html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Malay Invitation · 10 Design Concepts</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Source+Code+Pro:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --cream: #f9f7f1;
+      --paper: #fffdf8;
+      --slate: #72809c;
+      --slate-dark: #5c6982;
+      --slate-deep: #3f4a5f;
+      --navy: #354159;
+      --periwinkle: #c7d0e4;
+      --gold: #c9a86a;
+      --gold-dark: #a8895e;
+      --ink: #3f4a5f;
+      --muted: #7c8494;
+      --line: #e4dccb;
+      --display: "Playfair Display", serif;
+      --serif: "Cormorant Garamond", serif;
+      --mono: "Source Code Pro", monospace;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      background: #eef0f4;
+      font-family: var(--serif);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at 18% 8%, rgba(255,255,255,.92), transparent 34%),
+        radial-gradient(circle at 86% 18%, rgba(114,128,156,.18), transparent 32%),
+        linear-gradient(180deg, #eef0f4, #f7f3ed);
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: .05;
+      background-image: radial-gradient(rgba(15,23,42,.85) 1px, transparent 1px);
+      background-size: 26px 26px;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      padding: 16px 20px 12px;
+      background: rgba(238,240,244,.88);
+      border-bottom: 1px solid rgba(255,255,255,.85);
+      backdrop-filter: blur(14px);
+    }
+
+    .topbar-inner {
+      max-width: 980px;
+      margin: 0 auto;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    .eyebrow {
+      margin: 0 0 4px;
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: .28em;
+      text-transform: uppercase;
+      color: #98a0b2;
+    }
+
+    .topbar h1 {
+      margin: 0;
+      font-family: var(--display);
+      font-size: clamp(22px, 3vw, 30px);
+      font-weight: 500;
+      letter-spacing: -.02em;
+      color: var(--ink);
+    }
+
+    .topbar h1 em {
+      font-family: var(--serif);
+      font-size: .72em;
+      font-weight: 400;
+      color: var(--slate);
+    }
+
+    .counter {
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: .18em;
+      color: #98a0b2;
+      white-space: nowrap;
+      padding-bottom: 5px;
+    }
+
+    .tabs {
+      max-width: 980px;
+      margin: 14px auto 0;
+      display: flex;
+      gap: 7px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      scrollbar-width: none;
+    }
+
+    .tabs::-webkit-scrollbar { display: none; }
+
+    .tab {
+      flex: 0 0 auto;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.9);
+      background: rgba(255,255,255,.6);
+      color: #6f7787;
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: .05em;
+      cursor: pointer;
+      transition: .2s ease;
+    }
+
+    .tab b { font-size: 8px; font-weight: 600; color: #a9afbc; }
+    .tab:hover { background: #fff; color: var(--ink); }
+    .tab.active { background: var(--slate); border-color: var(--slate); color: #fff; box-shadow: 0 6px 16px rgba(80,95,125,.22); }
+    .tab.active b { color: rgba(255,255,255,.65); }
+
+    main {
+      position: relative;
+      z-index: 1;
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 20px 16px 80px;
+    }
+
+    .feature-strip {
+      max-width: 980px;
+      margin: 0 auto 18px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .feature-strip span {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 5px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(114,128,156,.14);
+      background: rgba(255,255,255,.52);
+      font-family: var(--mono);
+      font-size: 7px;
+      letter-spacing: .04em;
+      color: #8a92a3;
+    }
+
+    .feature-strip span::before { content: "✓"; color: var(--gold-dark); }
+
+    .design { display: none; animation: fadeUp .45s ease both; }
+    .design.active { display: block; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(14px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .design-head {
+      max-width: 430px;
+      margin: 0 auto 16px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .design-num {
+      flex: 0 0 auto;
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      border: 1px solid rgba(114,128,156,.3);
+      background: rgba(255,255,255,.55);
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--slate);
+    }
+
+    .design-head h2 {
+      margin: 0;
+      font-family: var(--display);
+      font-size: 22px;
+      font-weight: 500;
+      color: var(--ink);
+      line-height: 1.1;
+    }
+
+    .design-head p {
+      margin: 5px 0 0;
+      font-family: var(--serif);
+      font-size: 14px;
+      font-style: italic;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+
+    .stage {
+      position: relative;
+      max-width: 430px;
+      margin: 0 auto;
+      border-radius: 32px;
+      border: 1px solid rgba(255,255,255,.9);
+      background: var(--cream);
+      box-shadow: 0 26px 80px rgba(80,88,110,.17);
+      overflow: hidden;
+    }
+
+    .stage::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: .26;
+      background-image: radial-gradient(rgba(90,75,55,.16) .7px, transparent .8px);
+      background-size: 20px 20px;
+    }
+
+    .stage > * { position: relative; z-index: 1; }
+
+    .salam,
+    .formal {
+      margin: 0;
+      font-family: var(--serif);
+      font-size: 14px;
+      line-height: 1.55;
+      text-align: center;
+    }
+
+    .salam { font-style: italic; }
+
+    .closing {
+      margin: 0;
+      font-family: var(--serif);
+      font-size: 13px;
+      font-style: italic;
+      line-height: 1.5;
+      text-align: center;
+    }
+
+    .hosts,
+    .couple {
+      margin: 0;
+      text-align: center;
+      font-family: var(--display);
+      letter-spacing: .06em;
+      line-height: 1.45;
+    }
+
+    .hosts { font-size: 13px; font-weight: 600; }
+    .couple { font-size: 14px; font-weight: 600; }
+
+    .amp {
+      display: block;
+      margin: 2px 0;
+      font-family: var(--serif);
+      font-style: italic;
+      font-weight: 400;
+      color: var(--gold-dark);
+    }
+
+    .detail-label {
+      display: block;
+      font-family: var(--mono);
+      font-size: 6px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: #a29a8a;
+    }
+
+    .detail-value {
+      display: block;
+      margin-top: 2px;
+      font-family: var(--serif);
+      font-size: 14px;
+      line-height: 1.3;
+      color: var(--ink);
+    }
+
+    /* 01 — Passport page */
+    .inv-01 .passport-cover {
+      padding: 20px 20px 17px;
+      text-align: center;
+      color: #f9f7f1;
+      background:
+        radial-gradient(circle at 50% 0%, rgba(201,168,106,.22), transparent 55%),
+        linear-gradient(150deg, #3f4a5f, #2f3a4f);
+      border-bottom: 1px solid rgba(201,168,106,.45);
+    }
+    .inv-01 .passport-cover p {
+      margin: 0;
+      font-family: var(--mono);
+      font-size: 7px;
+      letter-spacing: .28em;
+      text-transform: uppercase;
+      color: #d9c192;
+    }
+    .inv-01 .passport-cover h2 {
+      margin: 5px 0 0;
+      font-family: var(--display);
+      font-size: 24px;
+      font-weight: 500;
+      letter-spacing: .04em;
+      color: #fffaf0;
+    }
+    .inv-01 .passport-cover .emblem {
+      width: 46px;
+      height: 46px;
+      margin: 10px auto 0;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(201,168,106,.55);
+      border-radius: 50%;
+      font-family: var(--display);
+      font-size: 14px;
+      font-style: italic;
+      color: #e8cd98;
+    }
+    .inv-01 .passport-page { padding: 18px 18px 16px; }
+    .inv-01 .pp-top {
+      display: grid;
+      grid-template-columns: 78px 1fr;
+      gap: 12px;
+      align-items: start;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--line);
+    }
+    .inv-01 .pp-photo {
+      height: 94px;
+      display: grid;
+      place-items: center;
+      border: 1px solid #d9c9b0;
+      background: linear-gradient(145deg, #e9e0d0, #c9bfa8);
+      font-family: var(--display);
+      font-size: 18px;
+      font-style: italic;
+      color: #6b5f4a;
+      text-align: center;
+    }
+    .inv-01 .pp-photo span {
+      display: block;
+      margin-top: 2px;
+      font-family: var(--mono);
+      font-size: 4.5px;
+      letter-spacing: .12em;
+      color: #8d7d64;
+    }
+    .inv-01 .pp-fields { display: grid; gap: 8px; }
+    .inv-01 .pp-fields p { margin: 0; font-family: var(--display); font-size: 12px; font-weight: 600; line-height: 1.35; letter-spacing: .03em; }
+    .inv-01 .pp-fields .amp { display: inline; margin: 0 2px; font-size: 12px; }
+    .inv-01 .pp-intro { margin: 12px 0 0; font-family: var(--serif); font-size: 13px; line-height: 1.5; text-align: center; }
+    .inv-01 .pp-details {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 12px;
+      padding: 10px 0;
+      border-top: 1px dashed var(--line);
+      border-bottom: 1px dashed var(--line);
+    }
+    .inv-01 .pp-details .wide { grid-column: 1 / -1; }
+    .inv-01 .pp-closing { margin: 11px 0 0; font-family: var(--serif); font-size: 12.5px; font-style: italic; line-height: 1.45; text-align: center; }
+    .inv-01 .mrz {
+      margin-top: 12px;
+      padding-top: 8px;
+      border-top: 1px solid #d9c9b0;
+      font-family: var(--mono);
+      font-size: 5.5px;
+      letter-spacing: .12em;
+      color: #8d7d64;
+      word-break: break-all;
+      line-height: 1.6;
+    }
+    .inv-01 .pp-stamp {
+      position: absolute;
+      right: 22px;
+      top: 118px;
+      width: 48px;
+      height: 48px;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(114,128,156,.35);
+      border-radius: 50%;
+      font-family: var(--mono);
+      font-size: 4.5px;
+      line-height: 1.4;
+      text-align: center;
+      color: rgba(114,128,156,.6);
+      transform: rotate(-13deg);
+    }
+
+    /* 02 — Boarding pass */
+    .inv-02 { padding: 16px; }
+    .inv-02 .boarding {
+      position: relative;
+      display: grid;
+      grid-template-columns: 1fr 64px;
+      border-radius: 17px;
+      border: 1px solid #d9cebb;
+      background: var(--paper);
+      box-shadow: 0 14px 30px rgba(90,95,110,.11);
+      overflow: hidden;
+    }
+    .inv-02 .bp-main { padding: 17px 14px 15px; }
+    .inv-02 .bp-kicker { margin: 0; font-family: var(--mono); font-size: 6px; letter-spacing: .2em; text-transform: uppercase; color: #a8895e; }
+    .inv-02 h2 { margin: 4px 0 8px; font-family: var(--display); font-size: 21px; font-weight: 500; letter-spacing: .03em; text-align: center; color: var(--ink); }
+    .inv-02 .salam { margin-bottom: 7px; font-size: 12.5px; }
+    .inv-02 .formal { font-size: 12.5px; }
+    .inv-02 .hosts { margin: 8px 0; font-size: 11px; }
+    .inv-02 .couple { margin: 8px 0; font-size: 12px; }
+    .inv-02 .bp-details {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 10px;
+      padding-top: 9px;
+      border-top: 1px dashed #d8d0be;
+    }
+    .inv-02 .bp-details .wide { grid-column: 1 / -1; }
+    .inv-02 .closing { margin-top: 10px; font-size: 12px; }
+    .inv-02 .bp-stub {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      padding: 10px 5px;
+      border-left: 1px dashed #d8d0be;
+      background: rgba(243,238,227,.6);
+    }
+    .inv-02 .bp-plane { font-size: 17px; color: var(--slate); transform: rotate(45deg); }
+    .inv-02 .bp-barcode { width: 24px; height: 58px; background: repeating-linear-gradient(90deg, #6c788d 0 1.5px, transparent 1.5px 4px); opacity: .9; }
+    .inv-02 .bp-stub small { font-family: var(--mono); font-size: 5.5px; letter-spacing: .1em; color: #8a8170; text-align: center; line-height: 1.5; }
+    .inv-02 .boarding::before,
+    .inv-02 .boarding::after {
+      content: "";
+      position: absolute;
+      right: 58px;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--cream);
+      border: 1px solid #d9cebb;
+      z-index: 2;
+    }
+    .inv-02 .boarding::before { top: -5px; }
+    .inv-02 .boarding::after { bottom: -5px; }
+
+    /* 03 — Airmail letter */
+    .inv-03 { padding: 14px; }
+    .inv-03 .airmail {
+      border: 4px solid transparent;
+      border-radius: 6px;
+      background:
+        linear-gradient(var(--paper), var(--paper)) padding-box,
+        repeating-linear-gradient(45deg, #72809c 0 8px, #f9f7f1 8px 16px, #c9a86a 16px 24px) border-box;
+      padding: 16px 14px 14px;
+      position: relative;
+    }
+    .inv-03 .air-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
+    .inv-03 .air-label { margin: 0; font-family: var(--mono); font-size: 6px; letter-spacing: .18em; text-transform: uppercase; color: #a8895e; }
+    .inv-03 .postage {
+      width: 44px;
+      height: 52px;
+      display: grid;
+      place-items: center;
+      border: 1px dashed #b7a78b;
+      background: #f4e8d6;
+      font-family: var(--display);
+      font-size: 10px;
+      line-height: 1.2;
+      color: #8d7d64;
+      transform: rotate(3deg);
+    }
+    .inv-03 .postmark {
+      position: absolute;
+      right: 42px;
+      top: 52px;
+      width: 40px;
+      height: 40px;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(114,128,156,.35);
+      border-radius: 50%;
+      font-family: var(--mono);
+      font-size: 4.5px;
+      line-height: 1.5;
+      text-align: center;
+      color: rgba(114,128,156,.6);
+      transform: rotate(-12deg);
+    }
+    .inv-03 h2 { margin: 12px 0 8px; font-family: var(--display); font-size: 21px; font-weight: 500; text-align: center; color: var(--ink); }
+    .inv-03 .salam { font-size: 13px; margin-bottom: 7px; }
+    .inv-03 .formal { font-size: 13px; }
+    .inv-03 .hosts { margin: 9px 0; font-size: 12px; }
+    .inv-03 .couple { margin: 9px 0; font-size: 13px; }
+    .inv-03 .air-details {
+      margin-top: 10px;
+      border-top: 1px dashed var(--line);
+      border-bottom: 1px dashed var(--line);
+      padding: 8px 0;
+      display: grid;
+      gap: 5px;
+    }
+    .inv-03 .air-details div { display: flex; justify-content: space-between; gap: 10px; text-align: left; }
+    .inv-03 .air-details .detail-value { margin: 0; text-align: right; font-size: 13px; }
+    .inv-03 .closing { margin-top: 10px; font-size: 12.5px; }
+    .inv-03 .signature { margin: 10px 0 0; font-family: var(--display); font-size: 15px; font-style: italic; text-align: right; color: var(--slate); }
+
+    /* 04 — Songket gold frame */
+    .inv-04 { padding: 13px; }
+    .inv-04 .songket {
+      position: relative;
+      border: 1px solid rgba(201,168,106,.75);
+      border-radius: 4px;
+      padding: 18px 16px 16px;
+      background:
+        linear-gradient(180deg, rgba(201,168,106,.06), transparent 20%, transparent 80%, rgba(201,168,106,.06)),
+        var(--paper);
+      box-shadow: inset 0 0 0 5px var(--paper), inset 0 0 0 6px rgba(114,128,156,.28);
+    }
+    .inv-04 .songket::before,
+    .inv-04 .songket::after {
+      content: "❖";
+      position: absolute;
+      color: var(--gold);
+      font-size: 13px;
+      line-height: 1;
+    }
+    .inv-04 .songket::before { left: 10px; top: 8px; }
+    .inv-04 .songket::after { right: 10px; bottom: 8px; }
+    .inv-04 .songket-top { text-align: center; }
+    .inv-04 .songket-pattern {
+      height: 5px;
+      margin: 0 auto 10px;
+      width: 80%;
+      background: repeating-linear-gradient(90deg, var(--gold) 0 3px, transparent 3px 7px);
+      opacity: .55;
+    }
+    .inv-04 h2 {
+      margin: 0;
+      font-family: var(--display);
+      font-size: 22px;
+      font-weight: 500;
+      letter-spacing: .07em;
+      color: var(--slate-dark);
+    }
+    .inv-04 .songket-sub { margin: 3px 0 0; font-family: var(--mono); font-size: 5.5px; letter-spacing: .2em; text-transform: uppercase; color: var(--gold-dark); }
+    .inv-04 .salam { margin-top: 10px; font-size: 13px; }
+    .inv-04 .formal { font-size: 13px; }
+    .inv-04 .hosts { margin: 8px 0; font-size: 12px; color: var(--slate-dark); }
+    .inv-04 .couple { margin: 8px 0; font-size: 13px; color: var(--slate-dark); }
+    .inv-04 .songket-details {
+      margin-top: 10px;
+      padding: 9px 10px;
+      border: 1px solid rgba(201,168,106,.28);
+      background: rgba(249,247,241,.7);
+      display: grid;
+      gap: 6px;
+    }
+    .inv-04 .songket-details div { display: flex; justify-content: space-between; gap: 10px; }
+    .inv-04 .songket-details .detail-value { margin: 0; text-align: right; font-size: 13px; }
+    .inv-04 .closing { margin-top: 10px; font-size: 12.5px; }
+
+    /* 05 — Editorial minimal */
+    .inv-05 { padding: 25px 21px 22px; }
+    .inv-05 .ed-meta { display: flex; justify-content: space-between; gap: 12px; font-family: var(--mono); font-size: 6px; letter-spacing: .16em; text-transform: uppercase; color: #a29a8a; }
+    .inv-05 h2 { margin: 10px 0 0; font-family: var(--display); font-size: 30px; font-weight: 400; line-height: 1.02; letter-spacing: -.02em; color: var(--ink); }
+    .inv-05 .ed-sub { margin: 5px 0 0; font-family: var(--serif); font-size: 14px; font-style: italic; color: var(--muted); }
+    .inv-05 .ed-rule { height: 1px; margin: 14px 0; background: var(--line); }
+    .inv-05 .salam { text-align: left; font-size: 13px; margin-bottom: 7px; }
+    .inv-05 .formal { text-align: left; font-size: 13px; }
+    .inv-05 .hosts { margin: 12px 0; text-align: left; font-size: 14px; line-height: 1.5; }
+    .inv-05 .hosts .amp { display: inline; margin: 0 4px; }
+    .inv-05 .couple { margin: 12px 0; text-align: left; font-size: 18px; line-height: 1.25; letter-spacing: .02em; }
+    .inv-05 .couple .amp { display: inline; margin: 0 5px; font-size: 16px; }
+    .inv-05 .ed-details { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 14px; padding: 12px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+    .inv-05 .ed-details .wide { grid-column: 1 / -1; }
+    .inv-05 .closing { text-align: left; margin-top: 12px; font-size: 12.5px; }
+    .inv-05 .ed-sign { margin-top: 14px; font-family: var(--display); font-size: 15px; font-style: italic; color: var(--slate); }
+
+    /* 06 — Wax seal & ribbon */
+    .inv-06 { padding: 17px 15px 15px; }
+    .inv-06 .seal-card {
+      position: relative;
+      border: 1px solid rgba(201,168,106,.5);
+      background: var(--paper);
+      padding: 62px 16px 16px;
+      text-align: center;
+      overflow: hidden;
+    }
+    .inv-06 .seal-ribbon {
+      position: absolute;
+      left: 50%;
+      top: 0;
+      width: 54px;
+      height: 40px;
+      transform: translateX(-50%);
+      background: linear-gradient(90deg, #5c6982, #72809c 34%, #8b98b2 50%, #66738d 66%, #55617a);
+      clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 78%, 0 100%);
+    }
+    .inv-06 .wax-seal {
+      position: absolute;
+      left: 50%;
+      top: 17px;
+      width: 48px;
+      height: 48px;
+      transform: translateX(-50%);
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: radial-gradient(circle at 34% 28%, #e8cd98, #c9a86a 56%, #9f7d48 100%);
+      box-shadow: inset 0 0 0 2px rgba(255,255,255,.25), inset 0 -2px 4px rgba(80,55,20,.24), 0 5px 10px rgba(90,65,30,.25);
+      font-family: var(--display);
+      font-size: 10px;
+      color: #5e4a2c;
+      z-index: 2;
+    }
+    .inv-06 .wax-seal::before { content: ""; position: absolute; inset: 5px; border: 1px solid rgba(94,74,44,.35); border-radius: 50%; }
+    .inv-06 .wax-seal img { width: 30px; height: auto; position: relative; z-index: 1; }
+    .inv-06 h2 { margin: 14px 0 0; font-family: var(--display); font-size: 21px; font-weight: 500; letter-spacing: .04em; color: var(--ink); }
+    .inv-06 .salam { margin-top: 9px; font-size: 13px; }
+    .inv-06 .formal { font-size: 13px; }
+    .inv-06 .hosts { margin: 8px 0; font-size: 12px; }
+    .inv-06 .couple { margin: 8px 0; font-size: 13px; }
+    .inv-06 .seal-details {
+      margin-top: 10px;
+      padding: 9px 10px;
+      border-top: 1px dashed var(--line);
+      border-bottom: 1px dashed var(--line);
+      display: grid;
+      gap: 6px;
+    }
+    .inv-06 .seal-details div { display: flex; justify-content: space-between; gap: 10px; }
+    .inv-06 .seal-details .detail-value { margin: 0; text-align: right; font-size: 13px; }
+    .inv-06 .closing { margin-top: 10px; font-size: 12.5px; }
+
+    /* 07 — Luggage tag */
+    .inv-07 { padding: 20px 18px 22px; background: linear-gradient(180deg, #eee7d8, #f9f7f1 35%, #f4ecdd); }
+    .inv-07 .tag-string {
+      width: 70px;
+      height: 26px;
+      margin: 0 auto -8px;
+      border: 1px solid #c9b99d;
+      border-bottom: 0;
+      border-radius: 40px 40px 0 0;
+      opacity: .7;
+    }
+    .inv-07 .tag {
+      position: relative;
+      border: 1px solid #dccfb8;
+      border-radius: 14px;
+      background: linear-gradient(180deg, #fdf8ec, #f5edda);
+      box-shadow: 0 12px 26px rgba(120,100,70,.12);
+      padding: 25px 16px 16px;
+    }
+    .inv-07 .tag-hole {
+      position: absolute;
+      left: 50%;
+      top: 10px;
+      width: 11px;
+      height: 11px;
+      transform: translateX(-50%);
+      border: 1px solid #c9b99d;
+      border-radius: 50%;
+      background: var(--cream);
+      box-shadow: inset 0 1px 2px rgba(0,0,0,.08);
+    }
+    .inv-07 .tag-head { text-align: center; padding-bottom: 9px; border-bottom: 1px dashed #dccfb8; }
+    .inv-07 .tag-head p { margin: 0; font-family: var(--mono); font-size: 6px; letter-spacing: .2em; text-transform: uppercase; color: #a8895e; }
+    .inv-07 h2 { margin: 4px 0 0; font-family: var(--display); font-size: 21px; font-weight: 500; color: var(--ink); }
+    .inv-07 .salam { margin-top: 9px; font-size: 13px; }
+    .inv-07 .formal { font-size: 13px; }
+    .inv-07 .hosts { margin: 8px 0; font-size: 12px; }
+    .inv-07 .couple { margin: 8px 0; font-size: 13px; }
+    .inv-07 .tag-details { margin-top: 10px; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 9px 0; border-top: 1px dashed #dccfb8; border-bottom: 1px dashed #dccfb8; }
+    .inv-07 .tag-details .wide { grid-column: 1 / -1; }
+    .inv-07 .closing { margin-top: 9px; font-size: 12px; }
+    .inv-07 .tag-barcode { width: 100px; height: 28px; margin: 11px auto 0; background: repeating-linear-gradient(90deg, #8a7a60 0 1px, transparent 1px 3px); opacity: .55; }
+
+    /* 08 — Constellation */
+    .inv-08.stage {
+      background:
+        radial-gradient(circle at 18% 8%, rgba(255,255,255,.13), transparent 24%),
+        radial-gradient(circle at 84% 20%, rgba(201,168,106,.16), transparent 26%),
+        linear-gradient(170deg, #46546d, #2f3a4f 62%, #293346);
+      color: #f7f1e5;
+    }
+    .inv-08.stage::before {
+      opacity: .55;
+      background-image: radial-gradient(#fff .6px, transparent .8px);
+      background-size: 23px 23px;
+    }
+    .inv-08 { padding: 26px 20px 22px; }
+    .inv-08 .moon {
+      position: absolute;
+      right: 26px;
+      top: 20px;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      box-shadow: inset -8px 3px 0 0 #f0d394;
+      transform: rotate(-18deg);
+      opacity: .95;
+    }
+    .inv-08 .const-kicker { margin: 0; text-align: center; font-family: var(--mono); font-size: 6.5px; letter-spacing: .24em; text-transform: uppercase; color: #d9c192; }
+    .inv-08 h2 { margin: 5px 0 0; text-align: center; font-family: var(--display); font-size: 27px; font-weight: 400; color: #fffaf0; }
+    .inv-08 .salam { margin-top: 10px; color: #d3d9e3; font-size: 13px; }
+    .inv-08 .formal { color: #d3d9e3; font-size: 13px; }
+    .inv-08 .hosts { margin: 9px 0; color: #fffaf0; font-size: 12px; }
+    .inv-08 .couple { margin: 9px 0; color: #fffaf0; font-size: 13px; }
+    .inv-08 .amp { color: #e6c98c; }
+    .inv-08 .const-details { margin-top: 11px; padding: 10px 0; border-top: 1px solid rgba(255,255,255,.14); border-bottom: 1px solid rgba(255,255,255,.14); display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .inv-08 .const-details .wide { grid-column: 1 / -1; }
+    .inv-08 .detail-label { color: #9daac0; }
+    .inv-08 .detail-value { color: #f7f1e5; }
+    .inv-08 .closing { margin-top: 10px; color: #bdc7d7; font-size: 12.5px; }
+    .inv-08 .const-stars { display: flex; justify-content: center; gap: 10px; margin-top: 12px; }
+    .inv-08 .const-stars span { width: 4px; height: 4px; border-radius: 50%; background: #f4d79a; box-shadow: 0 0 8px #f4d79a; }
+
+    /* 09 — Telegram */
+    .inv-09 { padding: 16px; background: #f2ecdf; }
+    .inv-09 .telegram {
+      border: 2px solid #6e6250;
+      background: #fbf6ea;
+      padding: 4px;
+      position: relative;
+    }
+    .inv-09 .telegram-inner {
+      border: 1px solid rgba(110,98,80,.45);
+      padding: 14px 14px 12px;
+    }
+    .inv-09 .tele-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; border-bottom: 1px solid rgba(110,98,80,.35); padding-bottom: 7px; }
+    .inv-09 .tele-head p { margin: 0; font-family: var(--mono); font-size: 6px; letter-spacing: .2em; text-transform: uppercase; color: #8a7a60; }
+    .inv-09 .tele-head strong { font-family: var(--display); font-size: 13px; font-weight: 600; letter-spacing: .08em; color: #4f4638; }
+    .inv-09 .tele-head span { font-family: var(--mono); font-size: 5.5px; letter-spacing: .12em; color: #8a7a60; }
+    .inv-09 h2 { margin: 11px 0 8px; text-align: center; font-family: var(--display); font-size: 20px; font-weight: 600; letter-spacing: .05em; color: #4f4638; }
+    .inv-09 .salam { font-family: var(--mono); font-size: 10.5px; line-height: 1.7; color: #5c5141; }
+    .inv-09 .formal { font-family: var(--mono); font-size: 10.5px; line-height: 1.7; color: #5c5141; }
+    .inv-09 .hosts { margin: 8px 0; font-family: var(--display); font-size: 12px; color: #4f4638; }
+    .inv-09 .couple { margin: 8px 0; font-family: var(--display); font-size: 12.5px; color: #4f4638; }
+    .inv-09 .tele-details { margin-top: 10px; padding-top: 8px; border-top: 1px dashed rgba(110,98,80,.4); display: grid; gap: 6px; }
+    .inv-09 .tele-details div { display: flex; align-items: baseline; gap: 6px; }
+    .inv-09 .tele-details .detail-label { color: #8a7a60; font-size: 5.5px; }
+    .inv-09 .tele-details .dots { flex: 1; border-bottom: 1px dotted rgba(110,98,80,.45); }
+    .inv-09 .tele-details .detail-value { margin: 0; font-family: var(--mono); font-size: 10px; color: #4f4638; text-align: right; }
+    .inv-09 .closing { margin-top: 9px; font-family: var(--mono); font-size: 10px; line-height: 1.7; color: #5c5141; }
+    .inv-09 .tele-stamp {
+      position: absolute;
+      right: 8px;
+      top: 54px;
+      width: 48px;
+      height: 48px;
+      display: grid;
+      place-items: center;
+      border: 2px solid rgba(159,77,84,.45);
+      border-radius: 50%;
+      font-family: var(--mono);
+      font-size: 4.5px;
+      line-height: 1.5;
+      text-align: center;
+      color: rgba(159,77,84,.65);
+      transform: rotate(-12deg);
+    }
+    .inv-09 .tele-footer { margin-top: 10px; padding-top: 6px; border-top: 1px solid rgba(110,98,80,.3); display: flex; justify-content: space-between; font-family: var(--mono); font-size: 5px; letter-spacing: .12em; color: #8a7a60; }
+
+    /* 10 — Botanical dusty blue */
+    .inv-10.stage { background: linear-gradient(165deg, #f6f5f0, #eef1f7 55%, #f9f7f1); }
+    .inv-10 { padding: 25px 20px 22px; position: relative; overflow: hidden; }
+    .inv-10 .leaf {
+      position: absolute;
+      width: 120px;
+      height: 160px;
+      opacity: .32;
+      pointer-events: none;
+    }
+    .inv-10 .leaf-a { left: -28px; top: 12px; transform: rotate(-18deg); }
+    .inv-10 .leaf-b { right: -32px; bottom: 12px; transform: rotate(155deg); }
+    .inv-10 .bot-head { text-align: center; }
+    .inv-10 .bot-kicker { margin: 0; font-family: var(--mono); font-size: 6px; letter-spacing: .24em; text-transform: uppercase; color: #8e9bb2; }
+    .inv-10 h2 { margin: 5px 0 0; font-family: var(--display); font-size: 23px; font-weight: 500; letter-spacing: .03em; color: var(--ink); }
+    .inv-10 .bot-rule { width: 46px; height: 1px; margin: 10px auto; background: linear-gradient(90deg, transparent, var(--gold), transparent); }
+    .inv-10 .salam { font-size: 13px; }
+    .inv-10 .formal { font-size: 13px; }
+    .inv-10 .hosts { margin: 8px 0; font-size: 12px; }
+    .inv-10 .couple { margin: 8px 0; font-size: 13px; }
+    .inv-10 .bot-details {
+      margin-top: 10px;
+      padding: 10px 12px;
+      border: 1px solid rgba(114,128,156,.18);
+      border-radius: 10px;
+      background: rgba(255,255,255,.45);
+      display: grid;
+      gap: 6px;
+    }
+    .inv-10 .bot-details div { display: flex; justify-content: space-between; gap: 10px; }
+    .inv-10 .bot-details .detail-value { margin: 0; text-align: right; font-size: 13px; }
+    .inv-10 .closing { margin-top: 10px; font-size: 12.5px; }
+    .inv-10 .bot-sign { margin-top: 12px; text-align: center; font-family: var(--display); font-size: 15px; font-style: italic; color: var(--slate); }
+
+    /* Pager */
+    .pager { max-width: 430px; margin: 18px auto 0; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+    .pager button {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 9px 14px; border-radius: 999px;
+      border: 1px solid rgba(114,128,156,.2);
+      background: rgba(255,255,255,.7);
+      color: #5f6d88; font-family: var(--mono); font-size: 9px; letter-spacing: .06em;
+      cursor: pointer; transition: .2s ease;
+    }
+    .pager button:hover { background: #fff; color: var(--ink); }
+    .pager button:disabled { opacity: .35; cursor: default; }
+    .pager span { font-family: var(--mono); font-size: 8px; letter-spacing: .16em; color: #9aa2b2; }
+
+    @media (max-width: 520px) {
+      .topbar { padding: 13px 14px 10px; }
+      .topbar-inner { align-items: flex-start; }
+      .counter { display: none; }
+      main { padding: 16px 10px 60px; }
+      .stage { border-radius: 26px; }
+      .design-head { padding: 0 6px; }
+      .design-head h2 { font-size: 19px; }
+      .design-head p { font-size: 13px; }
+      .feature-strip { justify-content: flex-start; flex-wrap: nowrap; overflow-x: auto; padding-bottom: 5px; }
+      .feature-strip span { flex: 0 0 auto; }
+    }
+
+    @media print {
+      body { background: #fff; }
+      body::before, body::after, .topbar, .pager, .feature-strip { display: none; }
+      main { max-width: none; padding: 0; }
+      .design { display: block !important; page-break-after: always; }
+      .design-head { margin-bottom: 10px; }
+      .stage { box-shadow: none; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div>
+        <p class="eyebrow">Aidit &amp; Athirah · 24.12.2026</p>
+        <h1>Malay Invitation <em>· 10 design concepts</em></h1>
+      </div>
+      <div class="counter" id="counter">01 / 10</div>
+    </div>
+    <nav class="tabs" aria-label="Pilih design kad jemputan">
+      <button class="tab active" data-target="1"><b>01</b> Passport Page</button>
+      <button class="tab" data-target="2"><b>02</b> Boarding Pass</button>
+      <button class="tab" data-target="3"><b>03</b> Airmail</button>
+      <button class="tab" data-target="4"><b>04</b> Songket Gold</button>
+      <button class="tab" data-target="5"><b>05</b> Editorial</button>
+      <button class="tab" data-target="6"><b>06</b> Wax Seal</button>
+      <button class="tab" data-target="7"><b>07</b> Luggage Tag</button>
+      <button class="tab" data-target="8"><b>08</b> Constellation</button>
+      <button class="tab" data-target="9"><b>09</b> Telegram</button>
+      <button class="tab" data-target="10"><b>10</b> Botanical</button>
+    </nav>
+  </header>
+
+  <main>
+    <div class="feature-strip" aria-label="Ciri-ciri design">
+      <span>Text jemputan sama</span>
+      <span>10 layout berbeza</span>
+      <span>Tema cream · slate · gold</span>
+      <span>Mobile friendly</span>
+      <span>Print ready</span>
+    </div>
+
+    <!-- 01 -->
+    <section class="design active" data-design="1">
+      <div class="design-head">
+        <span class="design-num">01</span>
+        <div><h2>Passport Page</h2><p>Kad jemputan sebagai passport page dengan cover navy, monogram dan MRZ.</p></div>
+      </div>
+      <div class="stage inv-01">
+        <div class="passport-cover">
+          <p>Wedding passport · Walimatulurus</p>
+          <h2>JEMPUTAN WALIMATULURUS</h2>
+          <div class="emblem">A&amp;A</div>
+        </div>
+        <div class="passport-page">
+          <div class="pp-top">
+            <div class="pp-photo">A&amp;A<span>THE COUPLE</span></div>
+            <div class="pp-fields">
+              <div><span class="detail-label">Hosts</span><p>AZMI BIN MAT JUSOH <span class="amp">&amp;</span> FARIDAH BINTI ABDUL HAMID</p></div>
+              <div><span class="detail-label">Bride &amp; Groom</span><p>NUR ATHIRAH BINTI AZMI <span class="amp">&amp;</span> MUHAMAD AIDIT HAIKAL BIN ZAINUDDIN</p></div>
+            </div>
+          </div>
+          <p class="pp-intro">Assalamualaikum warahmatullahi wabarakatuh dan salam sejahtera.</p>
+          <p class="pp-intro">Dengan penuh kesyukuran ke hadrat Allah SWT, kami dengan segala hormatnya menjemput Dato’/Datin/Tuan/Puan/Encik/Cik ke majlis walimatulurus anakanda kami.</p>
+          <div class="pp-details">
+            <div><span class="detail-label">Date</span><span class="detail-value">Khamis, 24 Disember 2026</span></div>
+            <div><span class="detail-label">Time</span><span class="detail-value">12.00 tengah hari</span></div>
+            <div class="wide"><span class="detail-label">Venue</span><span class="detail-value">MOARA HALL<br>Lot 418, Hujung Tanjung, Pulau Belanga, 16100 Kota Bharu, Kelantan</span></div>
+          </div>
+          <p class="pp-closing">Semoga kehadiran serta doa restu anda dapat menyerikan majlis dan menambahkan keberkatan buat kedua-dua mempelai. Insya-Allah.</p>
+          <div class="mrz">P&lt;MYS&lt;ATHIRAH&lt;&lt;AIDIT&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;24DEC2026&lt;&lt;&lt;&lt;&lt;&lt;&lt;MOARAHALL&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 02 -->
+    <section class="design" data-design="2">
+      <div class="design-head">
+        <span class="design-num">02</span>
+        <div><h2>Boarding Pass</h2><p>Kad jemputan sebagai boarding pass dengan stub, barcode dan gate.</p></div>
+      </div>
+      <div class="stage inv-02">
+        <div class="boarding">
+          <div class="bp-main">
+            <p class="bp-kicker">Boarding pass · Walimatulurus</p>
+            <h2>JEMPUTAN WALIMATULURUS</h2>
+            <p class="salam">Assalamualaikum warahmatullahi wabarakatuh dan salam sejahtera.</p>
+            <p class="formal">Dengan penuh kesyukuran ke hadrat Allah SWT, kami</p>
+            <p class="hosts">AZMI BIN MAT JUSOH<span class="amp">&amp;</span>FARIDAH BINTI ABDUL HAMID</p>
+            <p class="formal">dengan segala hormatnya menjemput Dato’/Datin/Tuan/Puan/Encik/Cik ke majlis walimatulurus anakanda kami</p>
+            <p class="couple">NUR ATHIRAH BINTI AZMI<span class="amp">&amp;</span>MUHAMAD AIDIT HAIKAL BIN ZAINUDDIN</p>
+            <div class="bp-details">
+              <div><span class="detail-label">Date</span><span class="detail-value">Khamis, 24 Disember 2026</span></div>
+              <div><span class="detail-label">Time</span><span class="detail-value">12.00 tengah hari</span></div>
+              <div class="wide"><span class="detail-label">Gate / Venue</span><span class="detail-value">MOARA HALL · Lot 418, Hujung Tanjung, Pulau Belanga, 16100 Kota Bharu, Kelantan</span></div>
+            </div>
+            <p class="closing">Semoga kehadiran serta doa restu anda dapat menyerikan majlis dan menambahkan keberkatan buat kedua-dua mempelai. Insya-Allah.</p>
+          </div>
+          <div class="bp-stub">
+            <span class="bp-plane">✈</span>
+            <div class="bp-barcode"></div>
+            <small>AA 1224<br>ADMIT ONE<br>24.12.26</small>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 03 -->
+    <section class="design" data-design="3">
+      <div class="design-head">
+        <span class="design-num">03</span>
+        <div><h2>Airmail Letter</h2><p>Surat airmail dengan postage stamp, postmark dan border travel.</p></div>
+      </div>
+      <div class="stage inv-03">
+        <div class="airmail">
+          <div class="air-top">
+            <p class="air-label">Par avion · With love<br>Walimatulurus · 24.12.2026</p>
+            <div class="postage">AA<br>24.12</div>
+          </div>
+          <div class="postmark">MOARA<br>HALL<br>2026</div>
+          <h2>JEMPUTAN WALIMATULURUS</h2>
+          <p class="salam">Assalamualaikum warahmatullahi wabarakatuh dan salam sejahtera.</p>
+          <p class="formal">Dengan penuh kesyukuran ke hadrat Allah SWT, kami</p>
+          <p class="hosts">AZMI BIN MAT JUSOH<span class="amp">&amp;</span>FARIDAH BINTI ABDUL HAMID</p>
+          <p class="formal">dengan segala hormatnya menjemput Dato’/Datin/Tuan/Puan/Encik/Cik ke majlis walimatulurus anakanda kami</p>
+          <p class="couple">NUR ATHIRAH BINTI AZMI<span class="amp">&amp;</span>MUHAMAD AIDIT HAIKAL BIN ZAINUDDIN</p>
+          <div class="air-details">
+            <div><span class="detail-label">Date</span><span class="detail-value">Khamis, 24 Disember 2026</span></div>
+            <div><span class="detail-label">Time</span><span class="detail-value">12.00 tengah hari</span></div>
+            <div><span class="detail-label">Venue</span><span class="detail-value">MOARA HALL</span></div>
+            <div><span class="detail-label">Address</span><span class="detail-value">Lot 418, Hujung Tanjung, Pulau Belanga, 16100 Kota Bharu, Kelantan</span></div>
+          </div>
+          <p class="closing">Semoga kehadiran serta doa restu anda dapat menyerikan majlis dan menambahkan keberkatan buat kedua-dua mempelai. Insya-Allah.</p>
+          <p class="signature">With love, Aidit &amp; Athirah</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 04 -->
+    <section class="design" data-design="4">
+      <div class="design-head">
+        <span class="design-num">04</span>
+        <div><h2>Songket Gold Frame</h2><p>Bingkai gold klasik dengan rasa songket dan tradisional Melayu.</p></div>
+      </div>
+      <div class="stage inv-04">
+        <div class="songket">
+          <div class="songket-top">
+            <div class="songket-pattern"></div>
+            <h2>JEMPUTAN WALIMATULURUS</h2>
+            <p class="songket-sub">Aidit &amp; Athirah · 24 Disember 2026</p>
+          </div>
+          <p class="salam">Assalamualaikum warahmatullahi wabarakatuh dan salam sejahtera.</p>
+          <p class="formal">Dengan penuh kesyukuran ke hadrat Allah SWT, kami</p>
+          <p class="hosts">AZMI BIN MAT JUSOH<span class="amp">&amp;</span>FARIDAH BINTI ABDUL HAMID</p>
+          <p class="formal">dengan segala hormatnya menjemput Dato’/Datin/Tuan/Puan/Encik/Cik ke majlis walimatulurus anakanda kami</p>
+          <p class="couple">NUR ATHIRAH BINTI AZMI<span class="amp">&amp;</span>MUHAMAD AIDIT HAIKAL BIN ZAINUDDIN</p>
+          <div class="songket-details">
+            <div><span class="detail-label">Tarikh</span><span class="detail-value">Khamis, 24 Disember 2026</span></div>
+            <div><span class="detail-label">Masa</span><span class="detail-value">12.00 tengah hari</span></div>
+            <div><span class="detail-label">Tempat</span><span class="detail-value">MOARA HALL</span></div>
+            <div><span class="detail-label">Alamat</span><span class="detail-value">Lot 418, Hujung Tanjung, Pulau Belanga, 16100 Kota Bharu, Kelantan</span></div>
+          </div>
+          <p class="closing">Semoga kehadiran serta doa restu anda dapat menyerikan majlis dan menambahkan keberkatan buat kedua-dua mempelai. Insya-Allah.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 05 -->
+    <section class="design" data-design="5">
+      <div class="design-head">
+        <span class="design-num">05</span>
+        <div><h2>Editorial Minimal</h2><p>Typography besar, hairline dan whitespace — premium magazine.</p></div>
+      </div>
+      <div class="stage inv-05">
+        <div class="ed-meta"><span>Walimatulurus</span><span>24 · 12 · 2026</span></div>
+        <h2>Jemputan<br>Walimatulurus</h2>
+        <p class="ed-sub">Aidit &amp; Athirah · Kota Bharu</p>
+        <div class="ed-rule"></div>
+        <p class="salam">Assalamualaikum warahmatullahi wabarakatuh dan salam sejahtera.</p>
+        <p class="formal">Dengan penuh kesyukuran ke hadrat Allah SWT, kami</p>
+        <p class="hosts">AZMI BIN MAT JUSOH <span class="amp">&amp;</span> FARIDAH BINTI ABDUL HAMID</p>
+        <p class="formal">dengan segala hormatnya menjemput Dato’/Datin/Tuan/Puan/Encik/Cik ke majlis walimatulurus anakanda kami</p>
+        <p class="couple">NUR ATHIRAH BINTI AZMI <span class="amp">&amp;</span> MUHAMAD AIDIT HAIKAL BIN ZAINUDDIN</p>
+        <div class="ed-details">
+          <div><span class="detail-label">Tarikh</span><span class="detail-value">Khamis, 24 Disember 2026</span></div>
+          <div><span class="detail-label">Masa</span><span class="detail-value">12.00 tengah hari</span></div>
+          <div class="wide"><span class="detail-label">Tempat</span><span class="detail-value">MOARA HALL<br>Lot 418, Hujung Tanjung, Pulau Belanga, 16100 Kota Bharu, Kelantan</span></div>
+        </div>
+        <p class="closing">Semoga kehadiran serta doa restu anda dapat menyerikan majlis dan menambahkan keberkatan buat kedua-dua mempelai. Insya-Allah.</p>
+        <p class="ed-sign">With love, Aidit &amp; Athirah</p>
+      </div>
+    </section>
+
+    <!-- 06 -->
+    <section class="design" data-design="6">
+      <div class="design-head">
+        <span class="design-num">06</span>
+        <div><h2>Wax Seal &amp; Ribbon</h2><p>Ribbon slate dan wax seal gold — classic romantic wedding.</p></div>
+      </div>
+      <div class="stage inv-06">
+        <div class="seal-card">
+          <div class="seal-ribbon"></div>
+          <div class="wax-seal"><img src="/logo-mark.png" alt="Aidit &amp; Athirah logo" /></div>
+          <h2>JEMPUTAN WALIMATULURUS</h2>
+          <p class="salam">Assalamualaikum warahmatullahi wabarakatuh dan salam sejahtera.</p>
+          <p class="formal">Dengan penuh kesyukuran ke hadrat Allah SWT, kami</p>
+          <p class="hosts">AZMI BIN MAT JUSOH<span class="amp">&amp;</span>FARIDAH BINTI ABDUL HAMID</p>
+          <p class="formal">dengan segala hormatnya menjemput Dato’/Datin/Tuan/Puan/Encik/Cik ke majlis walimatulurus anakanda kami</p>
+          <p class="couple">NUR ATHIRAH BINTI AZMI<span class="amp">&amp;</span>MUHAMAD AIDIT HAIKAL BIN ZAINUDDIN</p>
+          <div class="seal-details">
+            <div><span class="detail-label">Tarikh</span><span class="detail-value">Khamis, 24 Disember 2026</span></div>
+            <div><span class="detail-label">Masa</span><span class="detail-value">12.00 tengah hari</span></div>
+            <div><span class="detail-label">Tempat</span><span class="detail-value">MOARA HALL</span></div>
+            <div><span class="detail-label">Alamat</span><span class="detail-value">Lot 418, Hujung Tanjung, Pulau Belanga, 16100 Kota Bharu, Kelantan</span></div>
+          </div>
+          <p class="closing">Semoga kehadiran serta doa restu anda dapat menyerikan majlis dan menambahkan keberkatan buat kedua-dua mempelai. Insya-Allah.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 07 -->
+    <section class="design" data-design="7">
+      <div class="design-head">
+        <span class="design-num">07</span>
+        <div><h2>Luggage Tag</h2><p>Kad jemputan sebagai tag bagasi dengan tali, lubang dan barcode.</p></div>
+      </div>
+      <div class="stage inv-07">
+        <div class="tag-string"></div>
+        <div class="tag">
+          <div class="tag-hole"></div>
+          <div class="tag-head">
+            <p>Wedding destination · Walimatulurus</p>
+            <h2>JEMPUTAN WALIMATULURUS</h2>
+          </div>
+          <p class="salam">Assalamualaikum warahmatullahi wabarakatuh dan salam sejahtera.</p>
+          <p class="formal">Dengan penuh kesyukuran ke hadrat Allah SWT, kami</p>
+          <p class="hosts">AZMI BIN MAT JUSOH<span class="amp">&amp;</span>FARIDAH BINTI ABDUL HAMID</p>
+          <p class="formal">dengan segala hormatnya menjemput Dato’/Datin/Tuan/Puan/Encik/Cik ke majlis walimatulurus anakanda kami</p>
+          <p class="couple">NUR ATHIRAH BINTI AZMI<span class="amp">&amp;</span>MUHAMAD AIDIT HAIKAL BIN ZAINUDDIN</p>
+          <div class="tag-details">
+            <div><span class="detail-label">Date</span><span class="detail-value">Khamis, 24 Disember 2026</span></div>
+            <div><span class="detail-label">Time</span><span class="detail-value">12.00 tengah hari</span></div>
+            <div class="wide"><span class="detail-label">Venue</span><span class="detail-value">MOARA HALL · Lot 418, Hujung Tanjung, Pulau Belanga, 16100 Kota Bharu, Kelantan</span></div>
+          </div>
+          <p class="closing">Semoga kehadiran serta doa restu anda dapat menyerikan majlis dan menambahkan keberkatan buat kedua-dua mempelai. Insya-Allah.</p>
+          <div class="tag-barcode"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 08 -->
+    <section class="design" data-design="8">
+      <div class="design-head">
+        <span class="design-num">08</span>
+        <div><h2>Constellation Night</h2><p>Night sky navy dengan bintang gold — dramatic dan romantic.</p></div>
+      </div>
+      <div class="stage inv-08">
+        <div class="moon"></div>
+        <p class="const-kicker">Written in the stars · 24.12.2026</p>
+        <h2>JEMPUTAN WALIMATULURUS</h2>
+        <p class="salam">Assalamualaikum warahmatullahi wabarakatuh dan salam sejahtera.</p>
+        <p class="formal">Dengan penuh kesyukuran ke hadrat Allah SWT, kami</p>
+        <p class="hosts">AZMI BIN MAT JUSOH<span class="amp">&amp;</span>FARIDAH BINTI ABDUL HAMID</p>
+        <p class="formal">dengan segala hormatnya menjemput Dato’/Datin/Tuan/Puan/Encik/Cik ke majlis walimatulurus anakanda kami</p>
+        <p class="couple">NUR ATHIRAH BINTI AZMI<span class="amp">&amp;</span>MUHAMAD AIDIT HAIKAL BIN ZAINUDDIN</p>
+        <div class="const-details">
+          <div><span class="detail-label">Date</span><span class="detail-value">Khamis, 24 Disember 2026</span></div>
+          <div><span class="detail-label">Time</span><span class="detail-value">12.00 tengah hari</span></div>
+          <div class="wide"><span class="detail-label">Venue</span><span class="detail-value">MOARA HALL · Lot 418, Hujung Tanjung, Pulau Belanga, 16100 Kota Bharu, Kelantan</span></div>
+        </div>
+        <p class="closing">Semoga kehadiran serta doa restu anda dapat menyerikan majlis dan menambahkan keberkatan buat kedua-dua mempelai. Insya-Allah.</p>
+        <div class="const-stars"><span></span><span></span><span></span><span></span><span></span></div>
+      </div>
+    </section>
+
+    <!-- 09 -->
+    <section class="design" data-design="9">
+      <div class="design-head">
+        <span class="design-num">09</span>
+        <div><h2>Vintage Telegram</h2><p>Telegram lama dengan typewriter, stamp dan garis dotted.</p></div>
+      </div>
+      <div class="stage inv-09">
+        <div class="telegram">
+          <div class="telegram-inner">
+            <div class="tele-head">
+              <p>Telegram · Wedding</p>
+              <strong>WALIMATULURUS</strong>
+              <span>24.12.26</span>
+            </div>
+            <h2>JEMPUTAN WALIMATULURUS</h2>
+            <p class="salam">Assalamualaikum warahmatullahi wabarakatuh dan salam sejahtera.</p>
+            <p class="formal">Dengan penuh kesyukuran ke hadrat Allah SWT, kami</p>
+            <p class="hosts">AZMI BIN MAT JUSOH<span class="amp">&amp;</span>FARIDAH BINTI ABDUL HAMID</p>
+            <p class="formal">dengan segala hormatnya menjemput Dato’/Datin/Tuan/Puan/Encik/Cik ke majlis walimatulurus anakanda kami</p>
+            <p class="couple">NUR ATHIRAH BINTI AZMI<span class="amp">&amp;</span>MUHAMAD AIDIT HAIKAL BIN ZAINUDDIN</p>
+            <div class="tele-details">
+              <div><span class="detail-label">Date</span><span class="dots"></span><span class="detail-value">Khamis, 24 Disember 2026</span></div>
+              <div><span class="detail-label">Time</span><span class="dots"></span><span class="detail-value">12.00 tengah hari</span></div>
+              <div><span class="detail-label">Venue</span><span class="dots"></span><span class="detail-value">MOARA HALL</span></div>
+              <div><span class="detail-label">Address</span><span class="dots"></span><span class="detail-value">Lot 418, Hujung Tanjung, Pulau Belanga, 16100 Kota Bharu, Kelantan</span></div>
+            </div>
+            <p class="closing">Semoga kehadiran serta doa restu anda dapat menyerikan majlis dan menambahkan keberkatan buat kedua-dua mempelai. Insya-Allah.</p>
+            <div class="tele-footer"><span>RECEIVED · 24 DEC 2026</span><span>AIDIT &amp; ATHIRAH</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 10 -->
+    <section class="design" data-design="10">
+      <div class="design-head">
+        <span class="design-num">10</span>
+        <div><h2>Botanical Dusty Blue</h2><p>Daun line-art lembut, cream dan dusty blue — airy &amp; modern.</p></div>
+      </div>
+      <div class="stage inv-10">
+        <svg class="leaf leaf-a" viewBox="0 0 120 160" fill="none" aria-hidden="true">
+          <path d="M60 150C60 100 30 70 10 40M60 150C60 100 90 70 110 40M60 120C40 100 30 80 30 60M60 100C80 80 95 60 95 40" stroke="#72809c" stroke-width="1.2" stroke-linecap="round"/>
+          <path d="M18 48C34 50 44 62 44 78C28 76 18 64 18 48ZM104 48C88 50 78 62 78 78C94 76 104 64 104 48ZM32 68C46 70 54 80 54 94C40 92 32 82 32 68ZM88 68C74 70 66 80 66 94C80 92 88 82 88 68Z" fill="#72809c" opacity=".35"/>
+        </svg>
+        <svg class="leaf leaf-b" viewBox="0 0 120 160" fill="none" aria-hidden="true">
+          <path d="M60 150C60 100 30 70 10 40M60 150C60 100 90 70 110 40M60 120C40 100 30 80 30 60M60 100C80 80 95 60 95 40" stroke="#72809c" stroke-width="1.2" stroke-linecap="round"/>
+          <path d="M18 48C34 50 44 62 44 78C28 76 18 64 18 48ZM104 48C88 50 78 62 78 78C94 76 104 64 104 48Z" fill="#72809c" opacity=".35"/>
+        </svg>
+        <div class="bot-head">
+          <p class="bot-kicker">Walimatulurus · Aidit &amp; Athirah</p>
+          <h2>JEMPUTAN WALIMATULURUS</h2>
+          <div class="bot-rule"></div>
+        </div>
+        <p class="salam">Assalamualaikum warahmatullahi wabarakatuh dan salam sejahtera.</p>
+        <p class="formal">Dengan penuh kesyukuran ke hadrat Allah SWT, kami</p>
+        <p class="hosts">AZMI BIN MAT JUSOH<span class="amp">&amp;</span>FARIDAH BINTI ABDUL HAMID</p>
+        <p class="formal">dengan segala hormatnya menjemput Dato’/Datin/Tuan/Puan/Encik/Cik ke majlis walimatulurus anakanda kami</p>
+        <p class="couple">NUR ATHIRAH BINTI AZMI<span class="amp">&amp;</span>MUHAMAD AIDIT HAIKAL BIN ZAINUDDIN</p>
+        <div class="bot-details">
+          <div><span class="detail-label">Tarikh</span><span class="detail-value">Khamis, 24 Disember 2026</span></div>
+          <div><span class="detail-label">Masa</span><span class="detail-value">12.00 tengah hari</span></div>
+          <div><span class="detail-label">Tempat</span><span class="detail-value">MOARA HALL</span></div>
+          <div><span class="detail-label">Alamat</span><span class="detail-value">Lot 418, Hujung Tanjung, Pulau Belanga, 16100 Kota Bharu, Kelantan</span></div>
+        </div>
+        <p class="closing">Semoga kehadiran serta doa restu anda dapat menyerikan majlis dan menambahkan keberkatan buat kedua-dua mempelai. Insya-Allah.</p>
+        <p class="bot-sign">With love, Aidit &amp; Athirah</p>
+      </div>
+    </section>
+
+    <div class="pager">
+      <button id="prev" type="button">← Sebelum</button>
+      <span id="pager-label">Design 01 / 10</span>
+      <button id="next" type="button">Seterusnya →</button>
+    </div>
+  </main>
+
+  <script>
+    const designs = Array.from(document.querySelectorAll(".design"));
+    const tabs = Array.from(document.querySelectorAll(".tab"));
+    const counter = document.getElementById("counter");
+    const pagerLabel = document.getElementById("pager-label");
+    const prev = document.getElementById("prev");
+    const next = document.getElementById("next");
+    let current = 0;
+
+    function show(index, updateHash = true) {
+      current = (index + designs.length) % designs.length;
+      designs.forEach((section, i) => section.classList.toggle("active", i === current));
+      tabs.forEach((tab, i) => {
+        tab.classList.toggle("active", i === current);
+        if (i === current) tab.scrollIntoView({ inline: "center", block: "nearest", behavior: "smooth" });
+      });
+      const number = String(current + 1).padStart(2, "0");
+      counter.textContent = number + " / 10";
+      pagerLabel.textContent = "Design " + number + " / 10";
+      prev.disabled = current === 0;
+      next.disabled = current === designs.length - 1;
+      if (updateHash) history.replaceState(null, "", "#design-" + (current + 1));
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    tabs.forEach((tab, index) => tab.addEventListener("click", () => show(index)));
+    prev.addEventListener("click", () => show(current - 1));
+    next.addEventListener("click", () => show(current + 1));
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "ArrowLeft") show(current - 1);
+      if (event.key === "ArrowRight") show(current + 1);
+    });
+
+    const fromHash = Number((location.hash.match(/design-(\d+)/) || [])[1]);
+    show(Number.isFinite(fromHash) && fromHash > 0 ? fromHash - 1 : 0, false);
+  </script>
+</body>
+</html>

@@ -2,8 +2,12 @@ import { type FormEvent, useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { supabase } from "@/lib/supabase";
 import {
+  ArrowRight,
   CalendarDays,
+  Camera,
   Check,
+  ChevronLeft,
+  ChevronRight,
   Clock,
   Gift,
   Heart,
@@ -13,10 +17,16 @@ import {
   Navigation,
   Phone,
   Plane,
+  Route,
   Send,
   Users,
   X,
 } from "lucide-react";
+import MemoryJourney from "@/components/wedding/MemoryJourney";
+import GuestPhotoQR from "@/components/wedding/GuestPhotoQR";
+import GiftRegistry from "@/components/wedding/GiftRegistry";
+import WeddingLogo from "@/components/wedding/WeddingLogo";
+import { timelineFlightCode, weddingTimelineEvents } from "@/data/weddingTimeline";
 import moment1 from "@/assets/moment-1.jpeg";
 import moment2 from "@/assets/moment-2.jpeg";
 import moment3 from "@/assets/moment-3.jpeg";
@@ -25,7 +35,7 @@ import moment5 from "@/assets/moment-5.jpeg";
 import venueImg from "@/assets/venue.jpg";
 import weddingSong from "@/assets/river-flows-in-you.mp3";
 
-type InfoKey = "calendar" | "location" | "rsvp" | "gallery" | "gift" | "salamkaut" | "contact";
+type InfoKey = "calendar" | "location" | "rsvp" | "gallery" | "gift" | "salamkaut" | "contact" | "journey" | "photos";
 
 const quickCards: Array<{
   id: InfoKey;
@@ -40,39 +50,10 @@ const quickCards: Array<{
   { id: "gift", title: "Gift", caption: "Group gift", icon: Gift },
   { id: "salamkaut", title: "Salam Kaut", caption: "Duit salam", icon: Heart },
   { id: "contact", title: "Contact", caption: "Ask family", icon: Phone },
-];
-
-const events = [
-  {
-    title: "Guest Arrival",
-    time: "11:00 AM",
-    detail: "Moara Hall opens for family and friends.",
-  },
-  {
-    title: "Lunch Reception",
-    time: "12:00 PM",
-    detail: "A warm meal, greetings, and wedding portraits.",
-  },
-  {
-    title: "Photo Session",
-    time: "2:30 PM",
-    detail: "Group photos with the couple.",
-  },
-  {
-    title: "Ceremony End",
-    time: "4:00 PM",
-    detail: "Thank you for boarding our forever journey.",
-  },
+  { id: "photos", title: "Photos", caption: "Scan & share", icon: Camera },
 ];
 
 const gallery = [moment1, moment2, moment3, moment4, moment5];
-
-type GiftItem = {
-  id: string;
-  title: string;
-  target_amount: number;
-  sort_order: number;
-};
 
 const paymentUrl = "https://payment.tngdigital.com.my/sc/bDLob4bj0L";
 
@@ -107,7 +88,7 @@ const Index = () => {
   const [wishesRefreshKey, setWishesRefreshKey] = useState(0);
 
   const activeCard = useMemo(
-    () => quickCards.find((card) => card.id === activeInfo),
+    () => quickCards.find((card) => card.id === activeInfo && card.id !== "journey"),
     [activeInfo],
   );
 
@@ -223,7 +204,7 @@ const Index = () => {
                     <p className="font-serif text-sm italic text-white/80">Wedding</p>
                     <h1 className="mt-1 font-display text-[1.65rem] leading-none tracking-wide">PASSPORT</h1>
                     <div className="mx-auto my-5 flex h-14 w-14 items-center justify-center rounded-full border border-white/50 sm:h-16 sm:w-16">
-                      <span className="font-display text-3xl italic">AA</span>
+                      <WeddingLogo className="h-9 w-11 text-[#f9f7f1] sm:h-10 sm:w-12" />
                     </div>
                     <p className="text-xs uppercase tracking-[0.16em] text-white/85">
                       Aidit & Athirah
@@ -266,14 +247,14 @@ const Index = () => {
 
                 <BoardingTicket guestName={guestName} />
 
-                <div data-tour-target="venue" className="relative mt-4 min-h-[188px] overflow-hidden rounded-[26px] border border-slate-200 bg-white p-4">
+                <div data-tour-target="venue" className="relative mt-4 overflow-hidden rounded-[26px] border border-slate-200 bg-white p-4">
                   <div className="absolute right-5 top-6 text-[#72809c]">
                     <Plane className="h-6 w-6 rotate-45" />
                   </div>
                   <div className="flex gap-3">
                     <button
                       type="button"
-                      onClick={() => setActiveInfo("gallery")}
+                      onClick={() => setActiveInfo("journey")}
                       className="group w-28 shrink-0 rotate-[-7deg] rounded-md bg-white p-1 shadow-lg transition-transform duration-300 hover:rotate-[-3deg]"
                     >
                       <img src={moment1} alt="Travel moment" className="h-24 w-full rounded-sm object-cover" />
@@ -282,20 +263,44 @@ const Index = () => {
                     <button
                       type="button"
                       onClick={() => setActiveInfo("location")}
-                      className="group mt-12 w-28 shrink-0 rotate-[6deg] rounded-md bg-white p-1 shadow-lg transition-transform duration-300 hover:rotate-[2deg]"
+                      className="group mt-8 w-28 shrink-0 rotate-[6deg] rounded-md bg-white p-1 shadow-lg transition-transform duration-300 hover:rotate-[2deg]"
                     >
                       <img src={venueImg} alt="Venue preview" className="h-24 w-full rounded-sm object-cover" />
                       <p className="py-1 font-serif text-xs italic text-slate-500">Venue</p>
                     </button>
                   </div>
-                  <p className="absolute bottom-5 right-5 max-w-[132px] text-right font-serif text-base italic leading-tight text-slate-500 sm:max-w-[140px] sm:text-lg">
-                    Our route to forever
-                  </p>
+
+                  <div className="mt-5 flex items-center justify-between gap-3 border-t border-dashed border-slate-200 pt-3.5">
+                    <div className="min-w-0">
+                      <p className="font-serif text-[15px] italic leading-tight text-slate-500">
+                        Our route to forever
+                      </p>
+                      <p className="mt-1 font-mono text-[8px] uppercase tracking-[0.16em] text-slate-400">
+                        From hello to forever
+                      </p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setActiveInfo("journey")}
+                      className="group inline-flex shrink-0 items-center gap-1.5 rounded-full border border-[#d7dbea] bg-[#eef1f7] px-3.5 py-2 text-[11px] font-medium text-[#64728e] transition-colors hover:bg-[#e3e8f2]"
+                      aria-label="Buka memory journey"
+                    >
+                      <Route className="h-3.5 w-3.5" />
+                      Journey
+                      <ArrowRight className="h-3 w-3 transition-transform duration-300 group-hover:translate-x-0.5" />
+                    </button>
+                  </div>
                 </div>
 
                 <div className="mt-4 grid grid-cols-2 gap-3">
                   {quickCards
-                    .filter((card) => card.id === "gift" || card.id === "salamkaut" || card.id === "contact")
+                    .filter(
+                      (card) =>
+                        card.id === "gift" ||
+                        card.id === "salamkaut" ||
+                        card.id === "contact" ||
+                        card.id === "photos",
+                    )
                     .map((card) => {
                     const Icon = card.icon;
                     return (
@@ -329,7 +334,10 @@ const Index = () => {
                   <Phone className="h-5 w-5" />
                   Contact Family
                 </button>
-                <GuestWishes refreshKey={wishesRefreshKey} />
+                <GuestWishes
+                  refreshKey={wishesRefreshKey}
+                  onWriteWish={() => setActiveInfo("rsvp")}
+                />
               </section>
             </section>
 
@@ -337,9 +345,17 @@ const Index = () => {
               activeCard={activeCard}
               activeInfo={activeInfo}
               submitted={submitted}
-              onClose={() => setActiveInfo(null)}
+              onClose={() => {
+                setActiveInfo(null);
+                setSubmitted(false);
+              }}
               onSubmitted={addRsvpEntry}
             />
+            <AnimatePresence>
+              {activeInfo === "journey" && (
+                <MemoryJourney key="memory-journey" onClose={() => setActiveInfo(null)} />
+              )}
+            </AnimatePresence>
             <MobileDock onSelect={setActiveInfo} />
             <motion.button
               type="button"
@@ -521,57 +537,106 @@ const InvitationGuideTour = ({ onClose }: { onClose: () => void }) => {
 };
 
 const MalayInvitationCard = () => (
-  <article className="relative mt-5 overflow-hidden rounded-[24px] border border-[#dce0e9] bg-white px-5 py-6 text-center shadow-sm sm:px-6">
-    <div className="pointer-events-none absolute inset-2 rounded-[18px] border border-[#e8eaf0]" />
+  <article className="relative mt-5 overflow-hidden rounded-[24px] border border-[#e4dccb] bg-[#fffdf8] px-4 pb-5 pt-[84px] text-center shadow-sm">
+    <div className="pointer-events-none absolute inset-2 rounded-[18px] border border-[#c9a86a]/35" />
+    <div className="absolute left-1/2 top-0 h-12 w-14 -translate-x-1/2 bg-gradient-to-r from-[#5c6982] via-[#8b98b2] to-[#55617a] [clip-path:polygon(0_0,100%_0,100%_100%,50%_78%,0_100%)]" />
+    <div className="absolute left-1/2 top-5 flex h-14 w-14 -translate-x-1/2 items-center justify-center rounded-full bg-[radial-gradient(circle_at_34%_28%,#e8cd98,#c9a86a_56%,#9f7d48_100%)] shadow-[inset_0_0_0_2px_rgba(255,255,255,0.25),inset_0_-2px_4px_rgba(80,55,20,0.24),0_5px_10px_rgba(90,65,30,0.25)]">
+      <WeddingLogo className="h-9 w-11 text-[#5e4a2c]" />
+    </div>
+
     <div className="relative">
-      <p className="font-display text-lg leading-snug text-[#72809c] sm:text-xl">
-        JEMPUTAN WALIMATULURUS
+      <p className="font-mono text-[8px] uppercase tracking-[0.22em] text-[#a8895e]">
+        Walimatulurus · 24.12.2026
       </p>
-      <p className="mx-auto mt-4 max-w-[330px] font-serif text-sm leading-relaxed text-slate-600">
+      <h2 className="mt-1 font-display text-xl leading-snug text-[#5c6982]">
+        JEMPUTAN WALIMATULURUS
+      </h2>
+      <div className="mx-auto mt-3 h-px w-12 bg-gradient-to-r from-transparent via-[#c9a86a] to-transparent" />
+
+      <p className="mx-auto mt-3 max-w-[330px] font-serif text-[13.5px] leading-relaxed text-slate-600">
         Assalamualaikum warahmatullahi wabarakatuh dan salam sejahtera,
       </p>
-      <p className="mt-4 font-serif text-sm leading-relaxed text-slate-600">
+      <p className="mt-3 font-serif text-[13.5px] leading-relaxed text-slate-600">
         Dengan penuh kesyukuran ke hadrat Allah SWT, kami
       </p>
-      <div className="mt-3 rounded-[18px] bg-[#f4f5f8] px-3 py-3.5">
-        <p className="text-xs font-semibold tracking-[0.06em] text-slate-700">AZMI BIN MAT JUSOH</p>
-        <p className="my-1 font-serif text-sm italic text-[#72809c]">&amp;</p>
-        <p className="text-xs font-semibold tracking-[0.06em] text-slate-700">FARIDAH BINTI ABDUL HAMID</p>
+
+      <div className="mt-2">
+        <p className="break-words font-display text-[12px] font-semibold leading-relaxed tracking-[0.06em] text-[#5c6982]">
+          AZMI BIN MAT JUSOH
+        </p>
+        <p className="my-1 font-serif text-sm italic text-[#a8895e]">&amp;</p>
+        <p className="break-words font-display text-[12px] font-semibold leading-relaxed tracking-[0.06em] text-[#5c6982]">
+          FARIDAH BINTI ABDUL HAMID
+        </p>
       </div>
-      <p className="mt-4 font-serif text-sm leading-relaxed text-slate-600">
+
+      <p className="mt-3 font-serif text-[13.5px] leading-relaxed text-slate-600">
         dengan segala hormatnya menjemput Dato’/Datin/Tuan/Puan/Encik/Cik ke majlis
         walimatulurus anakanda kami
       </p>
-      <p className="mt-4 break-words text-sm font-semibold leading-relaxed tracking-[0.08em] text-[#72809c]">
-        NUR ATHIRAH BINTI AZMI
-      </p>
-      <p className="my-1 font-serif text-sm italic text-slate-500">&amp;</p>
-      <p className="break-words text-sm font-semibold leading-relaxed tracking-[0.08em] text-[#72809c]">
-        MUHAMAD AIDIT HAIKAL BIN ZAINUDDIN
-      </p>
 
-      <div className="my-5 border-t border-dashed border-slate-300" />
-      <div className="space-y-3 text-left text-sm text-slate-600">
-        <div className="flex items-start gap-3">
-          <span aria-hidden="true">🗓️</span>
-          <p>Khamis, 24 Disember 2026</p>
+      <div className="relative mt-4 overflow-hidden rounded-[16px] border border-[#c9a86a]/25 bg-[#f9f7f1]/80 px-3 py-4">
+        <Heart className="pointer-events-none absolute left-2 top-2 h-3 w-3 text-[#c9a86a]/30" />
+        <Heart className="pointer-events-none absolute bottom-2 right-2 h-3 w-3 text-[#c9a86a]/30" />
+
+        <p className="font-mono text-[6px] uppercase tracking-[0.22em] text-[#a8895e]">
+          The Bride
+        </p>
+        <p className="mt-1 break-words font-display text-sm font-semibold leading-relaxed tracking-[0.07em] text-[#5c6982]">
+          NUR ATHIRAH BINTI AZMI
+        </p>
+
+        <div className="my-2.5 flex items-center justify-center gap-2">
+          <span className="h-px w-8 bg-gradient-to-r from-transparent to-[#c9a86a]/50" />
+          <span className="flex h-7 w-7 items-center justify-center rounded-full border border-[#c9a86a]/40 bg-white/70 text-[#c9a86a] shadow-sm">
+            <Heart className="h-3.5 w-3.5 fill-[#c9a86a]/30" />
+          </span>
+          <span className="h-px w-8 bg-gradient-to-l from-transparent to-[#c9a86a]/50" />
         </div>
-        <div className="flex items-start gap-3">
-          <span aria-hidden="true">🕛</span>
-          <p>12.00 tengah hari</p>
+
+        <p className="font-mono text-[6px] uppercase tracking-[0.22em] text-[#a8895e]">
+          The Groom
+        </p>
+        <p className="mt-1 break-words font-display text-sm font-semibold leading-relaxed tracking-[0.07em] text-[#5c6982]">
+          MUHAMAD AIDIT HAIKAL BIN ZAINUDDIN
+        </p>
+
+        <p className="mt-2 text-center font-serif text-[10.5px] italic text-[#a8895e]">
+          two hearts, one promise
+        </p>
+      </div>
+
+      <div className="mt-4 space-y-2 border-y border-dashed border-[#e4dccb] py-3 text-left">
+        <div className="flex items-start justify-between gap-3">
+          <span className="font-mono text-[6.5px] uppercase tracking-[0.14em] text-[#a29a8a]">Tarikh</span>
+          <span className="text-right font-serif text-[13px] leading-snug text-slate-600">Khamis, 24 Disember 2026</span>
         </div>
-        <div className="flex items-start gap-3">
-          <span aria-hidden="true">📍</span>
-          <p><span className="font-semibold text-slate-700">MOARA HALL</span><br />
-            Lot 418, Hujung Tanjung, Pulau Belanga,<br />
+        <div className="flex items-start justify-between gap-3">
+          <span className="font-mono text-[6.5px] uppercase tracking-[0.14em] text-[#a29a8a]">Masa</span>
+          <span className="text-right font-serif text-[13px] leading-snug text-slate-600">12.00 tengah hari</span>
+        </div>
+        <div className="flex items-start justify-between gap-3">
+          <span className="font-mono text-[6.5px] uppercase tracking-[0.14em] text-[#a29a8a]">Tempat</span>
+          <span className="text-right font-serif text-[13px] leading-snug text-slate-600">
+            <b className="font-semibold text-slate-700">MOARA HALL</b>
+            <br />
+            Lot 418, Hujung Tanjung, Pulau Belanga,
+            <br />
             16100 Kota Bharu, Kelantan
-          </p>
+          </span>
         </div>
       </div>
-      <p className="mt-5 font-serif text-sm italic leading-relaxed text-slate-600">
+
+      <p className="mt-4 font-serif text-[12.5px] italic leading-relaxed text-slate-600">
         Semoga kehadiran serta doa restu anda dapat menyerikan majlis dan menambahkan
         keberkatan buat kedua-dua mempelai. Insya-Allah.
       </p>
+
+      <div className="mt-4 flex items-center justify-center gap-2">
+        <span className="h-px w-6 bg-[#e4dccb]" />
+        <WeddingLogo className="h-4 w-5 text-[#c9a86a]" />
+        <span className="h-px w-6 bg-[#e4dccb]" />
+      </div>
     </div>
   </article>
 );
@@ -597,7 +662,7 @@ const PassportCover = ({ guestName, onOpen }: { guestName: string; onOpen: () =>
           <p className="mt-8 font-serif text-lg italic text-white/80">Wedding</p>
           <h1 className="mt-1 font-display text-3xl tracking-wide">PASSPORT</h1>
           <div className="mx-auto my-8 flex h-28 w-28 items-center justify-center rounded-full border border-white/45">
-            <Heart className="h-10 w-10 fill-white/15 text-white" />
+            <WeddingLogo className="h-20 w-24 text-[#e8cd98]" />
           </div>
           <p className="text-xs uppercase tracking-[0.24em] text-white/85">Aidit</p>
           <p className="font-serif text-lg italic text-white/80">&</p>
@@ -703,19 +768,77 @@ const CountdownStrip = () => {
 
 const Timeline = () => (
   <div className="mt-6">
-    <h2 className="text-center font-display text-2xl tracking-wide text-slate-700">Wedding Timeline</h2>
-    <div className="mt-5 space-y-5">
-      {events.map((event) => (
-        <div key={event.title} className="grid grid-cols-[64px_1px_1fr] gap-3 sm:grid-cols-[74px_1px_1fr] sm:gap-4">
-          <p className="text-right font-mono text-xs text-[#72809c]">{event.time}</p>
-          <div className="relative bg-slate-200">
-            <span className="absolute -left-[5px] top-0 h-3 w-3 rounded-full bg-[#72809c]" />
+    <div className="text-center">
+      <p className="font-mono text-[9px] uppercase tracking-[0.26em] text-slate-400">
+        Boarding · Wedding Day
+      </p>
+      <h2 className="mt-1 font-display text-2xl tracking-wide text-slate-700">
+        Wedding Timeline
+      </h2>
+      <p className="mt-1 font-serif text-sm italic text-slate-500">
+        Aidit &amp; Athirah · flight to forever
+      </p>
+      <div className="mx-auto mt-4 h-px w-12 bg-gradient-to-r from-transparent via-[#c9a86a]/70 to-transparent" />
+    </div>
+
+    <div className="mt-5 space-y-4">
+      {weddingTimelineEvents.map((event, index) => (
+        <motion.article
+          key={`${event.time}-${event.title}`}
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.45, delay: index * 0.05 }}
+          className={`relative grid grid-cols-[58px_1fr_46px] overflow-hidden rounded-[15px] border border-[#e4dccb] bg-[#fffdf8] shadow-[0_12px_28px_rgba(90,95,110,0.08)] ${
+            index % 2 === 0 ? "-rotate-[0.35deg]" : "rotate-[0.45deg]"
+          }`}
+        >
+          <div className="border-r border-dashed border-[#d8d0be] bg-[#f3eee3]/60 px-1 py-4 text-center">
+            <p className="font-mono text-[13px] font-semibold leading-none text-[#72809c]">
+              {event.time}
+            </p>
+            <p className="mt-1 font-mono text-[7px] uppercase tracking-[0.16em] text-[#a29a8a]">
+              {event.period}
+            </p>
           </div>
-          <div className="-mt-1">
-            <h3 className="font-display text-lg text-slate-700">{event.title}</h3>
-            <p className="mt-1 text-sm leading-relaxed text-slate-500">{event.detail}</p>
+
+          <div className="px-3 py-3.5">
+            <p className="font-mono text-[7px] uppercase tracking-[0.18em] text-[#b0a792]">
+              Boarding · {String(index + 1).padStart(2, "0")}
+            </p>
+            <h3 className="mt-0.5 font-display text-[17px] leading-tight text-slate-700">
+              {event.title}
+            </h3>
+            <p className="mt-1 font-serif text-[13.5px] italic leading-snug text-slate-500">
+              {event.detail}
+            </p>
+            <div className="mt-2 flex gap-3 border-t border-dashed border-[#e4dccb] pt-2">
+              <div>
+                <p className="font-mono text-[6.5px] uppercase tracking-[0.12em] text-[#b0a792]">
+                  Gate
+                </p>
+                <p className="mt-0.5 font-mono text-[8px] text-[#5c6982]">{event.gate}</p>
+              </div>
+              <div>
+                <p className="font-mono text-[6.5px] uppercase tracking-[0.12em] text-[#b0a792]">
+                  Seat
+                </p>
+                <p className="mt-0.5 font-mono text-[8px] text-[#5c6982]">{event.seat}</p>
+              </div>
+            </div>
           </div>
-        </div>
+
+          <div className="flex flex-col items-center justify-center gap-1.5 border-l border-dashed border-[#d8d0be] bg-[#f3eee3]/55 px-1 py-2">
+            <Plane className="h-3.5 w-3.5 rotate-45 text-[#72809c]" />
+            <div className="h-6 w-[18px] bg-[repeating-linear-gradient(90deg,#6c788d_0_1px,transparent_1px_3px)] opacity-90" />
+            <p className="font-mono text-[6px] tracking-[0.04em] text-[#a29a8a]">
+              {timelineFlightCode}
+            </p>
+          </div>
+
+          <span className="pointer-events-none absolute -top-1.5 left-[57px] h-3 w-3 rounded-full border border-[#e4dccb] bg-[#f9f7f1]" />
+          <span className="pointer-events-none absolute -bottom-1.5 left-[57px] h-3 w-3 rounded-full border border-[#e4dccb] bg-[#f9f7f1]" />
+        </motion.article>
       ))}
     </div>
   </div>
@@ -728,9 +851,72 @@ type WishRow = {
   created_at: string;
 };
 
-const GuestWishes = ({ refreshKey }: { refreshKey: number }) => {
+const formatWishDate = (value: string) => {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "";
+  return new Intl.DateTimeFormat("ms-MY", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  }).format(date);
+};
+
+const GuestWishes = ({
+  refreshKey,
+  onWriteWish,
+}: {
+  refreshKey: number;
+  onWriteWish: () => void;
+}) => {
   const [wishes, setWishes] = useState<WishRow[]>([]);
   const [loading, setLoading] = useState(true);
+  const railRef = useRef<HTMLDivElement>(null);
+  const [activeWish, setActiveWish] = useState(0);
+  const wishItems = wishes.slice(0, 5);
+
+  useEffect(() => {
+    setActiveWish(0);
+    railRef.current?.scrollTo({ left: 0, behavior: "smooth" });
+  }, [refreshKey, wishes.length]);
+
+  const scrollToWish = (index: number) => {
+    const rail = railRef.current;
+    if (!rail) return;
+    const card = rail.children[index] as HTMLElement | undefined;
+    if (!card) return;
+    const railRect = rail.getBoundingClientRect();
+    const cardRect = card.getBoundingClientRect();
+    rail.scrollTo({
+      left: rail.scrollLeft + cardRect.left - railRect.left,
+      behavior: "smooth",
+    });
+  };
+
+  const goToWish = (direction: number) => {
+    if (wishItems.length < 2) return;
+    const next = (activeWish + direction + wishItems.length) % wishItems.length;
+    scrollToWish(next);
+  };
+
+  const handleWishScroll = () => {
+    const rail = railRef.current;
+    if (!rail) return;
+    const railRect = rail.getBoundingClientRect();
+    const center = railRect.left + railRect.width / 2;
+    let closest = 0;
+    let closestDistance = Number.POSITIVE_INFINITY;
+
+    Array.from(rail.children).forEach((child, index) => {
+      const rect = (child as HTMLElement).getBoundingClientRect();
+      const distance = Math.abs(rect.left + rect.width / 2 - center);
+      if (distance < closestDistance) {
+        closestDistance = distance;
+        closest = index;
+      }
+    });
+
+    setActiveWish(closest);
+  };
 
   useEffect(() => {
     let cancelled = false;
@@ -739,6 +925,7 @@ const GuestWishes = ({ refreshKey }: { refreshKey: number }) => {
       const { data, error } = await supabase
         .from("wishes")
         .select("id, name, message, created_at")
+        .eq("is_visible", true)
         .order("created_at", { ascending: false })
         .limit(20);
 
@@ -758,34 +945,166 @@ const GuestWishes = ({ refreshKey }: { refreshKey: number }) => {
   }, [refreshKey]);
 
   return (
-    <section data-tour-target="wishes" className="mt-5 rounded-[26px] border border-slate-200 bg-white p-4">
-      <div className="mb-4 flex items-center justify-between gap-3">
+    <section
+      data-tour-target="wishes"
+      className="mt-5 overflow-hidden rounded-[26px] border border-[#e4dccb] bg-white/80 p-4"
+    >
+      <div className="flex items-start justify-between gap-3">
         <div>
-          <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-slate-400">
-            Guest Wishes
+          <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-slate-400">
+            Guestbook · Wishes
           </p>
           <h2 className="mt-1 font-display text-2xl text-slate-700">From Our Guests</h2>
+          <p className="mt-1 font-serif text-sm italic text-slate-500">
+            little notes for our forever
+          </p>
         </div>
-        <Heart className="h-5 w-5 fill-[#72809c]/20 text-[#72809c]" />
+        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[#e4dccb] bg-[#f9f7f1] text-[#c9a86a]">
+          <Heart className="h-4 w-4 fill-[#c9a86a]/20" />
+        </div>
       </div>
 
-      {wishes.length > 0 ? (
-        <div className="space-y-3">
-          {wishes.slice(0, 5).map((wish) => (
-            <article key={wish.id} className="rounded-[18px] bg-[#f4f6fb] p-4">
-              <p className="font-display text-lg text-slate-700">{wish.name || "Guest"}</p>
-              <p className="mt-2 font-serif text-base italic leading-relaxed text-slate-600">
-                "{wish.message}"
-              </p>
-            </article>
+      <div className="mt-3 h-px bg-gradient-to-r from-transparent via-[#e4dccb] to-transparent" />
+
+      {loading ? (
+        <div className="mt-4 space-y-3">
+          {[0, 1].map((item) => (
+            <div key={item} className="h-28 animate-pulse rounded-[14px] bg-[#f4f1e9]" />
           ))}
         </div>
+      ) : wishes.length > 0 ? (
+        <>
+          <div className="mt-4">
+            <div
+              ref={railRef}
+              onScroll={handleWishScroll}
+              className="flex snap-x snap-mandatory gap-3 overflow-x-auto pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+            >
+              {wishItems.map((wish, index) => (
+                <motion.article
+                  key={wish.id}
+                  initial={{ opacity: 0, y: 12 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.2 }}
+                  transition={{ duration: 0.45, delay: index * 0.04 }}
+                  className={`relative shrink-0 snap-start rounded-[14px] border border-[#e4dccb] bg-[#fffdf8] p-3.5 shadow-[0_10px_22px_rgba(90,95,110,0.06)] ${
+                    wishItems.length > 1 ? "w-[88%]" : "w-full"
+                  }`}
+                >
+                  <div className="absolute right-2.5 top-2.5 flex h-11 w-9 rotate-3 flex-col items-center justify-center gap-0.5 border border-dashed border-[#b7a78b] bg-[#f4e8d6] text-center text-[#8d7d64]">
+                    <WeddingLogo className="h-4 w-5 text-[#8d7d64]" />
+                    <span className="font-mono text-[4.5px] leading-none">24.12</span>
+                  </div>
+                  <div className="absolute right-7 top-8 flex h-9 w-9 -rotate-12 items-center justify-center rounded-full border border-[#72809c]/35 text-center font-mono text-[4.5px] leading-tight text-[#72809c]/60">
+                    MOARA
+                    <br />
+                    HALL
+                    <br />
+                    2026
+                  </div>
+
+                  <p className="font-mono text-[6.5px] uppercase tracking-[0.18em] text-[#a8895e]">
+                    Par avion · Postcard {String(index + 1).padStart(2, "0")}
+                  </p>
+                  <p className="mt-1 pr-16 font-display text-[17px] leading-tight text-slate-700">
+                    {wish.name || "Tetamu"}
+                  </p>
+                  <p className="mt-1.5 font-serif text-[14.5px] italic leading-relaxed text-slate-600">
+                    “{wish.message}”
+                  </p>
+
+                  <div className="mt-3 flex items-center justify-between border-t border-dashed border-[#e4dccb] pt-2">
+                    <span className="font-mono text-[5.5px] uppercase tracking-[0.12em] text-slate-400">
+                      {formatWishDate(wish.created_at)}
+                    </span>
+                    <span className="flex items-center gap-1 font-mono text-[5.5px] uppercase tracking-[0.1em] text-[#c9a86a]">
+                      <Heart className="h-2.5 w-2.5 fill-current" />
+                      with love
+                    </span>
+                  </div>
+                </motion.article>
+              ))}
+            </div>
+
+            {wishItems.length > 1 && (
+              <>
+                <div className="mt-2 flex items-center justify-between gap-2">
+                  <button
+                    type="button"
+                    onClick={() => goToWish(-1)}
+                    className="flex h-8 w-8 items-center justify-center rounded-full border border-[#e4dccb] bg-white/70 text-[#72809c] transition-colors hover:bg-white"
+                    aria-label="Ucapan sebelumnya"
+                  >
+                    <ChevronLeft className="h-4 w-4" />
+                  </button>
+
+                  <div className="flex items-center gap-1.5">
+                    {wishItems.map((wish, index) => (
+                      <button
+                        key={wish.id}
+                        type="button"
+                        onClick={() => scrollToWish(index)}
+                        className={`h-1.5 rounded-full transition-all ${
+                          activeWish === index ? "w-5 bg-[#c9a86a]" : "w-1.5 bg-[#d9d0be]"
+                        }`}
+                        aria-label={`Ucapan ${index + 1}`}
+                      />
+                    ))}
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() => goToWish(1)}
+                    className="flex h-8 w-8 items-center justify-center rounded-full border border-[#e4dccb] bg-white/70 text-[#72809c] transition-colors hover:bg-white"
+                    aria-label="Ucapan seterusnya"
+                  >
+                    <ChevronRight className="h-4 w-4" />
+                  </button>
+                </div>
+                <p className="mt-1.5 text-center font-mono text-[5.5px] uppercase tracking-[0.14em] text-slate-400">
+                  Swipe untuk ucapan lain →
+                </p>
+              </>
+            )}
+          </div>
+
+          <button
+            type="button"
+            onClick={onWriteWish}
+            className="mt-4 flex w-full items-center justify-center gap-2 rounded-full border border-[#d7dbea] bg-[#f4f6fb] px-4 py-2.5 text-xs font-medium text-[#64728e] transition-colors hover:bg-[#e9edf6]"
+          >
+            <Heart className="h-3.5 w-3.5" />
+            Tinggalkan ucapan
+          </button>
+        </>
       ) : (
-        <p className="rounded-[18px] bg-[#f4f6fb] p-4 font-serif text-base italic leading-relaxed text-slate-500">
-          {loading
-            ? "Loading wishes..."
-            : "Wishes from guests will appear here after they submit the RSVP form."}
-        </p>
+        <div className="mt-4 rounded-[4px] bg-[repeating-linear-gradient(45deg,#72809c_0_7px,#f9f7f1_7px_14px,#c9a86a_14px_21px)] p-[3px]">
+          <div className="relative rounded-[2px] bg-[#fffdf8] px-4 py-5 text-center">
+            <div className="absolute right-3 top-3 flex h-11 w-9 rotate-3 flex-col items-center justify-center gap-0.5 border border-dashed border-[#b7a78b] bg-[#f4e8d6] text-center text-[#8d7d64]">
+              <WeddingLogo className="h-4 w-5 text-[#8d7d64]" />
+              <span className="font-mono text-[4.5px] leading-none">24.12</span>
+            </div>
+
+            <div className="mx-auto flex h-11 w-11 items-center justify-center rounded-full border border-[#e4dccb] bg-[#f9f7f1] text-[#c9a86a]">
+              <Heart className="h-5 w-5 fill-[#c9a86a]/20" />
+            </div>
+            <p className="mt-2 font-display text-lg text-slate-700">Be our first wish</p>
+            <p className="mx-auto mt-1 max-w-[250px] font-serif text-sm italic leading-relaxed text-slate-500">
+              Ucapan dan doa anda akan muncul di sini selepas anda menghantar RSVP.
+            </p>
+            <button
+              type="button"
+              onClick={onWriteWish}
+              className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-[#72809c] px-4 py-2 text-xs font-medium text-white transition-colors hover:bg-[#64728e]"
+            >
+              <Heart className="h-3.5 w-3.5" />
+              Tinggalkan ucapan
+            </button>
+            <p className="mt-3 font-mono text-[5.5px] uppercase tracking-[0.14em] text-slate-300">
+              Your words, our keepsake
+            </p>
+          </div>
+        </div>
       )}
     </section>
   );
@@ -831,236 +1150,6 @@ const currency = new Intl.NumberFormat("ms-MY", {
   currency: "MYR",
   maximumFractionDigits: 0,
 });
-
-const GiftContribution = () => {
-  const [giftItems, setGiftItems] = useState<GiftItem[]>([]);
-  const [approvedTotals, setApprovedTotals] = useState<Record<string, number>>({});
-  const [selectedItem, setSelectedItem] = useState("");
-  const [giftsLoading, setGiftsLoading] = useState(true);
-  const [giftsError, setGiftsError] = useState("");
-  const [submitError, setSubmitError] = useState("");
-  const [contributorName, setContributorName] = useState("");
-  const [amount, setAmount] = useState(100);
-  const [giftSubmitted, setGiftSubmitted] = useState(false);
-
-  useEffect(() => {
-    let active = true;
-
-    const loadGiftData = async () => {
-      setGiftsLoading(true);
-      setGiftsError("");
-      const [{ data: items, error: itemsError }, { data: totalsData, error: totalsError }] = await Promise.all([
-        supabase
-          .from("gift_items")
-          .select("id, title, target_amount, sort_order")
-          .eq("is_active", true)
-          .order("sort_order", { ascending: true }),
-        supabase.rpc("get_approved_gift_totals"),
-      ]);
-
-      if (!active) return;
-      if (itemsError || totalsError) {
-        console.error("Failed to load gift data:", itemsError?.message ?? totalsError?.message);
-        setGiftsError("Gift details are temporarily unavailable. Please try again later.");
-        setGiftsLoading(false);
-        return;
-      }
-
-      const gifts = (items ?? []) as GiftItem[];
-      const totals = (totalsData ?? []).reduce<Record<string, number>>((result, row) => {
-        const itemId = row.gift_item_id as string | null;
-        const value = Number(row.total_amount);
-        if (itemId && Number.isFinite(value)) result[itemId] = value;
-        return result;
-      }, {});
-      setGiftItems(gifts);
-      setApprovedTotals(totals);
-      setSelectedItem((current) => gifts.some((item) => item.id === current) ? current : gifts[0]?.id ?? "");
-      setGiftsLoading(false);
-    };
-
-    void loadGiftData();
-    return () => { active = false; };
-  }, []);
-
-  const wishlistWithTotals = giftItems.map((item) => {
-    const total = approvedTotals[item.id] ?? 0;
-    const progress = item.target_amount > 0
-      ? Math.min(100, Math.round((total / item.target_amount) * 100))
-      : 0;
-    return { ...item, target: item.target_amount, total, progress };
-  });
-
-  const selectedGift = wishlistWithTotals.find((item) => item.id === selectedItem);
-  if (giftsLoading) {
-    return <p className="rounded-[20px] bg-white/65 p-4 text-sm text-slate-600">Loading gift wishlist…</p>;
-  }
-  if (giftsError) {
-    return <p className="rounded-[20px] bg-white/65 p-4 text-sm text-slate-600">{giftsError}</p>;
-  }
-  if (!selectedGift) {
-    return <p className="rounded-[20px] bg-white/65 p-4 text-sm text-slate-600">The gift wishlist will be available soon.</p>;
-  }
-  const remaining = Math.max(0, selectedGift.target - selectedGift.total);
-  const maxContribution = Math.max(50, Math.min(1000, remaining || selectedGift.target));
-
-  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    if (!selectedGift) return;
-    setSubmitError("");
-    const safeAmount = Math.max(1, Math.min(amount, remaining || amount));
-    const finalName = contributorName.trim() || "Guest";
-    const { error } = await supabase
-      .from("donation_confirmations")
-      .insert({
-        name: finalName,
-        amount: String(safeAmount),
-        message: `Gift: ${selectedGift.title}`,
-        gift_item_id: selectedGift.id,
-      })
-
-    if (error) {
-      console.error("Failed to save gift contribution:", error.message);
-      setSubmitError("We couldn't submit your contribution. Please try again.");
-      return;
-    }
-
-    setContributorName("");
-    setAmount(100);
-    setGiftSubmitted(true);
-    window.setTimeout(() => setGiftSubmitted(false), 2200);
-  };
-
-  return (
-    <div className="space-y-4">
-      <div className="rounded-[20px] bg-white/65 p-4">
-        <p className="font-serif text-lg italic leading-relaxed text-slate-600">
-          Choose a wishlist item and contribute any amount toward the target.
-        </p>
-      </div>
-
-      <div className="space-y-3">
-        {wishlistWithTotals.map((item) => (
-          <button
-            key={item.id}
-            type="button"
-            onClick={() => setSelectedItem(item.id)}
-            className={`w-full rounded-[20px] p-4 text-left transition-all ${
-              selectedItem === item.id
-                ? "bg-white shadow-sm ring-2 ring-slate-700/15"
-                : "bg-white/58 hover:bg-white/75"
-            }`}
-          >
-            <div className="flex items-start justify-between gap-3">
-              <div>
-                <p className="font-display text-xl text-slate-700">{item.title}</p>
-                <p className="mt-1 text-xs text-slate-500">
-                  Target {currency.format(item.target)}
-                </p>
-              </div>
-              <span className="rounded-full bg-[#72809c] px-3 py-1 font-mono text-[10px] text-white">
-                {item.progress}%
-              </span>
-            </div>
-
-            <div className="mt-4 h-3 overflow-hidden rounded-full bg-slate-200/80">
-              <motion.div
-                className="h-full rounded-full bg-slate-700"
-                initial={false}
-                animate={{ width: `${item.progress}%` }}
-                transition={{ duration: 0.45 }}
-              />
-            </div>
-
-            <div className="mt-3 flex items-center justify-between text-xs text-slate-500">
-              <span>Collected {currency.format(item.total)}</span>
-              <span>Left {currency.format(Math.max(0, item.target - item.total))}</span>
-            </div>
-          </button>
-        ))}
-      </div>
-
-      <TransferDetails />
-
-      <form onSubmit={handleSubmit} className="rounded-[22px] bg-white/70 p-4">
-        <div className="flex items-center justify-between gap-4">
-          <div>
-            <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-slate-500">
-              Contribution
-            </p>
-            <p className="mt-1 font-display text-2xl text-slate-700">
-              {currency.format(amount)}
-            </p>
-          </div>
-          <Gift className="h-8 w-8 text-[#72809c]" />
-        </div>
-
-        <label className="mt-4 block">
-          <span className="sr-only">Your name</span>
-          <input
-            value={contributorName}
-            onChange={(event) => setContributorName(event.target.value)}
-            className="w-full rounded-xl border-0 bg-white px-4 py-3 text-sm outline-none ring-1 ring-slate-200 focus:ring-2 focus:ring-slate-500"
-            placeholder="Your name"
-            required
-          />
-        </label>
-
-        <label className="mt-4 block">
-          <span className="mb-2 block text-xs font-medium text-slate-500">
-            Slide amount for {selectedGift.title}
-          </span>
-          <input
-            type="range"
-            min={10}
-            max={maxContribution}
-            step={10}
-            value={Math.min(amount, maxContribution)}
-            onChange={(event) => setAmount(Number(event.target.value))}
-            className="w-full accent-slate-700"
-          />
-          <div className="mt-2 flex justify-between text-[10px] text-slate-500">
-            <span>RM10</span>
-            <span>{currency.format(maxContribution)}</span>
-          </div>
-        </label>
-
-        <label className="mt-4 block">
-          <span className="sr-only">Donation amount</span>
-          <input
-            type="number"
-            min={1}
-            max={remaining || undefined}
-            value={amount}
-            onChange={(event) => setAmount(Number(event.target.value))}
-            className="w-full rounded-xl border-0 bg-white px-4 py-3 text-sm outline-none ring-1 ring-slate-200 focus:ring-2 focus:ring-slate-500"
-            placeholder="Donation amount"
-          />
-        </label>
-
-        <button
-          type="submit"
-          className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-slate-700 px-4 py-3 text-sm font-medium text-white transition-colors hover:bg-slate-800"
-        >
-          <Heart className="h-4 w-4" />
-          Contribute Gift
-        </button>
-
-        {submitError && (
-          <p role="alert" className="mt-3 rounded-xl bg-rose-50 px-4 py-3 text-center text-sm text-rose-700">
-            {submitError}
-          </p>
-        )}
-
-        {giftSubmitted && (
-          <p className="mt-3 rounded-xl bg-emerald-50 px-4 py-3 text-center text-sm text-emerald-700">
-            Thank you. Your contribution has been added.
-          </p>
-        )}
-      </form>
-    </div>
-  );
-};
 
 type SalamKautEntry = {
   name: string;
@@ -1277,7 +1366,7 @@ const InfoPopup = ({
             <X className="h-4 w-4" />
           </button>
           <p className="font-mono text-[10px] uppercase tracking-[0.24em] text-slate-500">
-            Boarding info
+            {activeInfo === "photos" ? "Guest camera" : "Boarding info"}
           </p>
           <h2 className="mt-2 font-display text-2xl">{activeCard.title}</h2>
           <div className="mt-5">{renderPopup(activeInfo, submitted, onSubmitted)}</div>
@@ -1286,6 +1375,12 @@ const InfoPopup = ({
     )}
   </AnimatePresence>
 );
+
+const attendanceOptions = [
+  { value: "Attending", label: "Hadir" },
+  { value: "Maybe", label: "Mungkin" },
+  { value: "Unable to attend", label: "Tidak hadir" },
+] as const;
 
 const RsvpForm = ({
   submitted,
@@ -1300,6 +1395,8 @@ const RsvpForm = ({
   const [wishes, setWishes] = useState("");
 
   const isNotAttending = attendance === "Unable to attend";
+  const attendanceLabel =
+    attendance === "Attending" ? "Hadir" : attendance === "Maybe" ? "Mungkin" : "Tidak hadir";
 
   const handleAttendanceChange = (value: string) => {
     setAttendance(value);
@@ -1312,76 +1409,192 @@ const RsvpForm = ({
 
   if (submitted) {
     return (
-      <div className="py-5 text-center">
-        <Check className="mx-auto h-10 w-10 text-slate-700" />
-        <h3 className="mt-3 font-display text-xl">RSVP received</h3>
-        <p className="mt-2 text-sm text-slate-600">
-          Thank you. Your wishes will appear below the Wedding Timeline.
+      <div className="-mx-1 rounded-[24px] bg-[#f9f7f1] p-5 text-center">
+        <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full border border-emerald-200 bg-emerald-50 text-emerald-600">
+          <Check className="h-6 w-6" />
+        </div>
+        <p className="mt-3 font-mono text-[8px] uppercase tracking-[0.22em] text-slate-400">
+          RSVP received
         </p>
+        <h3 className="mt-1 font-display text-2xl text-slate-700">Terima kasih!</h3>
+        <p className="mt-2 font-serif text-sm italic leading-relaxed text-slate-500">
+          Your seat has been noted. Your wish will appear in <b>From Our Guests</b>.
+        </p>
+
+        {name.trim() && (
+          <div className="mt-4 space-y-2 rounded-[14px] border border-dashed border-[#e4dccb] bg-white/60 p-3 text-left">
+            <div className="flex items-start justify-between gap-3">
+              <span className="font-mono text-[6.5px] uppercase tracking-[0.12em] text-slate-400">
+                Nama
+              </span>
+              <span className="text-right text-xs font-medium text-slate-600">{name}</span>
+            </div>
+            <div className="flex items-center justify-between gap-3">
+              <span className="font-mono text-[6.5px] uppercase tracking-[0.12em] text-slate-400">
+                Kehadiran
+              </span>
+              <span className="text-xs font-medium text-slate-600">{attendanceLabel}</span>
+            </div>
+            {!isNotAttending && (
+              <div className="flex items-center justify-between gap-3">
+                <span className="font-mono text-[6.5px] uppercase tracking-[0.12em] text-slate-400">
+                  Bilangan tetamu
+                </span>
+                <span className="text-xs font-medium text-slate-600">{pax}</span>
+              </div>
+            )}
+          </div>
+        )}
+
+        <div className="mt-4 flex items-center justify-between border-t border-dashed border-[#e4dccb] pt-2 font-mono text-[6px] uppercase tracking-[0.14em] text-slate-400">
+          <span>Aidit &amp; Athirah</span>
+          <span>24.12.26</span>
+        </div>
       </div>
     );
   }
 
   return (
-    <form
-      className="space-y-3"
-      onSubmit={(event) => {
-        event.preventDefault();
-        onSubmitted({
-          name: name.trim() || "Guest",
-          attendance,
-          pax: isNotAttending ? 0 : Math.max(1, pax),
-          wishes: wishes.trim(),
-        });
-      }}
-    >
-      <input
-        value={name}
-        onChange={(event) => setName(event.target.value)}
-        className="w-full rounded-xl border-0 bg-white/70 px-4 py-3 text-sm outline-none"
-        placeholder="Name"
-        required
-      />
-      <select
-        value={attendance}
-        onChange={(event) => handleAttendanceChange(event.target.value)}
-        className="w-full rounded-xl border-0 bg-white/70 px-4 py-3 text-sm outline-none"
-      >
-        <option>Attending</option>
-        <option>Maybe</option>
-        <option>Unable to attend</option>
-      </select>
-      <div>
-        <label className="mb-1 block text-xs font-medium text-slate-500">
-          Number of Pax
-        </label>
-        <input
-          type="number"
-          min={isNotAttending ? 0 : 1}
-          max={isNotAttending ? 0 : 20}
-          value={pax}
-          disabled={isNotAttending}
-          onChange={(event) => setPax(Math.max(0, Number(event.target.value)))}
-          className={`w-full rounded-xl border-0 px-4 py-3 text-sm outline-none ${
-            isNotAttending
-              ? "bg-slate-200/60 text-slate-400 cursor-not-allowed"
-              : "bg-white/70"
-          }`}
-          placeholder="Number of guests"
-          required={!isNotAttending}
-        />
+    <div className="-mx-1 rounded-[24px] bg-[#f9f7f1] p-4">
+      <div className="flex items-start justify-between gap-3">
+        <div>
+          <p className="font-mono text-[8px] uppercase tracking-[0.22em] text-[#a29a8a]">
+            Wedding pass · RSVP
+          </p>
+          <h3 className="mt-1 font-display text-xl text-slate-700">Sahkan kehadiran</h3>
+          <p className="mt-1 font-serif text-sm italic text-slate-500">We saved a seat for you.</p>
+        </div>
+        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[#e4dccb] bg-white/70 text-[#72809c]">
+          <Plane className="h-4 w-4 rotate-45" />
+        </div>
       </div>
-      <textarea
-        value={wishes}
-        onChange={(event) => setWishes(event.target.value)}
-        className="h-24 w-full resize-none rounded-xl border-0 bg-white/70 px-4 py-3 text-sm outline-none"
-        placeholder="Wishes"
-      />
-      <button className="flex w-full items-center justify-center gap-2 rounded-xl bg-slate-700 px-4 py-3 text-sm font-medium text-white">
-        <Send className="h-4 w-4" />
-        Submit
-      </button>
-    </form>
+
+      <div className="my-3 border-t border-dashed border-[#e4dccb]" />
+
+      <form
+        className="space-y-3"
+        onSubmit={(event) => {
+          event.preventDefault();
+          onSubmitted({
+            name: name.trim() || "Guest",
+            attendance,
+            pax: isNotAttending ? 0 : Math.max(1, pax),
+            wishes: wishes.trim(),
+          });
+        }}
+      >
+        <label className="block">
+          <span className="mb-1 block font-mono text-[7px] uppercase tracking-[0.12em] text-[#9a9182]">
+            Nama
+          </span>
+          <input
+            value={name}
+            onChange={(event) => setName(event.target.value)}
+            className="w-full rounded-[10px] border border-[#e4dccb] bg-white px-3 py-2.5 text-sm text-slate-700 outline-none placeholder:text-[#b0a792] focus:border-[#72809c]"
+            placeholder="Nama anda / keluarga"
+            required
+          />
+        </label>
+
+        <div>
+          <span className="mb-1 block font-mono text-[7px] uppercase tracking-[0.12em] text-[#9a9182]">
+            Kehadiran
+          </span>
+          <div className="grid grid-cols-3 gap-1.5">
+            {attendanceOptions.map((option) => (
+              <button
+                key={option.value}
+                type="button"
+                onClick={() => handleAttendanceChange(option.value)}
+                className={`rounded-[10px] border px-1.5 py-2 text-[11px] font-medium transition-colors ${
+                  attendance === option.value
+                    ? "border-[#72809c] bg-[#72809c] text-white"
+                    : "border-[#e4dccb] bg-white/70 text-slate-500 hover:bg-white"
+                }`}
+              >
+                {option.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div>
+          <div className="flex items-center justify-between gap-2">
+            <span className="font-mono text-[7px] uppercase tracking-[0.12em] text-[#9a9182]">
+              Bilangan tetamu
+            </span>
+            <span className="font-mono text-[6px] uppercase tracking-[0.1em] text-slate-400">
+              Max 20
+            </span>
+          </div>
+          <div className="mt-1 flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => setPax((current) => Math.max(1, current - 1))}
+              disabled={isNotAttending || pax <= 1}
+              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[10px] border border-[#e4dccb] bg-white/70 text-lg leading-none text-[#72809c] transition-colors hover:bg-white disabled:opacity-40"
+              aria-label="Kurangkan tetamu"
+            >
+              −
+            </button>
+            <input
+              type="number"
+              min={isNotAttending ? 0 : 1}
+              max={isNotAttending ? 0 : 20}
+              value={pax}
+              disabled={isNotAttending}
+              onChange={(event) =>
+                setPax(Math.max(0, Math.min(20, Number(event.target.value) || 0)))
+              }
+              className={`h-10 w-full rounded-[10px] border border-[#e4dccb] px-3 text-center text-sm outline-none ${
+                isNotAttending
+                  ? "cursor-not-allowed bg-[#f1ece1] text-slate-400"
+                  : "bg-white text-slate-700 focus:border-[#72809c]"
+              }`}
+              placeholder="Bilangan tetamu"
+              required={!isNotAttending}
+            />
+            <button
+              type="button"
+              onClick={() => setPax((current) => Math.min(20, current + 1))}
+              disabled={isNotAttending || pax >= 20}
+              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[10px] border border-[#e4dccb] bg-white/70 text-lg leading-none text-[#72809c] transition-colors hover:bg-white disabled:opacity-40"
+              aria-label="Tambah tetamu"
+            >
+              +
+            </button>
+          </div>
+        </div>
+
+        <label className="block">
+          <span className="mb-1 block font-mono text-[7px] uppercase tracking-[0.12em] text-[#9a9182]">
+            Ucapan &amp; doa{" "}
+            <span className="normal-case tracking-normal text-slate-400">(pilihan)</span>
+          </span>
+          <textarea
+            value={wishes}
+            onChange={(event) => setWishes(event.target.value)}
+            rows={3}
+            className="w-full resize-none rounded-[10px] border border-[#e4dccb] bg-white px-3 py-2.5 text-sm text-slate-700 outline-none placeholder:text-[#b0a792] focus:border-[#72809c]"
+            placeholder="Tinggalkan ucapan untuk pengantin..."
+          />
+        </label>
+
+        <button className="flex w-full items-center justify-center gap-2 rounded-full bg-[#72809c] px-5 py-3 text-sm font-medium text-white transition-colors hover:bg-[#64728e]">
+          <Send className="h-4 w-4" />
+          Hantar RSVP
+        </button>
+
+        <p className="text-center font-serif text-[11px] italic leading-relaxed text-slate-400">
+          Sila sahkan sebelum 17 Disember 2026.
+        </p>
+
+        <div className="flex items-center justify-between border-t border-dashed border-[#e4dccb] pt-2 font-mono text-[6px] uppercase tracking-[0.14em] text-slate-400">
+          <span>Aidit &amp; Athirah</span>
+          <span>24.12.26</span>
+        </div>
+      </form>
+    </div>
   );
 };
 
@@ -1463,7 +1676,7 @@ function renderPopup(
         </div>
       );
     case "gift":
-      return <GiftContribution />;
+      return <GiftRegistry paymentUrl={paymentUrl} />;
     case "salamkaut":
       return <SalamKaut />;
     case "contact":
@@ -1488,6 +1701,8 @@ function renderPopup(
           ))}
         </div>
       );
+    case "photos":
+      return <GuestPhotoQR />;
     default:
       return null;
   }

@@ -1,0 +1,1832 @@
+<!doctype html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wedding Timeline · 10 Design Concepts</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Source+Code+Pro:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --cream: #f9f7f1;
+      --paper: #fffdf8;
+      --slate: #72809c;
+      --slate-dark: #5c6982;
+      --slate-deep: #3f4a5f;
+      --periwinkle: #c7d0e4;
+      --gold: #c9a86a;
+      --gold-dark: #a8895e;
+      --ink: #3f4a5f;
+      --muted: #7c8494;
+      --line: #e4dccb;
+      --display: "Playfair Display", serif;
+      --serif: "Cormorant Garamond", serif;
+      --mono: "Source Code Pro", monospace;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      background: #eef0f4;
+      font-family: var(--serif);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at 18% 8%, rgba(255,255,255,.92), transparent 34%),
+        radial-gradient(circle at 86% 18%, rgba(114,128,156,.18), transparent 32%),
+        linear-gradient(180deg, #eef0f4, #f7f3ed);
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: .05;
+      background-image: radial-gradient(rgba(15,23,42,.85) 1px, transparent 1px);
+      background-size: 26px 26px;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      padding: 16px 20px 12px;
+      background: rgba(238,240,244,.88);
+      border-bottom: 1px solid rgba(255,255,255,.85);
+      backdrop-filter: blur(14px);
+    }
+
+    .topbar-inner {
+      max-width: 980px;
+      margin: 0 auto;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    .eyebrow {
+      margin: 0 0 4px;
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: .28em;
+      text-transform: uppercase;
+      color: #98a0b2;
+    }
+
+    .topbar h1 {
+      margin: 0;
+      font-family: var(--display);
+      font-size: clamp(22px, 3vw, 30px);
+      font-weight: 500;
+      letter-spacing: -.02em;
+      color: var(--ink);
+    }
+
+    .topbar h1 em {
+      font-family: var(--serif);
+      font-size: .72em;
+      font-weight: 400;
+      color: var(--slate);
+    }
+
+    .counter {
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: .18em;
+      color: #98a0b2;
+      white-space: nowrap;
+      padding-bottom: 5px;
+    }
+
+    .tabs {
+      max-width: 980px;
+      margin: 14px auto 0;
+      display: flex;
+      gap: 7px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      scrollbar-width: none;
+    }
+
+    .tabs::-webkit-scrollbar { display: none; }
+
+    .tab {
+      flex: 0 0 auto;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.9);
+      background: rgba(255,255,255,.6);
+      color: #6f7787;
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: .05em;
+      cursor: pointer;
+      transition: .2s ease;
+    }
+
+    .tab b {
+      font-size: 8px;
+      font-weight: 600;
+      color: #a9afbc;
+    }
+
+    .tab:hover {
+      background: #fff;
+      color: var(--ink);
+    }
+
+    .tab.active {
+      background: var(--slate);
+      border-color: var(--slate);
+      color: #fff;
+      box-shadow: 0 6px 16px rgba(80,95,125,.22);
+    }
+
+    .tab.active b { color: rgba(255,255,255,.65); }
+
+    main {
+      position: relative;
+      z-index: 1;
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 24px 16px 80px;
+    }
+
+    .design {
+      display: none;
+      animation: fadeUp .45s ease both;
+    }
+
+    .design.active { display: block; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(14px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .design-head {
+      max-width: 430px;
+      margin: 0 auto 16px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .design-num {
+      flex: 0 0 auto;
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      border: 1px solid rgba(114,128,156,.3);
+      background: rgba(255,255,255,.55);
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--slate);
+    }
+
+    .design-head h2 {
+      margin: 0;
+      font-family: var(--display);
+      font-size: 22px;
+      font-weight: 500;
+      color: var(--ink);
+      line-height: 1.1;
+    }
+
+    .design-head p {
+      margin: 5px 0 0;
+      font-family: var(--serif);
+      font-size: 14px;
+      font-style: italic;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+
+    .stage {
+      position: relative;
+      max-width: 430px;
+      margin: 0 auto;
+      padding: 25px 20px 26px;
+      border-radius: 32px;
+      border: 1px solid rgba(255,255,255,.9);
+      background: var(--cream);
+      box-shadow: 0 26px 80px rgba(80,88,110,.17);
+      overflow: hidden;
+    }
+
+    .stage::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: .28;
+      background-image: radial-gradient(rgba(90,75,55,.16) .7px, transparent .8px);
+      background-size: 20px 20px;
+    }
+
+    .stage > * { position: relative; z-index: 1; }
+
+    .stage-kicker {
+      margin: 0;
+      text-align: center;
+      font-family: var(--mono);
+      font-size: 8px;
+      letter-spacing: .26em;
+      text-transform: uppercase;
+      color: #a29a8a;
+    }
+
+    .stage-title {
+      margin: 5px 0 0;
+      text-align: center;
+      font-family: var(--display);
+      font-size: 27px;
+      font-weight: 500;
+      color: var(--ink);
+      line-height: 1.1;
+    }
+
+    .stage-sub {
+      margin: 5px 0 0;
+      text-align: center;
+      font-family: var(--serif);
+      font-size: 14px;
+      font-style: italic;
+      color: var(--muted);
+    }
+
+    .divider {
+      width: 52px;
+      height: 1px;
+      margin: 14px auto 20px;
+      background: linear-gradient(90deg, transparent, rgba(201,168,106,.7), transparent);
+    }
+
+    /* 01 — Boarding pass */
+    .bp-list { display: grid; gap: 16px; }
+    .bp-ticket {
+      position: relative;
+      display: grid;
+      grid-template-columns: 58px 1fr 46px;
+      border-radius: 15px;
+      border: 1px solid var(--line);
+      background: var(--paper);
+      box-shadow: 0 12px 28px rgba(90,95,110,.08);
+      overflow: hidden;
+    }
+    .bp-ticket:nth-child(even) { transform: rotate(.45deg); }
+    .bp-ticket:nth-child(odd) { transform: rotate(-.35deg); }
+    .bp-time {
+      padding: 15px 6px;
+      text-align: center;
+      border-right: 1px dashed #d8d0be;
+      background: rgba(243,238,227,.6);
+    }
+    .bp-time b {
+      display: block;
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--slate);
+      letter-spacing: -.02em;
+    }
+    .bp-time span {
+      display: block;
+      margin-top: 3px;
+      font-family: var(--mono);
+      font-size: 6px;
+      letter-spacing: .16em;
+      color: #a29a8a;
+    }
+    .bp-main { padding: 13px 12px 12px; }
+    .bp-kicker {
+      margin: 0;
+      font-family: var(--mono);
+      font-size: 6px;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: #b0a792;
+    }
+    .bp-main h3 {
+      margin: 3px 0 4px;
+      font-family: var(--display);
+      font-size: 18px;
+      font-weight: 500;
+      line-height: 1.1;
+      color: var(--ink);
+    }
+    .bp-main p {
+      margin: 0;
+      font-family: var(--serif);
+      font-size: 14px;
+      font-style: italic;
+      line-height: 1.3;
+      color: var(--muted);
+    }
+    .bp-meta {
+      display: flex;
+      gap: 12px;
+      margin-top: 9px;
+      padding-top: 7px;
+      border-top: 1px dashed #e4dccb;
+    }
+    .bp-meta span {
+      font-family: var(--mono);
+      font-size: 5.5px;
+      letter-spacing: .1em;
+      color: #b0a792;
+    }
+    .bp-meta b {
+      display: block;
+      margin-top: 1px;
+      font-family: var(--mono);
+      font-size: 7px;
+      font-weight: 500;
+      letter-spacing: .02em;
+      color: var(--slate-dark);
+    }
+    .bp-stub {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 8px 4px;
+      border-left: 1px dashed #d8d0be;
+      background: rgba(243,238,227,.55);
+    }
+    .bp-plane {
+      font-size: 13px;
+      color: var(--slate);
+      transform: rotate(45deg);
+      line-height: 1;
+    }
+    .bp-barcode {
+      width: 18px;
+      height: 24px;
+      background: repeating-linear-gradient(90deg, #6c788d 0 1px, transparent 1px 3px);
+      opacity: .9;
+    }
+    .bp-stub small {
+      font-family: var(--mono);
+      font-size: 5.5px;
+      letter-spacing: .04em;
+      color: #a29a8a;
+    }
+    .bp-ticket::before,
+    .bp-ticket::after {
+      content: "";
+      position: absolute;
+      left: 57px;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--cream);
+      border: 1px solid var(--line);
+    }
+    .bp-ticket::before { top: -6px; }
+    .bp-ticket::after { bottom: -6px; }
+
+    /* 02 — Passport stamps */
+    .stamp-stack { display: grid; gap: 15px; }
+    .stamp {
+      position: relative;
+      padding: 15px 16px 14px;
+      border: 2px solid rgba(114,128,156,.5);
+      border-radius: 9px;
+      background: rgba(255,253,248,.5);
+      box-shadow: inset 0 0 0 4px rgba(255,253,248,.65), inset 0 0 0 5px rgba(114,128,156,.18), 0 10px 22px rgba(90,95,110,.06);
+      transform: rotate(-.9deg);
+    }
+    .stamp:nth-child(even) {
+      transform: rotate(1.1deg);
+      border-color: rgba(201,168,106,.62);
+      box-shadow: inset 0 0 0 4px rgba(255,253,248,.65), inset 0 0 0 5px rgba(201,168,106,.22), 0 10px 22px rgba(90,95,110,.06);
+    }
+    .stamp-time {
+      font-family: var(--mono);
+      font-size: 8px;
+      letter-spacing: .18em;
+      color: var(--gold-dark);
+      text-transform: uppercase;
+    }
+    .stamp h3 {
+      margin: 3px 0 3px;
+      font-family: var(--display);
+      font-size: 20px;
+      font-weight: 500;
+      color: var(--ink);
+      line-height: 1.1;
+    }
+    .stamp p {
+      margin: 0;
+      max-width: 78%;
+      font-family: var(--serif);
+      font-size: 14px;
+      font-style: italic;
+      line-height: 1.3;
+      color: var(--muted);
+    }
+    .stamp-mark {
+      position: absolute;
+      right: 12px;
+      bottom: 11px;
+      width: 44px;
+      height: 44px;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(114,128,156,.45);
+      border-radius: 50%;
+      font-family: var(--mono);
+      font-size: 5.5px;
+      letter-spacing: .08em;
+      text-align: center;
+      line-height: 1.5;
+      color: rgba(114,128,156,.7);
+      transform: rotate(-12deg);
+    }
+    .stamp:nth-child(even) .stamp-mark { border-color: rgba(201,168,106,.6); color: rgba(168,137,94,.8); }
+    .stamp::after {
+      content: "APPROVED · 24 DEC 2026";
+      position: absolute;
+      right: 66px;
+      bottom: 15px;
+      font-family: var(--mono);
+      font-size: 5px;
+      letter-spacing: .1em;
+      color: rgba(160,152,138,.65);
+      transform: rotate(-3deg);
+    }
+
+    /* 03 — Departure board */
+    .board {
+      border-radius: 17px;
+      background: linear-gradient(180deg, #46536a, #364154);
+      padding: 15px 14px 8px;
+      color: #f4f0e7;
+      box-shadow: 0 18px 36px rgba(48,57,76,.28);
+      font-family: var(--mono);
+    }
+    .board-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 10px;
+      border-bottom: 1px solid rgba(255,255,255,.16);
+      font-size: 6.5px;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: #b9c3d6;
+    }
+    .board-head strong { color: #f3d28b; font-weight: 500; }
+    .board-row {
+      display: grid;
+      grid-template-columns: 52px 1fr 43px;
+      gap: 7px;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px dashed rgba(255,255,255,.13);
+    }
+    .board-row:last-child { border-bottom: 0; }
+    .board-time {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: -.02em;
+      color: #f0b35f;
+    }
+    .board-event {
+      font-family: var(--display);
+      font-size: 16px;
+      color: #fff;
+      line-height: 1.1;
+    }
+    .board-note {
+      grid-column: 2 / 4;
+      margin-top: -3px;
+      font-family: var(--serif);
+      font-size: 12px;
+      font-style: italic;
+      color: #c4cedd;
+      line-height: 1.25;
+    }
+    .board-status {
+      justify-self: end;
+      padding: 3px 4px;
+      border: 1px solid rgba(143,211,176,.35);
+      border-radius: 3px;
+      font-size: 5.5px;
+      letter-spacing: .06em;
+      color: #9ad9b8;
+      white-space: nowrap;
+    }
+    .board-stamp {
+      margin-top: 11px;
+      padding-top: 9px;
+      border-top: 1px solid rgba(255,255,255,.14);
+      display: flex;
+      justify-content: space-between;
+      font-size: 6px;
+      letter-spacing: .14em;
+      color: #98a7bf;
+    }
+
+    /* 04 — Airmail postcards */
+    .postcard-stack { display: grid; gap: 17px; }
+    .postcard {
+      position: relative;
+      padding: 5px;
+      border-radius: 5px;
+      background: repeating-linear-gradient(45deg, #72809c 0 9px, #f9f7f1 9px 18px, #c9a86a 18px 27px);
+      box-shadow: 0 12px 24px rgba(90,95,110,.1);
+      transform: rotate(-.7deg);
+    }
+    .postcard:nth-child(even) { transform: rotate(.8deg); }
+    .postcard-inner {
+      position: relative;
+      padding: 14px 14px 12px;
+      border-radius: 2px;
+      background: #fffdf8;
+    }
+    .postcard-time {
+      font-family: var(--mono);
+      font-size: 7px;
+      letter-spacing: .17em;
+      color: var(--gold-dark);
+      text-transform: uppercase;
+    }
+    .postcard h3 {
+      margin: 4px 30px 4px 0;
+      font-family: var(--display);
+      font-size: 20px;
+      font-weight: 500;
+      line-height: 1.1;
+      color: var(--ink);
+    }
+    .postcard p {
+      margin: 0;
+      max-width: 76%;
+      font-family: var(--serif);
+      font-size: 14.5px;
+      font-style: italic;
+      line-height: 1.3;
+      color: var(--muted);
+    }
+    .postage {
+      position: absolute;
+      right: 10px;
+      top: 9px;
+      width: 36px;
+      height: 44px;
+      display: grid;
+      place-items: center;
+      border: 1px dashed #b7a78b;
+      background: #f4e8d6;
+      font-family: var(--display);
+      font-size: 9px;
+      line-height: 1.1;
+      text-align: center;
+      color: #8d7d64;
+      transform: rotate(3deg);
+    }
+    .postmark {
+      position: absolute;
+      right: 28px;
+      top: 40px;
+      width: 38px;
+      height: 38px;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(114,128,156,.4);
+      border-radius: 50%;
+      font-family: var(--mono);
+      font-size: 4.5px;
+      text-align: center;
+      line-height: 1.5;
+      letter-spacing: .08em;
+      color: rgba(114,128,156,.65);
+      transform: rotate(-14deg);
+    }
+    .postcard-meta {
+      margin-top: 10px;
+      padding-top: 7px;
+      border-top: 1px dashed #e4dccb;
+      display: flex;
+      justify-content: space-between;
+      font-family: var(--mono);
+      font-size: 5.5px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: #b0a792;
+    }
+
+    /* 05 — Film strip */
+    .film-shell {
+      position: relative;
+      border-radius: 13px;
+      background: #2b2b2b;
+      padding: 17px 0 16px;
+      overflow: hidden;
+      box-shadow: 0 16px 34px rgba(40,40,40,.22);
+    }
+    .film-shell::before,
+    .film-shell::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 11px;
+      background-image: radial-gradient(circle at 5px 5px, #f9f7f1 0 3px, transparent 3.5px);
+      background-size: 16px 11px;
+      opacity: .85;
+    }
+    .film-shell::before { top: 0; }
+    .film-shell::after { bottom: 0; }
+    .film-head {
+      margin: 0 13px 7px;
+      display: flex;
+      justify-content: space-between;
+      font-family: var(--mono);
+      font-size: 6px;
+      letter-spacing: .16em;
+      color: #d7c8a9;
+    }
+    .film-track {
+      display: flex;
+      gap: 11px;
+      overflow-x: auto;
+      padding: 4px 13px 5px;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+    }
+    .film-track::-webkit-scrollbar { display: none; }
+    .film-frame {
+      flex: 0 0 236px;
+      scroll-snap-align: center;
+      border-radius: 5px;
+      background: #f8f2e5;
+      padding: 10px;
+      box-shadow: 0 8px 18px rgba(0,0,0,.25);
+    }
+    .film-scene {
+      position: relative;
+      height: 62px;
+      margin-bottom: 10px;
+      border-radius: 3px;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 24% 38%, rgba(255,255,255,.75), transparent 18%),
+        linear-gradient(135deg, #c7d0e4, #8f9cb5 48%, #66738d);
+    }
+    .film-scene::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      opacity: .22;
+      background-image: radial-gradient(rgba(0,0,0,.45) .6px, transparent .7px);
+      background-size: 5px 5px;
+    }
+    .film-frame:nth-child(2) .film-scene { background: linear-gradient(135deg, #e9dcc4, #c9a86a 55%, #8d744d); }
+    .film-frame:nth-child(3) .film-scene { background: linear-gradient(135deg, #d8e2d4, #92a79a 50%, #5f776b); }
+    .film-frame:nth-child(4) .film-scene { background: linear-gradient(135deg, #d6d9e6, #72809c 50%, #44506a); }
+    .film-time {
+      font-family: var(--mono);
+      font-size: 7px;
+      letter-spacing: .14em;
+      color: var(--gold-dark);
+    }
+    .film-frame h3 {
+      margin: 3px 0;
+      font-family: var(--display);
+      font-size: 17px;
+      font-weight: 500;
+      color: var(--ink);
+      line-height: 1.1;
+    }
+    .film-frame p {
+      margin: 0;
+      font-family: var(--serif);
+      font-size: 13.5px;
+      font-style: italic;
+      line-height: 1.3;
+      color: var(--muted);
+    }
+    .film-hint {
+      margin-top: 8px;
+      text-align: center;
+      font-family: var(--mono);
+      font-size: 6px;
+      letter-spacing: .2em;
+      color: #a29a8a;
+    }
+
+    /* 06 — Route map */
+    .route-wrap { position: relative; padding: 6px 0 2px; }
+    .route-svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      overflow: visible;
+    }
+    .route-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 0 0 12px;
+      font-family: var(--mono);
+      font-size: 6px;
+      letter-spacing: .18em;
+      color: #a29a8a;
+    }
+    .route-head span:last-child { color: var(--gold-dark); }
+    .route-list { display: grid; gap: 22px; position: relative; }
+    .route-item { width: 84%; position: relative; }
+    .route-item:nth-child(even) { margin-left: auto; }
+    .route-card {
+      position: relative;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: rgba(255,253,248,.93);
+      padding: 12px 13px;
+      box-shadow: 0 10px 22px rgba(90,95,110,.08);
+      backdrop-filter: blur(2px);
+    }
+    .route-item:nth-child(odd) .route-card { transform: rotate(-.7deg); }
+    .route-item:nth-child(even) .route-card { transform: rotate(.7deg); }
+    .route-time {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-family: var(--mono);
+      font-size: 7px;
+      letter-spacing: .14em;
+      color: var(--gold-dark);
+      text-transform: uppercase;
+    }
+    .route-pin {
+      width: 8px;
+      height: 8px;
+      border-radius: 50% 50% 50% 0;
+      background: var(--gold);
+      transform: rotate(-45deg);
+      display: inline-block;
+      border: 1px solid #a8895e;
+    }
+    .route-card h3 {
+      margin: 4px 0 3px;
+      font-family: var(--display);
+      font-size: 18px;
+      font-weight: 500;
+      color: var(--ink);
+      line-height: 1.1;
+    }
+    .route-card p {
+      margin: 0;
+      font-family: var(--serif);
+      font-size: 14px;
+      font-style: italic;
+      line-height: 1.3;
+      color: var(--muted);
+    }
+    .route-legend {
+      position: relative;
+      z-index: 2;
+      width: fit-content;
+      margin: 16px auto 0;
+      padding: 5px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(228,220,203,.75);
+      background: rgba(249,247,241,.92);
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      font-family: var(--mono);
+      font-size: 5.5px;
+      letter-spacing: .12em;
+      color: #a29a8a;
+    }
+    .route-legend span::before {
+      content: "";
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      margin-right: 4px;
+      border-radius: 50%;
+      background: var(--gold);
+      vertical-align: 1px;
+    }
+
+    /* 07 — Constellation */
+    .constellation {
+      position: relative;
+      overflow: hidden;
+      border-radius: 20px;
+      padding: 22px 16px 20px;
+      background:
+        radial-gradient(circle at 18% 8%, rgba(255,255,255,.14), transparent 24%),
+        radial-gradient(circle at 84% 20%, rgba(201,168,106,.18), transparent 26%),
+        linear-gradient(170deg, #46546d, #2f3a4f 62%, #293346);
+      box-shadow: 0 20px 44px rgba(41,51,70,.32);
+      color: #f7f1e5;
+    }
+    .constellation::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      opacity: .55;
+      background-image: radial-gradient(#fff 0.6px, transparent 0.8px);
+      background-size: 23px 23px;
+    }
+    .constellation::after {
+      content: "";
+      position: absolute;
+      right: 24px;
+      top: 18px;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      box-shadow: inset -8px 3px 0 0 #f0d394;
+      opacity: .9;
+      transform: rotate(-18deg);
+    }
+    .const-head { position: relative; text-align: center; margin-bottom: 20px; }
+    .const-head p {
+      margin: 0;
+      font-family: var(--mono);
+      font-size: 6.5px;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: #d9c192;
+    }
+    .const-head h2 {
+      margin: 4px 0 0;
+      font-family: var(--display);
+      font-size: 25px;
+      font-weight: 400;
+      color: #fffaf0;
+    }
+    .const-head span {
+      display: block;
+      margin-top: 3px;
+      font-family: var(--serif);
+      font-size: 13px;
+      font-style: italic;
+      color: #bdc7d7;
+    }
+    .star-list { position: relative; display: grid; gap: 22px; }
+    .star-item {
+      position: relative;
+      display: grid;
+      grid-template-columns: 24px 1fr;
+      gap: 12px;
+      align-items: center;
+    }
+    .star-item:nth-child(even) {
+      grid-template-columns: 1fr 24px;
+      text-align: right;
+    }
+    .star-item:nth-child(even) .star { order: 2; }
+    .star-item:nth-child(even) .star-copy { order: 1; }
+    .star {
+      width: 10px;
+      height: 10px;
+      justify-self: center;
+      border-radius: 50%;
+      background: #f4d79a;
+      box-shadow: 0 0 8px #f4d79a, 0 0 18px rgba(244,215,154,.5);
+      animation: twinkle 3.4s ease-in-out infinite;
+    }
+    .star-item:nth-child(2) .star { animation-delay: .6s; }
+    .star-item:nth-child(3) .star { animation-delay: 1.2s; }
+    .star-item:nth-child(4) .star { animation-delay: 1.8s; }
+    @keyframes twinkle {
+      0%, 100% { opacity: .75; transform: scale(.9); }
+      50% { opacity: 1; transform: scale(1.12); }
+    }
+    .star-copy { padding: 2px 0; }
+    .star-time {
+      font-family: var(--mono);
+      font-size: 7px;
+      letter-spacing: .18em;
+      color: #e6c98c;
+      text-transform: uppercase;
+    }
+    .star-copy h3 {
+      margin: 3px 0;
+      font-family: var(--display);
+      font-size: 18px;
+      font-weight: 400;
+      color: #fffaf0;
+      line-height: 1.1;
+    }
+    .star-copy p {
+      margin: 0;
+      font-family: var(--serif);
+      font-size: 13.5px;
+      font-style: italic;
+      line-height: 1.3;
+      color: #c2ccdb;
+    }
+    .const-foot {
+      margin-top: 18px;
+      text-align: center;
+      font-family: var(--mono);
+      font-size: 5.5px;
+      letter-spacing: .2em;
+      color: #8e9cb4;
+    }
+
+    /* 08 — Luggage tags */
+    .tag-list { position: relative; padding: 4px 0 4px 18px; }
+    .tag-list::before {
+      content: "";
+      position: absolute;
+      left: 21px;
+      top: 8px;
+      bottom: 12px;
+      width: 1px;
+      background: linear-gradient(180deg, transparent, #d3c5ad 8%, #d3c5ad 92%, transparent);
+    }
+    .tag {
+      position: relative;
+      margin: 0 0 18px 15px;
+      padding: 13px 14px 11px 27px;
+      border-radius: 11px;
+      border: 1px solid #dccfb8;
+      background: linear-gradient(180deg, #fdf8ec, #f5edda);
+      box-shadow: 0 10px 22px rgba(120,100,70,.1);
+      transform: rotate(-.8deg);
+    }
+    .tag:nth-child(even) {
+      margin-left: 29px;
+      transform: rotate(.9deg);
+    }
+    .tag-hole {
+      position: absolute;
+      left: 9px;
+      top: 50%;
+      width: 8px;
+      height: 8px;
+      border: 1px solid #c9b99d;
+      border-radius: 50%;
+      background: var(--cream);
+      transform: translateY(-50%);
+      box-shadow: inset 0 1px 2px rgba(0,0,0,.08);
+    }
+    .tag::before {
+      content: "";
+      position: absolute;
+      left: -15px;
+      top: 50%;
+      width: 14px;
+      height: 1px;
+      background: #d3c5ad;
+    }
+    .tag-time {
+      font-family: var(--mono);
+      font-size: 7px;
+      letter-spacing: .16em;
+      color: var(--gold-dark);
+      text-transform: uppercase;
+    }
+    .tag h3 {
+      margin: 3px 0 3px;
+      font-family: var(--display);
+      font-size: 18px;
+      font-weight: 500;
+      line-height: 1.1;
+      color: var(--ink);
+    }
+    .tag p {
+      margin: 0;
+      font-family: var(--serif);
+      font-size: 14px;
+      font-style: italic;
+      line-height: 1.3;
+      color: var(--muted);
+    }
+    .tag-meta {
+      margin-top: 7px;
+      padding-top: 6px;
+      border-top: 1px dashed #dccfb8;
+      display: flex;
+      justify-content: space-between;
+      font-family: var(--mono);
+      font-size: 5.5px;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: #a8987b;
+    }
+
+    /* 09 — Editorial minimal */
+    .editorial { padding: 2px 2px 0; }
+    .ed-row {
+      display: grid;
+      grid-template-columns: 72px 1fr;
+      gap: 16px;
+      padding: 17px 0 16px;
+      border-top: 1px solid #ddd5c5;
+    }
+    .ed-row:last-child { border-bottom: 1px solid #ddd5c5; }
+    .ed-time {
+      font-family: var(--display);
+      font-size: 26px;
+      font-weight: 400;
+      line-height: .95;
+      letter-spacing: -.03em;
+      color: var(--ink);
+    }
+    .ed-time span {
+      display: block;
+      margin-top: 5px;
+      font-family: var(--mono);
+      font-size: 6px;
+      letter-spacing: .16em;
+      color: #a29a8a;
+    }
+    .ed-main h3 {
+      margin: 0 0 4px;
+      font-family: var(--display);
+      font-size: 19px;
+      font-weight: 500;
+      line-height: 1.1;
+      color: var(--ink);
+    }
+    .ed-main p {
+      margin: 0;
+      font-family: var(--serif);
+      font-size: 14.5px;
+      font-style: italic;
+      line-height: 1.35;
+      color: var(--muted);
+    }
+    .ed-num {
+      display: block;
+      margin-top: 6px;
+      font-family: var(--mono);
+      font-size: 5.5px;
+      letter-spacing: .16em;
+      color: #b7aa92;
+    }
+    .ed-foot {
+      margin-top: 14px;
+      display: flex;
+      justify-content: space-between;
+      font-family: var(--mono);
+      font-size: 5.5px;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: #a29a8a;
+    }
+
+    /* 10 — Ribbon & wax seal */
+    .ribbon-wrap { position: relative; padding: 8px 0 6px; }
+    .ribbon {
+      position: absolute;
+      left: 50%;
+      top: 0;
+      bottom: 0;
+      width: 42px;
+      transform: translateX(-50%);
+      background: linear-gradient(90deg, #5c6982, #72809c 34%, #8b98b2 50%, #66738d 66%, #55617a);
+      box-shadow: 0 0 0 1px rgba(63,74,95,.15), 0 8px 18px rgba(80,95,125,.2);
+    }
+    .ribbon::before,
+    .ribbon::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 7px;
+      background: inherit;
+    }
+    .ribbon::before { top: -6px; clip-path: polygon(0 100%, 50% 0, 100% 100%); }
+    .ribbon::after { bottom: -6px; clip-path: polygon(0 0, 50% 100%, 100% 0); }
+    .seal-list { position: relative; display: grid; gap: 20px; }
+    .seal-item { position: relative; width: 79%; }
+    .seal-item:nth-child(odd) { padding-right: 26px; text-align: right; }
+    .seal-item:nth-child(even) { margin-left: auto; padding-left: 26px; }
+    .seal-card {
+      border-radius: 13px;
+      border: 1px solid var(--line);
+      background: rgba(255,253,248,.94);
+      padding: 12px 14px;
+      box-shadow: 0 10px 22px rgba(90,95,110,.08);
+    }
+    .seal-item:nth-child(odd) .seal-card { transform: rotate(-.6deg); border-radius: 13px 4px 13px 13px; padding-right: 48px; }
+    .seal-item:nth-child(even) .seal-card { transform: rotate(.6deg); border-radius: 4px 13px 13px 13px; padding-left: 48px; }
+    .seal-time {
+      font-family: var(--mono);
+      font-size: 7px;
+      letter-spacing: .15em;
+      color: var(--gold-dark);
+      text-transform: uppercase;
+    }
+    .seal-card h3 {
+      margin: 3px 0 3px;
+      font-family: var(--display);
+      font-size: 17px;
+      font-weight: 500;
+      color: var(--ink);
+      line-height: 1.1;
+    }
+    .seal-card p {
+      margin: 0;
+      font-family: var(--serif);
+      font-size: 13.5px;
+      font-style: italic;
+      line-height: 1.3;
+      color: var(--muted);
+    }
+    .wax-seal {
+      position: absolute;
+      top: 50%;
+      width: 36px;
+      height: 36px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: radial-gradient(circle at 34% 28%, #e8cd98, #c9a86a 56%, #9f7d48 100%);
+      box-shadow: inset 0 0 0 2px rgba(255,255,255,.25), inset 0 -2px 4px rgba(80,55,20,.24), 0 4px 9px rgba(90,65,30,.28);
+      font-family: var(--display);
+      font-size: 10px;
+      letter-spacing: .02em;
+      color: #5e4a2c;
+      transform: translateY(-50%);
+      z-index: 2;
+    }
+    .seal-item:nth-child(odd) .wax-seal { right: 4px; }
+    .seal-item:nth-child(even) .wax-seal { left: 4px; }
+    .wax-seal::before {
+      content: "";
+      position: absolute;
+      inset: 4px;
+      border: 1px solid rgba(94,74,44,.35);
+      border-radius: 50%;
+    }
+
+    .pager {
+      max-width: 430px;
+      margin: 18px auto 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .pager button {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 9px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(114,128,156,.2);
+      background: rgba(255,255,255,.7);
+      color: #5f6d88;
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: .06em;
+      cursor: pointer;
+      transition: .2s ease;
+    }
+
+    .pager button:hover { background: #fff; color: var(--ink); }
+    .pager button:disabled { opacity: .35; cursor: default; }
+    .pager span {
+      font-family: var(--mono);
+      font-size: 8px;
+      letter-spacing: .16em;
+      color: #9aa2b2;
+    }
+
+    @media (max-width: 480px) {
+      .topbar { padding: 13px 14px 10px; }
+      .topbar-inner { align-items: flex-start; }
+      .counter { display: none; }
+      main { padding: 18px 10px 60px; }
+      .stage { padding: 22px 15px 22px; border-radius: 26px; }
+      .stage-title { font-size: 24px; }
+      .design-head { padding: 0 6px; }
+      .design-head h2 { font-size: 19px; }
+      .design-head p { font-size: 13px; }
+      .film-frame { flex-basis: 214px; }
+      .ed-row { grid-template-columns: 64px 1fr; gap: 12px; }
+      .ed-time { font-size: 23px; }
+    }
+
+    @media print {
+      body { background: #fff; }
+      body::before, body::after, .topbar, .pager { display: none; }
+      main { max-width: none; padding: 0; }
+      .design { display: block !important; page-break-after: always; }
+      .design-head { margin-bottom: 10px; }
+      .stage { box-shadow: none; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div>
+        <p class="eyebrow">Aidit &amp; Athirah · 24.12.2026</p>
+        <h1>Wedding Timeline <em>· 10 design concepts</em></h1>
+      </div>
+      <div class="counter" id="counter">01 / 10</div>
+    </div>
+    <nav class="tabs" aria-label="Pilih design timeline">
+      <button class="tab active" data-target="1"><b>01</b> Boarding Pass</button>
+      <button class="tab" data-target="2"><b>02</b> Passport Stamp</button>
+      <button class="tab" data-target="3"><b>03</b> Departure Board</button>
+      <button class="tab" data-target="4"><b>04</b> Airmail</button>
+      <button class="tab" data-target="5"><b>05</b> Film Strip</button>
+      <button class="tab" data-target="6"><b>06</b> Route Map</button>
+      <button class="tab" data-target="7"><b>07</b> Constellation</button>
+      <button class="tab" data-target="8"><b>08</b> Luggage Tags</button>
+      <button class="tab" data-target="9"><b>09</b> Editorial</button>
+      <button class="tab" data-target="10"><b>10</b> Wax Seal</button>
+    </nav>
+  </header>
+
+  <main>
+    <!-- 01 -->
+    <section class="design active" data-design="1">
+      <div class="design-head">
+        <span class="design-num">01</span>
+        <div>
+          <h2>Boarding Pass Timeline</h2>
+          <p>Setiap event jadi tiket boarding mini — paling padan dengan tema passport.</p>
+        </div>
+      </div>
+      <div class="stage">
+        <p class="stage-kicker">Boarding · Wedding Day</p>
+        <h2 class="stage-title">Itinerary</h2>
+        <p class="stage-sub">Aidit &amp; Athirah · flight to forever</p>
+        <div class="divider"></div>
+        <div class="bp-list">
+          <article class="bp-ticket">
+            <div class="bp-time"><b>11:00</b><span>AM</span></div>
+            <div class="bp-main">
+              <p class="bp-kicker">Boarding · 01</p>
+              <h3>Guest Arrival</h3>
+              <p>Moara Hall opens for family and friends.</p>
+              <div class="bp-meta"><span>GATE<b>Moara Hall</b></span><span>SEAT<b>Family</b></span></div>
+            </div>
+            <div class="bp-stub"><span class="bp-plane">✈</span><div class="bp-barcode"></div><small>AA 1224</small></div>
+          </article>
+          <article class="bp-ticket">
+            <div class="bp-time"><b>12:00</b><span>PM</span></div>
+            <div class="bp-main">
+              <p class="bp-kicker">Boarding · 02</p>
+              <h3>Lunch Reception</h3>
+              <p>A warm meal, greetings, and wedding portraits.</p>
+              <div class="bp-meta"><span>GATE<b>Main Hall</b></span><span>SEAT<b>Table 08</b></span></div>
+            </div>
+            <div class="bp-stub"><span class="bp-plane">✈</span><div class="bp-barcode"></div><small>AA 1224</small></div>
+          </article>
+          <article class="bp-ticket">
+            <div class="bp-time"><b>2:30</b><span>PM</span></div>
+            <div class="bp-main">
+              <p class="bp-kicker">Boarding · 03</p>
+              <h3>Photo Session</h3>
+              <p>Group photos with the couple.</p>
+              <div class="bp-meta"><span>GATE<b>Garden</b></span><span>SEAT<b>Everyone</b></span></div>
+            </div>
+            <div class="bp-stub"><span class="bp-plane">✈</span><div class="bp-barcode"></div><small>AA 1224</small></div>
+          </article>
+          <article class="bp-ticket">
+            <div class="bp-time"><b>4:00</b><span>PM</span></div>
+            <div class="bp-main">
+              <p class="bp-kicker">Boarding · 04</p>
+              <h3>Ceremony End</h3>
+              <p>Thank you for boarding our forever journey.</p>
+              <div class="bp-meta"><span>GATE<b>Moara Hall</b></span><span>SEAT<b>Forever</b></span></div>
+            </div>
+            <div class="bp-stub"><span class="bp-plane">✈</span><div class="bp-barcode"></div><small>AA 1224</small></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- 02 -->
+    <section class="design" data-design="2">
+      <div class="design-head">
+        <span class="design-num">02</span>
+        <div>
+          <h2>Passport Stamp Journal</h2>
+          <p>Setiap event dicop macam passport — senget, bertekstur, rasa vintage.</p>
+        </div>
+      </div>
+      <div class="stage">
+        <p class="stage-kicker">Passport control</p>
+        <h2 class="stage-title">Stamps of the day</h2>
+        <p class="stage-sub">A little memory on every page</p>
+        <div class="divider"></div>
+        <div class="stamp-stack">
+          <article class="stamp">
+            <div class="stamp-time">11:00 AM · Arrival</div>
+            <h3>Guest Arrival</h3>
+            <p>Moara Hall opens for family and friends.</p>
+            <div class="stamp-mark">ADMIT<br>ONE</div>
+          </article>
+          <article class="stamp">
+            <div class="stamp-time">12:00 PM · Reception</div>
+            <h3>Lunch Reception</h3>
+            <p>A warm meal, greetings, and wedding portraits.</p>
+            <div class="stamp-mark">24<br>DEC</div>
+          </article>
+          <article class="stamp">
+            <div class="stamp-time">2:30 PM · Portraits</div>
+            <h3>Photo Session</h3>
+            <p>Group photos with the couple.</p>
+            <div class="stamp-mark">AA<br>2026</div>
+          </article>
+          <article class="stamp">
+            <div class="stamp-time">4:00 PM · Farewell</div>
+            <h3>Ceremony End</h3>
+            <p>Thank you for boarding our forever journey.</p>
+            <div class="stamp-mark">LOVE<br>FOREVER</div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- 03 -->
+    <section class="design" data-design="3">
+      <div class="design-head">
+        <span class="design-num">03</span>
+        <div>
+          <h2>Airport Departure Board</h2>
+          <p>Table mono yang clean — senang dibaca, rasa premium.</p>
+        </div>
+      </div>
+      <div class="stage">
+        <p class="stage-kicker">Wedding day · Live board</p>
+        <h2 class="stage-title">Departures</h2>
+        <p class="stage-sub">All gates lead to forever</p>
+        <div class="divider"></div>
+        <div class="board">
+          <div class="board-head"><span>Time</span><span><strong>Wedding AA</strong></span><span>Status</span></div>
+          <div class="board-row">
+            <div class="board-time">11:00</div>
+            <div class="board-event">Guest Arrival</div>
+            <div class="board-status">ON TIME</div>
+            <div class="board-note">Moara Hall opens for family and friends.</div>
+          </div>
+          <div class="board-row">
+            <div class="board-time">12:00</div>
+            <div class="board-event">Lunch Reception</div>
+            <div class="board-status">ON TIME</div>
+            <div class="board-note">A warm meal, greetings, and wedding portraits.</div>
+          </div>
+          <div class="board-row">
+            <div class="board-time">14:30</div>
+            <div class="board-event">Photo Session</div>
+            <div class="board-status">BOARDING</div>
+            <div class="board-note">Group photos with the couple.</div>
+          </div>
+          <div class="board-row">
+            <div class="board-time">16:00</div>
+            <div class="board-event">Ceremony End</div>
+            <div class="board-status">FOREVER</div>
+            <div class="board-note">Thank you for boarding our forever journey.</div>
+          </div>
+          <div class="board-stamp"><span>GATE · MOARA HALL</span><span>24 DEC 2026</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 04 -->
+    <section class="design" data-design="4">
+      <div class="design-head">
+        <span class="design-num">04</span>
+        <div>
+          <h2>Airmail Postcards</h2>
+          <p>Postcard berbingkai airmail dengan stamp dan postmark — travel + romantic.</p>
+        </div>
+      </div>
+      <div class="stage">
+        <p class="stage-kicker">Par avion · With love</p>
+        <h2 class="stage-title">Postcards from our day</h2>
+        <p class="stage-sub">Wish you were here</p>
+        <div class="divider"></div>
+        <div class="postcard-stack">
+          <article class="postcard">
+            <div class="postcard-inner">
+              <div class="postage">AA<br>24.12</div>
+              <div class="postmark">MOARA<br>HALL<br>2026</div>
+              <div class="postcard-time">11:00 AM · Arrival</div>
+              <h3>Guest Arrival</h3>
+              <p>Moara Hall opens for family and friends.</p>
+              <div class="postcard-meta"><span>Kota Bharu · Kelantan</span><span>Postcard 01</span></div>
+            </div>
+          </article>
+          <article class="postcard">
+            <div class="postcard-inner">
+              <div class="postage">AA<br>24.12</div>
+              <div class="postmark">WITH<br>LOVE<br>2026</div>
+              <div class="postcard-time">12:00 PM · Reception</div>
+              <h3>Lunch Reception</h3>
+              <p>A warm meal, greetings, and wedding portraits.</p>
+              <div class="postcard-meta"><span>Moara Hall</span><span>Postcard 02</span></div>
+            </div>
+          </article>
+          <article class="postcard">
+            <div class="postcard-inner">
+              <div class="postage">AA<br>24.12</div>
+              <div class="postmark">SMILE<br>PLEASE<br>2026</div>
+              <div class="postcard-time">2:30 PM · Portraits</div>
+              <h3>Photo Session</h3>
+              <p>Group photos with the couple.</p>
+              <div class="postcard-meta"><span>Garden</span><span>Postcard 03</span></div>
+            </div>
+          </article>
+          <article class="postcard">
+            <div class="postcard-inner">
+              <div class="postage">AA<br>24.12</div>
+              <div class="postmark">FOREVER<br>STARTS<br>HERE</div>
+              <div class="postcard-time">4:00 PM · Farewell</div>
+              <h3>Ceremony End</h3>
+              <p>Thank you for boarding our forever journey.</p>
+              <div class="postcard-meta"><span>With love</span><span>Postcard 04</span></div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- 05 -->
+    <section class="design" data-design="5">
+      <div class="design-head">
+        <span class="design-num">05</span>
+        <div>
+          <h2>Film Strip Reel</h2>
+          <p>Horizontal scroll macam filem lama — sesuai untuk mobile.</p>
+        </div>
+      </div>
+      <div class="stage">
+        <p class="stage-kicker">Wedding day · Reel 01</p>
+        <h2 class="stage-title">Our day in frames</h2>
+        <p class="stage-sub">Swipe to relive the moments</p>
+        <div class="divider"></div>
+        <div class="film-shell">
+          <div class="film-head"><span>AIDIT &amp; ATHIRAH</span><span>24 · 12 · 2026</span></div>
+          <div class="film-track">
+            <article class="film-frame">
+              <div class="film-scene"></div>
+              <div class="film-time">11:00 AM · FRAME 01</div>
+              <h3>Guest Arrival</h3>
+              <p>Moara Hall opens for family and friends.</p>
+            </article>
+            <article class="film-frame">
+              <div class="film-scene"></div>
+              <div class="film-time">12:00 PM · FRAME 02</div>
+              <h3>Lunch Reception</h3>
+              <p>A warm meal, greetings, and wedding portraits.</p>
+            </article>
+            <article class="film-frame">
+              <div class="film-scene"></div>
+              <div class="film-time">2:30 PM · FRAME 03</div>
+              <h3>Photo Session</h3>
+              <p>Group photos with the couple.</p>
+            </article>
+            <article class="film-frame">
+              <div class="film-scene"></div>
+              <div class="film-time">4:00 PM · FRAME 04</div>
+              <h3>Ceremony End</h3>
+              <p>Thank you for boarding our forever journey.</p>
+            </article>
+          </div>
+          <div class="film-hint">SWIPE TO EXPLORE →</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 06 -->
+    <section class="design" data-design="6">
+      <div class="design-head">
+        <span class="design-num">06</span>
+        <div>
+          <h2>Winding Route Map</h2>
+          <p>Jalan berliku + pin lokasi — sambung tema Memory Journey.</p>
+        </div>
+      </div>
+      <div class="stage">
+        <p class="stage-kicker">The day's route</p>
+        <h2 class="stage-title">Follow the path</h2>
+        <p class="stage-sub">Every stop is a little memory</p>
+        <div class="divider"></div>
+        <div class="route-wrap">
+          <svg class="route-svg" viewBox="0 0 340 760" preserveAspectRatio="none" aria-hidden="true">
+            <path d="M 170 -30 C 15 70, 15 170, 170 240 C 325 310, 325 420, 170 490 C 15 560, 15 660, 170 790" fill="none" stroke="#eee2c9" stroke-width="18" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
+            <path d="M 170 -30 C 15 70, 15 170, 170 240 C 325 310, 325 420, 170 490 C 15 560, 15 660, 170 790" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-dasharray="5 13" vector-effect="non-scaling-stroke"/>
+          </svg>
+          <div class="route-head"><span>START · MOARA HALL</span><span>FINISH · FOREVER</span></div>
+          <div class="route-list">
+            <article class="route-item">
+              <div class="route-card">
+                <div class="route-time"><span class="route-pin"></span> 11:00 AM · Stop 01</div>
+                <h3>Guest Arrival</h3>
+                <p>Moara Hall opens for family and friends.</p>
+              </div>
+            </article>
+            <article class="route-item">
+              <div class="route-card">
+                <div class="route-time"><span class="route-pin"></span> 12:00 PM · Stop 02</div>
+                <h3>Lunch Reception</h3>
+                <p>A warm meal, greetings, and wedding portraits.</p>
+              </div>
+            </article>
+            <article class="route-item">
+              <div class="route-card">
+                <div class="route-time"><span class="route-pin"></span> 2:30 PM · Stop 03</div>
+                <h3>Photo Session</h3>
+                <p>Group photos with the couple.</p>
+              </div>
+            </article>
+            <article class="route-item">
+              <div class="route-card">
+                <div class="route-time"><span class="route-pin"></span> 4:00 PM · Stop 04</div>
+                <h3>Ceremony End</h3>
+                <p>Thank you for boarding our forever journey.</p>
+              </div>
+            </article>
+          </div>
+          <div class="route-legend"><span>PIN = MEMORY</span><span>ROAD = STORY</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 07 -->
+    <section class="design" data-design="7">
+      <div class="design-head">
+        <span class="design-num">07</span>
+        <div>
+          <h2>Constellation Night Sky</h2>
+          <p>Event sebagai bintang — dramatic, romantic, sangat berbeza.</p>
+        </div>
+      </div>
+      <div class="stage">
+        <div class="constellation">
+          <div class="const-head">
+            <p>The night we said forever</p>
+            <h2>Our constellation</h2>
+            <span>24 December 2026 · Moara Hall</span>
+          </div>
+          <div class="star-list">
+            <article class="star-item">
+              <span class="star"></span>
+              <div class="star-copy">
+                <div class="star-time">11:00 AM</div>
+                <h3>Guest Arrival</h3>
+                <p>Moara Hall opens for family and friends.</p>
+              </div>
+            </article>
+            <article class="star-item">
+              <span class="star"></span>
+              <div class="star-copy">
+                <div class="star-time">12:00 PM</div>
+                <h3>Lunch Reception</h3>
+                <p>A warm meal, greetings, and wedding portraits.</p>
+              </div>
+            </article>
+            <article class="star-item">
+              <span class="star"></span>
+              <div class="star-copy">
+                <div class="star-time">2:30 PM</div>
+                <h3>Photo Session</h3>
+                <p>Group photos with the couple.</p>
+              </div>
+            </article>
+            <article class="star-item">
+              <span class="star"></span>
+              <div class="star-copy">
+                <div class="star-time">4:00 PM</div>
+                <h3>Ceremony End</h3>
+                <p>Thank you for boarding our forever journey.</p>
+              </div>
+            </article>
+          </div>
+          <div class="const-foot">AIDIT &amp; ATHIRAH · FOREVER WRITTEN IN THE STARS</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 08 -->
+    <section class="design" data-design="8">
+      <div class="design-head">
+        <span class="design-num">08</span>
+        <div>
+          <h2>Luggage Tags</h2>
+          <p>Tag bagasi dengan tali dan lubang — travel theme tapi handmade.</p>
+        </div>
+      </div>
+      <div class="stage">
+        <p class="stage-kicker">Baggage claim · Wedding day</p>
+        <h2 class="stage-title">Tagged with love</h2>
+        <p class="stage-sub">Collect moments, not things</p>
+        <div class="divider"></div>
+        <div class="tag-list">
+          <article class="tag">
+            <span class="tag-hole"></span>
+            <div class="tag-time">11:00 AM · Tag 01</div>
+            <h3>Guest Arrival</h3>
+            <p>Moara Hall opens for family and friends.</p>
+            <div class="tag-meta"><span>Gate · Moara Hall</span><span>Family</span></div>
+          </article>
+          <article class="tag">
+            <span class="tag-hole"></span>
+            <div class="tag-time">12:00 PM · Tag 02</div>
+            <h3>Lunch Reception</h3>
+            <p>A warm meal, greetings, and wedding portraits.</p>
+            <div class="tag-meta"><span>Main Hall</span><span>Table 08</span></div>
+          </article>
+          <article class="tag">
+            <span class="tag-hole"></span>
+            <div class="tag-time">2:30 PM · Tag 03</div>
+            <h3>Photo Session</h3>
+            <p>Group photos with the couple.</p>
+            <div class="tag-meta"><span>Garden</span><span>Everyone</span></div>
+          </article>
+          <article class="tag">
+            <span class="tag-hole"></span>
+            <div class="tag-time">4:00 PM · Tag 04</div>
+            <h3>Ceremony End</h3>
+            <p>Thank you for boarding our forever journey.</p>
+            <div class="tag-meta"><span>Moara Hall</span><span>Forever</span></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- 09 -->
+    <section class="design" data-design="9">
+      <div class="design-head">
+        <span class="design-num">09</span>
+        <div>
+          <h2>Editorial Minimal</h2>
+          <p>Typography besar, hairline, banyak whitespace — clean & premium.</p>
+        </div>
+      </div>
+      <div class="stage">
+        <p class="stage-kicker">The schedule</p>
+        <h2 class="stage-title">Wedding Timeline</h2>
+        <p class="stage-sub">Thursday · 24 December 2026</p>
+        <div class="divider"></div>
+        <div class="editorial">
+          <div class="ed-row">
+            <div class="ed-time">11:00<span>AM · 01</span></div>
+            <div class="ed-main">
+              <h3>Guest Arrival</h3>
+              <p>Moara Hall opens for family and friends.</p>
+              <span class="ed-num">MOARA HALL · KOTA BHARU</span>
+            </div>
+          </div>
+          <div class="ed-row">
+            <div class="ed-time">12:00<span>PM · 02</span></div>
+            <div class="ed-main">
+              <h3>Lunch Reception</h3>
+              <p>A warm meal, greetings, and wedding portraits.</p>
+              <span class="ed-num">MAIN HALL · TABLE 08</span>
+            </div>
+          </div>
+          <div class="ed-row">
+            <div class="ed-time">2:30<span>PM · 03</span></div>
+            <div class="ed-main">
+              <h3>Photo Session</h3>
+              <p>Group photos with the couple.</p>
+              <span class="ed-num">GARDEN · EVERYONE</span>
+            </div>
+          </div>
+          <div class="ed-row">
+            <div class="ed-time">4:00<span>PM · 04</span></div>
+            <div class="ed-main">
+              <h3>Ceremony End</h3>
+              <p>Thank you for boarding our forever journey.</p>
+              <span class="ed-num">MOARA HALL · FOREVER</span>
+            </div>
+          </div>
+          <div class="ed-foot"><span>AIDIT &amp; ATHIRAH</span><span>24.12.2026</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 10 -->
+    <section class="design" data-design="10">
+      <div class="design-head">
+        <span class="design-num">10</span>
+        <div>
+          <h2>Ribbon &amp; Wax Seal</h2>
+          <p>Ribbon slate + wax seal gold — classic romantic, sangat wedding.</p>
+        </div>
+      </div>
+      <div class="stage">
+        <p class="stage-kicker">Sealed with love</p>
+        <h2 class="stage-title">The day, unsealed</h2>
+        <p class="stage-sub">A timeline tied with ribbon</p>
+        <div class="divider"></div>
+        <div class="ribbon-wrap">
+          <div class="ribbon"></div>
+          <div class="seal-list">
+            <article class="seal-item">
+              <div class="seal-card">
+                <div class="seal-time">11:00 AM · Arrival</div>
+                <h3>Guest Arrival</h3>
+                <p>Moara Hall opens for family and friends.</p>
+              </div>
+              <span class="wax-seal">A&amp;A</span>
+            </article>
+            <article class="seal-item">
+              <div class="seal-card">
+                <div class="seal-time">12:00 PM · Reception</div>
+                <h3>Lunch Reception</h3>
+                <p>A warm meal, greetings, and wedding portraits.</p>
+              </div>
+              <span class="wax-seal">A&amp;A</span>
+            </article>
+            <article class="seal-item">
+              <div class="seal-card">
+                <div class="seal-time">2:30 PM · Portraits</div>
+                <h3>Photo Session</h3>
+                <p>Group photos with the couple.</p>
+              </div>
+              <span class="wax-seal">A&amp;A</span>
+            </article>
+            <article class="seal-item">
+              <div class="seal-card">
+                <div class="seal-time">4:00 PM · Farewell</div>
+                <h3>Ceremony End</h3>
+                <p>Thank you for boarding our forever journey.</p>
+              </div>
+              <span class="wax-seal">A&amp;A</span>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="pager">
+      <button id="prev" type="button">← Sebelum</button>
+      <span id="pager-label">Design 01 / 10</span>
+      <button id="next" type="button">Seterusnya →</button>
+    </div>
+  </main>
+
+  <script>
+    const designs = Array.from(document.querySelectorAll(".design"));
+    const tabs = Array.from(document.querySelectorAll(".tab"));
+    const counter = document.getElementById("counter");
+    const pagerLabel = document.getElementById("pager-label");
+    const prev = document.getElementById("prev");
+    const next = document.getElementById("next");
+    let current = 0;
+
+    function show(index, updateHash = true) {
+      current = (index + designs.length) % designs.length;
+      designs.forEach((section, i) => section.classList.toggle("active", i === current));
+      tabs.forEach((tab, i) => {
+        tab.classList.toggle("active", i === current);
+        if (i === current) tab.scrollIntoView({ inline: "center", block: "nearest", behavior: "smooth" });
+      });
+      const number = String(current + 1).padStart(2, "0");
+      counter.textContent = number + " / 10";
+      pagerLabel.textContent = "Design " + number + " / 10";
+      prev.disabled = current === 0;
+      next.disabled = current === designs.length - 1;
+      if (updateHash) history.replaceState(null, "", "#design-" + (current + 1));
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    tabs.forEach((tab, index) => tab.addEventListener("click", () => show(index)));
+    prev.addEventListener("click", () => show(current - 1));
+    next.addEventListener("click", () => show(current + 1));
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "ArrowLeft") show(current - 1);
+      if (event.key === "ArrowRight") show(current + 1);
+    });
+
+    const fromHash = Number((location.hash.match(/design-(\d+)/) || [])[1]);
+    show(Number.isFinite(fromHash) && fromHash > 0 ? fromHash - 1 : 0, false);
+  </script>
+</body>
+</html>
