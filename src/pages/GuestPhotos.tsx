@@ -14,18 +14,16 @@ import {
   Upload,
   X,
 } from "lucide-react";
-import { isSupabaseConfigured, supabase } from "@/lib/supabase";
 import GuestPhotoCamera, { type PhotoFilterId } from "@/components/wedding/GuestPhotoCamera";
 
-const PHOTO_BUCKET = "guest-photos";
-const PHOTO_FOLDER = "aidit-athirah";
 const MAX_FILE_MB = 15;
+const photoApiUrl = (import.meta.env.VITE_PHOTO_API_URL as string | undefined)?.replace(/\/$/, "");
 
 type GuestPhoto = {
   id: string;
   guest_name: string | null;
   message: string | null;
-  image_path: string;
+  image_url: string;
   created_at: string;
 };
 
@@ -33,11 +31,6 @@ type PendingPhoto = {
   blob: Blob;
   previewUrl: string;
 };
-
-const randomId = () =>
-  typeof crypto !== "undefined" && "randomUUID" in crypto
-    ? crypto.randomUUID()
-    : `${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
 
 const compressImage = async (input: Blob): Promise<Blob> => {
   let source: ImageBitmap | HTMLImageElement;
@@ -102,7 +95,7 @@ const GuestPhotos = () => {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const guest = params.get("to") || params.get("guest");
-    if (guest) setName(decodeURIComponent(guest));
+    if (guest) setName(guest);
   }, []);
 
   useEffect(() => {
@@ -116,10 +109,10 @@ const GuestPhotos = () => {
   useEffect(() => {
     let active = true;
 
-    if (!isSupabaseConfigured) {
+    if (!photoApiUrl) {
       setGalleryLoading(false);
       setPhotos([]);
-      setGalleryError("Galeri akan dibuka tidak lama lagi.");
+      setGalleryError("Photo sharing belum disambungkan ke Cloudflare.");
       return () => {
         active = false;
       };
@@ -128,20 +121,23 @@ const GuestPhotos = () => {
     setGalleryLoading(true);
     setGalleryError("");
 
-    void supabase
-      .from("guest_photos")
-      .select("id, guest_name, message, image_path, created_at")
-      .eq("is_visible", true)
-      .order("created_at", { ascending: false })
-      .limit(80)
-      .then(({ data, error }) => {
+    void fetch(`${photoApiUrl}/api/photos`)
+      .then(async (response) => {
+        if (!response.ok) throw new Error(`Photo API returned ${response.status}`);
+        return (await response.json()) as { photos: GuestPhoto[] };
+      })
+      .then(({ photos: items }) => {
         if (!active) return;
-        if (error) {
-          console.error("Failed to load guest photos:", error.message);
-          setGalleryError("Galeri belum tersedia. Cuba refresh sebentar lagi.");
-        } else {
-          setPhotos((data ?? []) as GuestPhoto[]);
-        }
+        setPhotos(items);
+        setGalleryError("");
+      })
+      .catch((error: unknown) => {
+        if (!active) return;
+        console.error("Failed to load guest photos:", error);
+        setGalleryError("Galeri belum tersedia. Cuba refresh sebentar lagi.");
+      })
+      .finally(() => {
+        if (!active) return;
         setGalleryLoading(false);
       });
 
@@ -150,8 +146,7 @@ const GuestPhotos = () => {
     };
   }, [refreshKey]);
 
-  const photoUrl = (path: string) =>
-    supabase.storage.from(PHOTO_BUCKET).getPublicUrl(path).data.publicUrl;
+  const photoUrl = (photo: GuestPhoto) => photo.image_url;
 
   const chooseFile = () => fileInputRef.current?.click();
 
@@ -193,40 +188,28 @@ const GuestPhotos = () => {
     event.preventDefault();
     if (!pending) return;
 
-    if (!isSupabaseConfigured) {
-      setFormError("Photo sharing belum diaktifkan. Sila hubungi tuan rumah.");
+    if (!photoApiUrl) {
+      setFormError("Photo sharing belum disambungkan ke Cloudflare. Sila hubungi tuan rumah.");
       return;
     }
 
     setSubmitting(true);
     setFormError("");
 
-    let uploadedPath = "";
-
     try {
       const uploadBlob = await compressImage(pending.blob);
-      const path = `${PHOTO_FOLDER}/${Date.now()}-${randomId()}.jpg`;
+      const formData = new FormData();
+      formData.append("photo", uploadBlob, "guest-photo.jpg");
+      formData.append("guest_name", name.trim() || "Tetamu");
+      formData.append("message", message.trim());
 
-      const { error: uploadError } = await supabase.storage
-        .from(PHOTO_BUCKET)
-        .upload(path, uploadBlob, {
-          contentType: "image/jpeg",
-          cacheControl: "31536000",
-          upsert: false,
-        });
-
-      if (uploadError) throw uploadError;
-      uploadedPath = path;
-
-      const { error: insertError } = await supabase.from("guest_photos").insert({
-        guest_name: name.trim() || "Tetamu",
-        message: message.trim() || null,
-        image_path: path,
+      const response = await fetch(`${photoApiUrl}/api/photos`, {
+        method: "POST",
+        body: formData,
       });
-
-      if (insertError) {
-        await supabase.storage.from(PHOTO_BUCKET).remove([path]);
-        throw insertError;
+      if (!response.ok) {
+        const result = (await response.json().catch(() => null)) as { error?: string } | null;
+        throw new Error(result?.error || `Photo API returned ${response.status}`);
       }
 
       URL.revokeObjectURL(pending.previewUrl);
@@ -238,23 +221,14 @@ const GuestPhotos = () => {
       window.setTimeout(() => setJustUploaded(false), 6500);
     } catch (error) {
       console.error("Failed to upload guest photo:", error);
-      if (uploadedPath) {
-        void supabase.storage.from(PHOTO_BUCKET).remove([uploadedPath]);
-      }
       const detail = error instanceof Error ? error.message : "";
-      if (detail.toLowerCase().includes("bucket")) {
-        setFormError("Photo sharing belum disediakan. Sila hubungi tuan rumah.");
-      } else if (detail.toLowerCase().includes("security")) {
-        setFormError("Upload tidak dibenarkan buat masa ini. Sila hubungi tuan rumah.");
-      } else {
-        setFormError("Gambar gagal dihantar. Sila cuba lagi.");
-      }
+      setFormError(detail || "Gambar gagal dihantar. Sila cuba lagi.");
     } finally {
       setSubmitting(false);
     }
   };
 
-  const activeLightboxUrl = activePhoto ? photoUrl(activePhoto.image_path) : "";
+  const activeLightboxUrl = activePhoto ? photoUrl(activePhoto) : "";
 
   return (
     <main className="min-h-[100svh] bg-[#eef0f4] text-slate-800">
@@ -328,12 +302,10 @@ const GuestPhotos = () => {
           </div>
         </section>
 
-        {!isSupabaseConfigured && (
+        {!photoApiUrl && (
           <p className="mt-4 rounded-[18px] border border-amber-200 bg-amber-50/90 px-4 py-3 text-center text-xs leading-relaxed text-amber-800">
-            Photo sharing belum diaktifkan pada build ini. Tetapkan
-            <span className="font-mono"> VITE_SUPABASE_URL </span>dan
-            <span className="font-mono"> VITE_SUPABASE_ANON_KEY</span>, kemudian jalankan SQL
-            Supabase yang disediakan.
+            Photo sharing belum disambungkan. Tetapkan
+            <span className="font-mono"> VITE_PHOTO_API_URL</span> kepada URL Cloudflare photo API.
           </p>
         )}
 
@@ -428,7 +400,7 @@ const GuestPhotos = () => {
                   >
                     <div className="overflow-hidden rounded-[13px] bg-[#e9e2d3]">
                       <img
-                        src={photoUrl(photo.image_path)}
+                        src={photoUrl(photo)}
                         alt={`Gambar daripada ${photo.guest_name || "tetamu"}`}
                         loading="lazy"
                         className="aspect-[4/5] w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
