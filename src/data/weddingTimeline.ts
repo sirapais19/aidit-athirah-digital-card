@@ -21,15 +21,15 @@ export type WeddingTimelineEvent = {
   seat: string;
 };
 
-export const timelineFlightCode = "AA 1224";
+export const timelineFlightCode = "AA241226";
 
 
 export const weddingTimelineEvents: WeddingTimelineEvent[] = [
   {
-    time: "9:30",
+    time: "9:00",
     period: "AM",
     title: "Akad Nikah Ceremony",
-    detail: "The solemnisation ceremony of Athirah & Aidit. A private ceremony exclusively for immediate family.",
+    detail: "A private ceremony exclusively for immediate family.",
     gate: "Moara Hall",
     seat: "Family Only",
   },
@@ -37,39 +37,56 @@ export const weddingTimelineEvents: WeddingTimelineEvent[] = [
     time: "11:00",
     period: "AM",
     title: "Guest Arrival",
-    detail: "Guests are welcome to arrive, register, and get seated before the reception begins.",
+    detail: "Guests are welcome to arrive, register, and get seated before the celebration begins.",
     gate: "Moara Hall",
     seat: "All Guests",
   },
+  
   {
-    time: "12:30",
+    time: "12:00",
     period: "PM",
     title: "Bride & Groom Arrival",
-    detail: "The newlyweds arrive with a traditional wedding procession (Berarak) to celebrate their special day.",
+    detail: "The newlyweds arrive with a traditional wedding procession (Berarak), followed by a prayer.",
     gate: "Main Entrance",
     seat: "All Guests",
   },
   {
     time: "12:30",
     period: "PM",
-    title: "Wedding Reception & Lunch",
-    detail: "Enjoy a delightful lunch, greetings, and a joyful celebration with the newlyweds.",
-    gate: "Main Hall",
+    title: "Cake Cutting Ceremony",
+    detail: "A sweet moment shared with the newlyweds and both families.",
+    gate: "Main Stage",
     seat: "All Guests",
   },
   {
-    time: "2:30",
+    time: "12:45",
     period: "PM",
-    title: "Photography Session",
-    detail: "Capture beautiful memories with the bride and groom through family and group photographs.",
-    gate: "Garden",
-    seat: "Family & Friends",
+    title: "Family Portrait Session",
+    detail: "Photographs with parents, siblings and the extended families of both sides.",
+    gate: "Photo Area",
+    seat: "Family",
+  },
+  {
+    time: "1:15",
+    period: "PM",
+    title: "Lunch Reception",
+    detail: "Guests are invited to enjoy the meal that has been prepared.",
+    gate: "Dining Hall",
+    seat: "All Guests",
+  },
+  {
+    time: "1:45",
+    period: "PM",
+    title: "Free & Easy Session",
+    detail: "Mingle, take photos and spend time with the newlyweds and other guests.",
+    gate: "Main Hall",
+    seat: "All Guests",
   },
   {
     time: "4:00",
     period: "PM",
     title: "Reception Ends",
-    detail: "Thank you for being part of our special day. Your presence means the world to us as we begin our forever journey.",
+    detail: "Thank you for your presence and prayers. Safe travels home.",
     gate: "Moara Hall",
     seat: "Forever",
   },

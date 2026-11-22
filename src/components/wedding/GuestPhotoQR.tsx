@@ -46,7 +46,7 @@ const GuestPhotoQR = () => {
           includeMargin={false}
           fgColor="#3f4a5f"
           bgColor="#ffffff"
-          style={{ width: 196, height: 196 }}
+          style={{ width: 172, height: 172 }}
         />
       </div>
 

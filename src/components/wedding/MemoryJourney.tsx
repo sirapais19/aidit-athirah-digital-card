@@ -1,68 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowDown, Heart, MapPin, Plane, X } from "lucide-react";
-import moment1 from "@/assets/moment-1.jpeg";
-import moment2 from "@/assets/moment-2.jpeg";
-import moment3 from "@/assets/moment-3.jpeg";
-import moment4 from "@/assets/moment-4.jpeg";
-import moment5 from "@/assets/moment-5.jpeg";
+import { milestones } from "@/data/milestones";
+import MilestoneGallery from "@/components/wedding/MilestoneGallery";
 import WeddingLogo from "@/components/wedding/WeddingLogo";
-
-/**
- * Placeholder milestones — replace the dates, titles, notes and photos
- * below with the couple's real memory journey. Everything else (path,
- * animations, layout) will follow automatically.
- */
-const milestones = [
-  {
-    date: "Mac 2021",
-    title: "First Hello",
-    note: "Pertemuan pertama yang tak dirancang. Satu salam, satu senyuman, dan cerita kita bermula.",
-    image: moment1,
-  },
-  {
-    date: "Jun 2021",
-    title: "First Date",
-    note: "Kopi dah sejuk pun tak sedar, sebab masing-masing tak nak berhenti bercakap.",
-    image: moment2,
-  },
-  {
-    date: "Disember 2021",
-    title: "Officially Us",
-    note: "Dua hati, satu janji. Hari kita mula guna perkataan “kami”.",
-    image: moment3,
-  },
-  {
-    date: "Ogos 2022",
-    title: "Our First Trip",
-    note: "Bandar baru, jalan yang salah, tapi memori paling manis yang tak dirancang.",
-    image: moment4,
-  },
-  {
-    date: "Februari 2023",
-    title: "Meet the Family",
-    note: "Muka cuak, makanan banyak, dan sambutan hangat daripada dua keluarga.",
-    image: moment5,
-  },
-  {
-    date: "November 2024",
-    title: "The Proposal",
-    note: "Di bawah langit penuh bintang, satu soalan kecil mengubah segalanya.",
-    image: moment1,
-  },
-  {
-    date: "April 2025",
-    title: "Engagement",
-    note: "Dikelilingi orang tersayang, kita ucapkan “ya” untuk selamanya.",
-    image: moment3,
-  },
-  {
-    date: "24 Disember 2026",
-    title: "Our Wedding Day",
-    note: "Hari kita sahkan janji. Ini baru permulaan cerita kita.",
-    image: moment5,
-  },
-];
 
 const roadPath =
   "M 170 -20 C 10 90, 10 220, 170 300 C 330 380, 330 500, 170 580 C 10 660, 10 780, 170 860 C 330 940, 330 1060, 170 1140 C 10 1220, 10 1320, 170 1420";
@@ -191,6 +132,12 @@ const MemoryJourney = ({ onClose }: { onClose: () => void }) => {
           <div className="relative mt-7 space-y-7">
             {milestones.map((milestone, index) => {
               const isLeft = index % 2 === 0;
+              const images =
+                milestone.images && milestone.images.length > 0
+                  ? milestone.images
+                  : milestone.image
+                    ? [milestone.image]
+                    : [];
               return (
                 <motion.article
                   key={`${milestone.date}-${milestone.title}`}
@@ -212,12 +159,12 @@ const MemoryJourney = ({ onClose }: { onClose: () => void }) => {
                       aria-hidden="true"
                     />
 
-                    {milestone.image && (
+                    {images.length > 0 && (
                       <div className="overflow-hidden rounded-[16px] bg-[#e9e2d3]">
-                        <img
-                          src={milestone.image}
+                        <MilestoneGallery
+                          images={images}
                           alt={`${milestone.title} moment`}
-                          loading="lazy"
+                          focus={milestone.focus}
                           className="h-36 w-full object-cover sm:h-40"
                         />
                       </div>
