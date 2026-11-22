@@ -28,6 +28,7 @@ import GiftRegistry from "@/components/wedding/GiftRegistry";
 import WeddingLogo from "@/components/wedding/WeddingLogo";
 import { timelineFlightCode, weddingTimelineEvents } from "@/data/weddingTimeline";
 import moment1 from "@/assets/moment-1.jpeg";
+import moment13 from "@/assets/moment-13.jpeg";
 import moment2 from "@/assets/moment-2.jpeg";
 import moment3 from "@/assets/moment-3.jpeg";
 import moment4 from "@/assets/moment-4.jpeg";
@@ -257,7 +258,7 @@ const Index = () => {
                       onClick={() => setActiveInfo("journey")}
                       className="group w-28 shrink-0 rotate-[-7deg] rounded-md bg-white p-1 shadow-lg transition-transform duration-300 hover:rotate-[-3deg]"
                     >
-                      <img src={moment1} alt="Travel moment" className="h-24 w-full rounded-sm object-cover" />
+                      <img src={moment13} alt="Journey moment" className="h-24 w-full rounded-sm object-cover" />
                       <p className="py-1 font-serif text-xs italic text-slate-500">Journey</p>
                     </button>
                     <button
@@ -695,33 +696,55 @@ const BackgroundTexture = () => (
 );
 
 const BoardingTicket = ({ guestName }: { guestName: string }) => (
-  <div className="mt-3 rounded-[22px] border border-slate-200 bg-white p-4 shadow-sm">
-    <div className="mb-3 flex items-center justify-between">
-          <p className="font-mono text-[9px] uppercase tracking-[0.16em] text-slate-400 sm:text-[10px] sm:tracking-[0.2em]">
-        Boarding Ticket to be married
-      </p>
-      <Heart className="h-4 w-4 fill-[#72809c]/20 text-[#72809c]" />
-    </div>
-    <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-3">
-      <div>
-        <p className="font-display text-2xl text-slate-700">SGL</p>
-        <p className="text-[10px] uppercase tracking-[0.15em] text-slate-400">Single</p>
+  <div className="mt-3">
+    <div className="grid grid-cols-[1fr_88px] overflow-hidden rounded-[20px] border border-slate-200 bg-white shadow-sm">
+      <div className="p-3.5">
+        <p className="font-mono text-[8px] uppercase tracking-[0.16em] text-slate-400 sm:text-[9px] sm:tracking-[0.2em]">
+          Boarding Ticket to be married
+        </p>
+
+        <div className="mt-2.5 grid grid-cols-[1fr_auto_1fr] items-center gap-2">
+          <div>
+            <p className="font-display text-2xl leading-none text-slate-700">SGL</p>
+            <p className="mt-0.5 text-[9px] uppercase tracking-[0.15em] text-slate-400">Single</p>
+          </div>
+          <Plane className="h-4 w-4 rotate-45 text-[#72809c]" />
+          <div className="text-right">
+            <p className="font-display text-2xl leading-none text-slate-700">FRV</p>
+            <p className="mt-0.5 text-[9px] uppercase tracking-[0.15em] text-slate-400">Forever</p>
+          </div>
+        </div>
+
+        <div className="my-2.5 border-t border-dashed border-slate-300" />
+
+        <div className="grid grid-cols-2 gap-2 text-[11px]">
+          <div>
+            <p className="font-mono text-[8px] uppercase tracking-[0.16em] text-slate-400">Passenger</p>
+            <p className="mt-0.5 break-words font-medium text-slate-700">{guestName}</p>
+          </div>
+          <div>
+            <p className="font-mono text-[8px] uppercase tracking-[0.16em] text-slate-400">Gate</p>
+            <p className="mt-0.5 break-words font-medium text-slate-700">Moara Hall</p>
+          </div>
+        </div>
       </div>
-      <Plane className="h-5 w-5 rotate-90 text-[#72809c]" />
-      <div className="text-right">
-        <p className="font-display text-2xl text-slate-700">FRV</p>
-        <p className="text-[10px] uppercase tracking-[0.15em] text-slate-400">Forever</p>
-      </div>
-    </div>
-    <div className="my-4 border-t border-dashed border-slate-300" />
-    <div className="grid grid-cols-2 gap-3 text-xs">
-      <div>
-        <p className="font-mono uppercase tracking-[0.16em] text-slate-400 sm:tracking-[0.18em]">Passenger</p>
-        <p className="mt-1 break-words font-medium text-slate-700">{guestName}</p>
-      </div>
-      <div>
-        <p className="font-mono uppercase tracking-[0.16em] text-slate-400 sm:tracking-[0.18em]">Gate</p>
-        <p className="mt-1 break-words font-medium text-slate-700">Moara Hall</p>
+
+      <div className="flex flex-col items-center justify-center gap-2 border-l border-dashed border-slate-300 bg-[#f4efe4] px-2 py-3">
+        <p className="text-center font-mono text-[7px] uppercase leading-relaxed tracking-[0.14em] text-slate-400">
+          Flight
+          <span className="mt-0.5 block text-[10px] font-semibold tracking-[0.06em] text-[#5b6884]">
+            {timelineFlightCode}
+          </span>
+        </p>
+        <div className="flex items-end justify-center gap-[1.5px]" aria-hidden="true">
+          {barcodeBars.slice(0, 11).map((bar, index) => (
+            <span
+              key={index}
+              className="rounded-sm bg-[#6f7c93]/65"
+              style={{ width: 1.5, height: Math.round(bar.height * 0.72) }}
+            />
+          ))}
+        </div>
       </div>
     </div>
   </div>
@@ -1355,21 +1378,23 @@ const InfoPopup = ({
           exit={{ opacity: 0, y: 16, scale: 0.96 }}
           transition={{ duration: 0.25 }}
           onClick={(event) => event.stopPropagation()}
-          className="relative max-h-[86svh] w-full max-w-[380px] overflow-y-auto rounded-[28px] border border-[#aeb8cf] bg-[#c7d0e4] p-5 pb-[calc(1.25rem+env(safe-area-inset-bottom))] text-slate-700 shadow-2xl sm:max-h-[82vh] sm:max-w-[360px]"
+          className="relative flex max-h-[86svh] w-full max-w-[380px] flex-col overflow-hidden rounded-[28px] border border-[#aeb8cf] bg-[#c7d0e4] text-slate-700 shadow-2xl sm:max-h-[82vh] sm:max-w-[360px]"
         >
           <button
             type="button"
             onClick={onClose}
-            className="absolute right-4 top-4 flex h-8 w-8 items-center justify-center rounded-full bg-white/55 text-slate-500"
+            className="absolute right-3 top-3 z-20 flex h-8 w-8 items-center justify-center rounded-full bg-white/70 text-slate-500 backdrop-blur-sm transition-colors hover:bg-white"
             aria-label="Close"
           >
             <X className="h-4 w-4" />
           </button>
-          <p className="font-mono text-[10px] uppercase tracking-[0.24em] text-slate-500">
-            {activeInfo === "photos" ? "Guest camera" : "Boarding info"}
-          </p>
-          <h2 className="mt-2 font-display text-2xl">{activeCard.title}</h2>
-          <div className="mt-5">{renderPopup(activeInfo, submitted, onSubmitted)}</div>
+          <div className="overflow-y-auto overscroll-contain px-5 pb-[calc(1.5rem+env(safe-area-inset-bottom))] pt-5 [&::-webkit-scrollbar-track]:bg-transparent">
+            <p className="font-mono text-[10px] uppercase tracking-[0.24em] text-slate-500">
+              {activeInfo === "photos" ? "Guest camera" : "Boarding info"}
+            </p>
+            <h2 className="mt-2 font-display text-2xl">{activeCard.title}</h2>
+            <div className="mt-5">{renderPopup(activeInfo, submitted, onSubmitted)}</div>
+          </div>
         </motion.div>
       </motion.div>
     )}
