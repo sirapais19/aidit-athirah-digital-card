@@ -1,0 +1,15 @@
+name = "aidit-athirah-digital-card"
+compatibility_date = "2025-01-01"
+pages_build_output_dir = "./dist"
+
+# Local development bindings (wrangler pages dev / wrangler d1 execute --local).
+# The IDs are placeholders; production bindings are managed in the Cloudflare
+# dashboard (Workers & Pages -> Settings -> Bindings).
+[[d1_databases]]
+binding = "DB"
+database_name = "wedding-photos"
+database_id = "00000000-0000-0000-0000-000000000000"
+
+[[r2_buckets]]
+binding = "PHOTOS"
+bucket_name = "guest-photos"

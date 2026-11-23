@@ -51,7 +51,7 @@ const compressImage = async (input: Blob): Promise<Blob> => {
   try {
     const sourceWidth = source instanceof HTMLImageElement ? source.naturalWidth : source.width;
     const sourceHeight = source instanceof HTMLImageElement ? source.naturalHeight : source.height;
-    const maxDimension = 1800;
+    const maxDimension = 1600;
     const ratio = Math.min(1, maxDimension / Math.max(sourceWidth, sourceHeight));
     const width = Math.max(1, Math.round(sourceWidth * ratio));
     const height = Math.max(1, Math.round(sourceHeight * ratio));
@@ -68,7 +68,7 @@ const compressImage = async (input: Blob): Promise<Blob> => {
       canvas.toBlob(
         (blob) => (blob ? resolve(blob) : reject(new Error("Gambar tidak dapat diproses."))),
         "image/jpeg",
-        0.88,
+        0.85,
       );
     });
   } finally {
@@ -77,6 +77,38 @@ const compressImage = async (input: Blob): Promise<Blob> => {
   }
 };
 
+type UploadResult = { ok: boolean; status: number; body: string };
+
+const uploadPhoto = (
+  formData: FormData,
+  onProgress: (percent: number) => void,
+): Promise<UploadResult> =>
+  new Promise((resolve, reject) => {
+    if (!photoApiUrl) {
+      reject(new Error("Photo API belum disambungkan."));
+      return;
+    }
+
+    const xhr = new XMLHttpRequest();
+    xhr.open("POST", `${photoApiUrl}/api/photos`);
+    xhr.timeout = 45000;
+    xhr.upload.onprogress = (event) => {
+      if (event.lengthComputable) {
+        onProgress(Math.round((event.loaded / event.total) * 100));
+      }
+    };
+    xhr.onload = () => {
+      resolve({
+        ok: xhr.status >= 200 && xhr.status < 300,
+        status: xhr.status,
+        body: xhr.responseText,
+      });
+    };
+    xhr.onerror = () => reject(new Error("Rangkaian bermasalah. Pastikan API foto sedang berjalan."));
+    xhr.ontimeout = () => reject(new Error("Upload ambil masa terlalu lama. Sila cuba lagi."));
+    xhr.send(formData);
+  });
+
 const GuestPhotos = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [cameraOpen, setCameraOpen] = useState(false);
@@ -84,6 +116,7 @@ const GuestPhotos = () => {
   const [name, setName] = useState("");
   const [message, setMessage] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState<number | null>(null);
   const [formError, setFormError] = useState("");
   const [justUploaded, setJustUploaded] = useState(false);
   const [photos, setPhotos] = useState<GuestPhoto[]>([]);
@@ -194,6 +227,7 @@ const GuestPhotos = () => {
     }
 
     setSubmitting(true);
+    setUploadProgress(0);
     setFormError("");
 
     try {
@@ -203,13 +237,16 @@ const GuestPhotos = () => {
       formData.append("guest_name", name.trim() || "Tetamu");
       formData.append("message", message.trim());
 
-      const response = await fetch(`${photoApiUrl}/api/photos`, {
-        method: "POST",
-        body: formData,
-      });
-      if (!response.ok) {
-        const result = (await response.json().catch(() => null)) as { error?: string } | null;
-        throw new Error(result?.error || `Photo API returned ${response.status}`);
+      const result = await uploadPhoto(formData, setUploadProgress);
+      if (!result.ok) {
+        let messageFromServer = `Photo API returned ${result.status}`;
+        try {
+          const parsed = JSON.parse(result.body) as { error?: string } | null;
+          if (parsed?.error) messageFromServer = parsed.error;
+        } catch {
+          // Response was not JSON; keep the fallback message.
+        }
+        throw new Error(messageFromServer);
       }
 
       URL.revokeObjectURL(pending.previewUrl);
@@ -225,6 +262,7 @@ const GuestPhotos = () => {
       setFormError(detail || "Gambar gagal dihantar. Sila cuba lagi.");
     } finally {
       setSubmitting(false);
+      setUploadProgress(null);
     }
   };
 
@@ -540,7 +578,9 @@ const GuestPhotos = () => {
                   {submitting ? (
                     <>
                       <Loader2 className="h-4 w-4 animate-spin" />
-                      Sedang hantar...
+                      {uploadProgress !== null && uploadProgress < 100
+                        ? `Menghantar... ${uploadProgress}%`
+                        : "Memproses gambar..."}
                     </>
                   ) : (
                     <>

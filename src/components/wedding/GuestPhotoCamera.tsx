@@ -1,12 +1,60 @@
 import { useEffect, useRef, useState } from "react";
 import { Camera, Check, FlipHorizontal, Loader2, RefreshCw, X } from "lucide-react";
 
-export type PhotoFilterId = "original" | "warm" | "bw";
+export type PhotoFilterId =
+  | "original"
+  | "warm"
+  | "golden"
+  | "soft"
+  | "vintage"
+  | "faded"
+  | "vivid"
+  | "bw";
 
-const filters: Array<{ id: PhotoFilterId; name: string; css: string }> = [
-  { id: "original", name: "Original", css: "none" },
-  { id: "warm", name: "Warm film", css: "sepia(28%) saturate(125%) contrast(108%) brightness(1.03)" },
-  { id: "bw", name: "Black & white", css: "grayscale(100%) contrast(122%)" },
+const filters: Array<{ id: PhotoFilterId; name: string; css: string; swatch: string }> = [
+  { id: "original", name: "Original", css: "none", swatch: "linear-gradient(135deg, #d9c7a3, #8fa0ba)" },
+  {
+    id: "warm",
+    name: "Warm film",
+    css: "sepia(28%) saturate(125%) contrast(108%) brightness(1.03)",
+    swatch: "linear-gradient(135deg, #e3c79b, #b98f66)",
+  },
+  {
+    id: "golden",
+    name: "Golden hour",
+    css: "sepia(18%) saturate(150%) contrast(106%) brightness(1.07)",
+    swatch: "linear-gradient(135deg, #f0c987, #c58a4a)",
+  },
+  {
+    id: "soft",
+    name: "Soft glow",
+    css: "brightness(1.09) contrast(92%) saturate(112%)",
+    swatch: "linear-gradient(135deg, #f6e6d2, #d9c3b0)",
+  },
+  {
+    id: "vintage",
+    name: "Vintage",
+    css: "sepia(42%) contrast(104%) brightness(1.04) saturate(85%)",
+    swatch: "linear-gradient(135deg, #d3b48f, #8f7b63)",
+  },
+  {
+    id: "faded",
+    name: "Faded film",
+    css: "contrast(88%) brightness(1.08) saturate(80%) sepia(12%)",
+    swatch: "linear-gradient(135deg, #e5ddcf, #b8b6b0)",
+  },
+  {
+    id: "vivid",
+    name: "Vivid",
+    css: "saturate(155%) contrast(112%) brightness(1.02)",
+    swatch: "linear-gradient(135deg, #7fc3d6, #d98a6a)",
+  },
+  {
+    id: "bw",
+    name: "Black & white",
+    css: "grayscale(100%) contrast(122%)",
+    swatch: "linear-gradient(135deg, #e4e4e4, #6f6f6f)",
+  },
 ];
 
 const GuestPhotoCamera = ({
@@ -20,6 +68,8 @@ const GuestPhotoCamera = ({
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const fallbackInputRef = useRef<HTMLInputElement>(null);
   const streamRef = useRef<MediaStream | null>(null);
+  const cameraTokenRef = useRef(0);
+  const capturedUrlRef = useRef<string | null>(null);
 
   const [facingMode, setFacingMode] = useState<"environment" | "user">("environment");
   const [filter, setFilter] = useState<PhotoFilterId>("warm");
@@ -34,11 +84,17 @@ const GuestPhotoCamera = ({
   };
 
   const startCamera = async (mode: "environment" | "user") => {
+    const token = cameraTokenRef.current + 1;
+    cameraTokenRef.current = token;
     stopCamera();
     setStarting(true);
     setError("");
 
     try {
+      if (!navigator.mediaDevices?.getUserMedia) {
+        throw new Error("Camera API not available in this browser context.");
+      }
+
       const stream = await navigator.mediaDevices.getUserMedia({
         video: {
           facingMode: { ideal: mode },
@@ -47,19 +103,33 @@ const GuestPhotoCamera = ({
         },
         audio: false,
       });
+
+      // A newer request (or unmount) may have happened while waiting for permission.
+      if (token !== cameraTokenRef.current) {
+        stream.getTracks().forEach((track) => track.stop());
+        return;
+      }
+
       streamRef.current = stream;
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
         videoRef.current.play().catch(() => undefined);
       }
     } catch (cameraError) {
+      if (token !== cameraTokenRef.current) return;
       console.warn("Guest camera unavailable:", cameraError);
       setError(
         "Kamera tidak dapat dibuka pada peranti ini. Anda boleh terus ambil gambar menggunakan kamera telefon atau pilih dari galeri.",
       );
     } finally {
-      setStarting(false);
+      if (token === cameraTokenRef.current) setStarting(false);
     }
+  };
+
+  const setCapturedPhoto = (next: { blob: Blob; url: string } | null) => {
+    if (capturedUrlRef.current) URL.revokeObjectURL(capturedUrlRef.current);
+    capturedUrlRef.current = next?.url ?? null;
+    setCaptured(next);
   };
 
   useEffect(() => {
@@ -70,6 +140,14 @@ const GuestPhotoCamera = ({
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [facingMode]);
+
+  useEffect(() => {
+    return () => {
+      cameraTokenRef.current += 1;
+      stopCamera();
+      if (capturedUrlRef.current) URL.revokeObjectURL(capturedUrlRef.current);
+    };
+  }, []);
 
   const activeFilter = filters.find((item) => item.id === filter) ?? filters[0];
 
@@ -141,7 +219,7 @@ const GuestPhotoCamera = ({
       (blob) => {
         if (!blob) return;
         stopCamera();
-        setCaptured({ blob, url: URL.createObjectURL(blob) });
+        setCapturedPhoto({ blob, url: URL.createObjectURL(blob) });
       },
       "image/jpeg",
       0.92,
@@ -149,14 +227,13 @@ const GuestPhotoCamera = ({
   };
 
   const handleRetake = () => {
-    if (captured) URL.revokeObjectURL(captured.url);
-    setCaptured(null);
+    setCapturedPhoto(null);
     void startCamera(facingMode);
   };
 
   const handleFallbackFile = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-    if (file) onCapture(file, filter);
+    if (file) onCapture(file, "original");
   };
 
   return (
@@ -199,7 +276,7 @@ const GuestPhotoCamera = ({
           <img
             src={captured.url}
             alt="Preview gambar"
-            className="h-full w-full object-cover"
+            className="h-full w-full bg-black object-contain"
           />
         ) : error ? (
           <div className="max-w-sm space-y-4 p-6 text-center">
@@ -247,19 +324,28 @@ const GuestPhotoCamera = ({
       </div>
 
       {!captured && !error && (
-        <div className="z-20 mb-2 overflow-x-auto">
-          <div className="flex justify-center gap-2 py-1">
+        <div className="z-20 mb-2 overflow-x-auto pb-1">
+          <div className="flex w-max min-w-full justify-start gap-2 px-1 py-1 sm:justify-center">
             {filters.map((item) => (
               <button
                 key={item.id}
                 type="button"
                 onClick={() => setFilter(item.id)}
-                className={`whitespace-nowrap rounded-full border px-3.5 py-1.5 text-[11px] font-semibold transition-all ${
+                aria-pressed={filter === item.id}
+                className={`flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full border px-3 py-1.5 text-[11px] font-semibold transition-all ${
                   filter === item.id
-                    ? "scale-105 border-[#e9b26f] bg-[#c9a06a] text-[#241f18]"
+                    ? "border-[#e9b26f] bg-[#c9a06a] text-[#241f18] shadow-[0_0_0_2px_rgba(233,178,111,0.25)]"
                     : "border-white/15 bg-black/50 text-white/85 hover:bg-black/70"
                 }`}
               >
+                <span
+                  aria-hidden="true"
+                  className="h-4 w-4 rounded-full border border-white/40"
+                  style={{
+                    background: item.swatch,
+                    filter: item.css === "none" ? undefined : item.css,
+                  }}
+                />
                 {item.name}
               </button>
             ))}

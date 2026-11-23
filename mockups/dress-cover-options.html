@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="ms">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Dress code cover — pilihan gambar</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;1,400&family=Montserrat:wght@400;500&family=Playfair+Display:wght@500&family=Source+Code+Pro:wght@400&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        padding: 32px 20px 60px;
+        background: radial-gradient(circle at 15% 0%, #f4f6fb, #eef0f4 45%, #e6eaf3);
+        font-family: "Montserrat", sans-serif;
+        color: #334155;
+      }
+      .head { max-width: 1060px; margin: 0 auto 26px; text-align: center; }
+      .head .eyebrow {
+        margin: 0;
+        font-family: "Source Code Pro", monospace;
+        font-size: 10px;
+        letter-spacing: 0.28em;
+        text-transform: uppercase;
+        color: #8b95ab;
+      }
+      .head h1 {
+        margin: 8px 0 6px;
+        font-family: "Playfair Display", serif;
+        font-weight: 500;
+        font-size: 30px;
+        color: #44506b;
+      }
+      .head p {
+        margin: 0 auto;
+        max-width: 620px;
+        font-family: "Cormorant Garamond", serif;
+        font-style: italic;
+        font-size: 17px;
+        color: #6d7689;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 22px;
+        max-width: 1060px;
+        margin: 0 auto;
+      }
+      @media (max-width: 900px) { .grid { grid-template-columns: 1fr; max-width: 420px; } }
+      .label {
+        font-family: "Source Code Pro", monospace;
+        font-size: 10px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: #6c7892;
+        margin-bottom: 8px;
+      }
+      .phone {
+        border-radius: 34px;
+        padding: 10px;
+        background: linear-gradient(180deg, #cfd7e7, #b9c4da);
+        box-shadow: 0 22px 46px rgba(55, 66, 92, 0.22);
+      }
+      .screen { border-radius: 26px; background: #e9ecf3; padding: 16px 14px; }
+      .venue {
+        position: relative;
+        border-radius: 22px;
+        border: 1px solid #e2e8f0;
+        background: #fff;
+        padding: 16px 14px 14px;
+      }
+      .plane { position: absolute; right: 16px; top: 16px; color: #72809c; font-size: 20px; transform: rotate(45deg); }
+      .row { display: flex; gap: 10px; }
+      .polaroid {
+        width: 88px;
+        flex: 0 0 88px;
+        padding: 4px 4px 0;
+        background: #fff;
+        border-radius: 5px;
+        box-shadow: 0 12px 24px rgba(30, 41, 59, 0.2);
+        text-align: center;
+      }
+      .polaroid img { display: block; width: 100%; height: 78px; object-fit: cover; border-radius: 3px; }
+      .polaroid p {
+        margin: 0;
+        padding: 5px 0;
+        font-family: "Cormorant Garamond", serif;
+        font-style: italic;
+        font-size: 12px;
+        color: #64748b;
+      }
+      .p-journey { transform: rotate(-7deg); }
+      .p-venue { transform: rotate(6deg); margin-top: 24px; }
+      .p-dress { transform: rotate(9deg); margin-top: 10px; }
+      .dashed { border-top: 1px dashed #e2e8f0; margin: 16px 0 10px; }
+      .route { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+      .route p:first-child { margin: 0; font-family: "Cormorant Garamond", serif; font-style: italic; font-size: 14px; color: #64748b; }
+      .route p:last-child { margin: 2px 0 0; font-family: "Source Code Pro", monospace; font-size: 7px; letter-spacing: 0.14em; text-transform: uppercase; color: #94a3b8; }
+      .route span {
+        padding: 8px 12px;
+        border-radius: 999px;
+        border: 1px solid #d7dbea;
+        background: #eef1f7;
+        font-size: 10px;
+        font-weight: 500;
+        color: #64728e;
+      }
+      .note {
+        margin: 9px 0 0;
+        font-family: "Cormorant Garamond", serif;
+        font-style: italic;
+        font-size: 14px;
+        line-height: 1.4;
+        color: #6d7689;
+      }
+      .note b { color: #4b566e; }
+      .legend {
+        max-width: 1060px;
+        margin: 28px auto 0;
+        padding: 15px 18px;
+        border-radius: 16px;
+        border: 1px solid #dfe5f1;
+        background: rgba(255, 255, 255, 0.62);
+        font-family: "Cormorant Garamond", serif;
+        font-size: 15px;
+        line-height: 1.5;
+        color: #6d7689;
+      }
+      .legend b { font-family: "Montserrat", sans-serif; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: #5f6c88; }
+    </style>
+  </head>
+  <body>
+    <header class="head">
+      <p class="eyebrow">Gambar AI tak tersedia · guna foto sedia ada</p>
+      <h1>Pilihan cover Dress Code</h1>
+      <p>AI image model sedang unavailable. Ini 3 gambar sedia ada yang paling match dengan venue — pilih satu.</p>
+    </header>
+
+    <main class="grid">
+      <section>
+        <div class="label">A · Tangan &amp; cincin</div>
+        <div class="phone">
+          <div class="screen">
+            <div class="venue">
+              <span class="plane">✈</span>
+              <div class="row">
+                <div class="polaroid p-journey">
+                  <img src="../src/assets/moment-13.jpeg" alt="Journey" />
+                  <p>Journey</p>
+                </div>
+                <div class="polaroid p-venue">
+                  <img src="../src/assets/venue.jpg" alt="Venue" />
+                  <p>Venue</p>
+                </div>
+                <div class="polaroid p-dress">
+                  <img src="../src/assets/couple-gallery-2.jpg" alt="Dress code" style="object-position: 50% 45%" />
+                  <p>Dress code</p>
+                </div>
+              </div>
+              <div class="dashed"></div>
+              <div class="route">
+                <div><p>Our route to forever</p><p>From hello to forever</p></div>
+                <span>⌘ Journey →</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="note"><b>A</b> — detail tangan + cincin, bokeh hangat. Paling “editorial” dan tak tunjuk muka.</p>
+      </section>
+
+      <section>
+        <div class="label">B · Pelamin &amp; attire</div>
+        <div class="phone">
+          <div class="screen">
+            <div class="venue">
+              <span class="plane">✈</span>
+              <div class="row">
+                <div class="polaroid p-journey">
+                  <img src="../src/assets/moment-13.jpeg" alt="Journey" />
+                  <p>Journey</p>
+                </div>
+                <div class="polaroid p-venue">
+                  <img src="../src/assets/venue.jpg" alt="Venue" />
+                  <p>Venue</p>
+                </div>
+                <div class="polaroid p-dress">
+                  <img src="../src/assets/moment-13f.jpeg" alt="Dress code" style="object-position: 40% 34%" />
+                  <p>Dress code</p>
+                </div>
+              </div>
+              <div class="dashed"></div>
+              <div class="route">
+                <div><p>Our route to forever</p><p>From hello to forever</p></div>
+                <span>⌘ Journey →</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="note"><b>B</b> — attire sebenar pengantin di pelamin. Personal, tapi crop kecil akan tunjuk baju + bouquet.</p>
+      </section>
+
+      <section>
+        <div class="label">C · Couple bokeh hangat</div>
+        <div class="phone">
+          <div class="screen">
+            <div class="venue">
+              <span class="plane">✈</span>
+              <div class="row">
+                <div class="polaroid p-journey">
+                  <img src="../src/assets/moment-13.jpeg" alt="Journey" />
+                  <p>Journey</p>
+                </div>
+                <div class="polaroid p-venue">
+                  <img src="../src/assets/venue.jpg" alt="Venue" />
+                  <p>Venue</p>
+                </div>
+                <div class="polaroid p-dress">
+                  <img src="../src/assets/couple-hero.jpg" alt="Dress code" style="object-position: 50% 30%" />
+                  <p>Dress code</p>
+                </div>
+              </div>
+              <div class="dashed"></div>
+              <div class="route">
+                <div><p>Our route to forever</p><p>From hello to forever</p></div>
+                <span>⌘ Journey →</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="note"><b>C</b> — paling dekat dengan mood venue (lampu hangat, bokeh). Tapi attire bukan tema Melayu.</p>
+      </section>
+    </main>
+
+    <div class="legend">
+      <b>Nota:</b> Untuk cuba generate gambar AI semula, beritahu saya — model mungkin pulih kemudian. Sementara itu, A atau B paling selamat.
+    </div>
+  </body>
+</html>

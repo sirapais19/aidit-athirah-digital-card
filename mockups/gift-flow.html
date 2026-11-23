@@ -1,0 +1,537 @@
+<!doctype html>
+<html lang="ms">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Gift flow preview · Aidit &amp; Athirah</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@400;500;600&family=Playfair+Display:wght@400;500;600&family=Source+Code+Pro:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --cream: #f9f7f1;
+        --line: #e4dccb;
+        --line-2: #dccfb8;
+        --gold: #b79a6a;
+        --gold-deep: #a8895e;
+        --blue: #72809c;
+        --blue-deep: #5c6982;
+        --muted: #a29a8a;
+        --ink: #334155;
+        --body: #64748b;
+        --popup: #c7d0e4;
+        --ok: #047857;
+        --ok-bg: #ecfdf5;
+        --wa: #128c7e;
+      }
+
+      * { box-sizing: border-box; }
+
+      body {
+        margin: 0;
+        padding: 32px 20px 56px;
+        background: radial-gradient(circle at 15% 0%, #f4f6fb 0%, #eef0f4 45%, #e6eaf3 100%);
+        color: var(--ink);
+        font-family: "Montserrat", sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      .page-head { max-width: 1180px; margin: 0 auto 28px; text-align: center; }
+      .page-head .eyebrow {
+        margin: 0; font-family: "Source Code Pro", monospace; font-size: 10px;
+        letter-spacing: 0.28em; text-transform: uppercase; color: #8b95ab;
+      }
+      .page-head h1 {
+        margin: 8px 0 6px; font-family: "Playfair Display", serif; font-weight: 500;
+        font-size: 30px; color: #44506b;
+      }
+      .page-head .sub {
+        margin: 0 auto; max-width: 700px; font-family: "Cormorant Garamond", serif;
+        font-style: italic; font-size: 17px; color: #6d7689;
+      }
+
+      .grid {
+        display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px;
+        max-width: 1180px; margin: 0 auto; align-items: start;
+      }
+      @media (max-width: 1020px) { .grid { grid-template-columns: 1fr; max-width: 430px; } }
+
+      .option { display: flex; flex-direction: column; gap: 10px; }
+      .option-label {
+        display: flex; align-items: center; gap: 8px;
+        font-family: "Source Code Pro", monospace; font-size: 10px;
+        letter-spacing: 0.16em; text-transform: uppercase; color: #6c7892;
+      }
+      .option-label .tag {
+        display: inline-flex; align-items: center; justify-content: center; height: 18px;
+        padding: 0 7px; border-radius: 999px; background: #dfe5f1; color: #5f6c88;
+        font-size: 9px; letter-spacing: 0.08em;
+      }
+      .option-note {
+        margin: 0; font-family: "Cormorant Garamond", serif; font-style: italic;
+        font-size: 14.5px; line-height: 1.35; color: #6d7689; min-height: 58px;
+      }
+      .option-note b { color: #4b566e; font-weight: 600; }
+
+      .phone {
+        border-radius: 34px; padding: 10px;
+        background: linear-gradient(180deg, #cfd7e7, #b9c4da);
+        box-shadow: 0 22px 46px rgba(55, 66, 92, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.55);
+      }
+      .screen {
+        position: relative; border-radius: 26px; overflow: hidden;
+        background: var(--popup); min-height: 700px;
+      }
+      .screen-head { padding: 18px 20px 10px; position: relative; }
+      .screen-head .eyebrow {
+        margin: 0; font-family: "Source Code Pro", monospace; font-size: 8.5px;
+        letter-spacing: 0.24em; text-transform: uppercase; color: #5f6c88;
+      }
+      .screen-head h2 {
+        margin: 6px 0 0; font-family: "Playfair Display", serif; font-weight: 500;
+        font-size: 22px; color: #44506b;
+      }
+      .close {
+        position: absolute; top: 14px; right: 14px; width: 30px; height: 30px;
+        border: 0; border-radius: 999px; background: rgba(255, 255, 255, 0.75);
+        color: #6b7690; font-size: 15px; line-height: 1; cursor: pointer;
+      }
+
+      .sheet {
+        margin: 10px 0 0; background: var(--cream);
+        border-radius: 26px 26px 0 0; padding: 18px 18px 22px; min-height: 632px;
+      }
+      .eyebrow-2 {
+        margin: 0; font-family: "Source Code Pro", monospace; font-size: 8px;
+        letter-spacing: 0.24em; text-transform: uppercase; color: #94a0b8;
+      }
+      .sheet h3 {
+        margin: 4px 0 0; font-family: "Playfair Display", serif; font-weight: 500;
+        font-size: 22px; color: var(--ink);
+      }
+
+      .item {
+        display: flex; align-items: center; gap: 11px; margin-top: 12px; padding: 10px;
+        border: 1px solid var(--line); border-radius: 16px; background: rgba(255, 255, 255, 0.6);
+      }
+      .thumb {
+        width: 58px; height: 58px; flex: 0 0 58px; border-radius: 12px; overflow: hidden;
+        background: linear-gradient(135deg, #e9e0d0, #c9bfa8);
+        display: flex; align-items: center; justify-content: center;
+      }
+      .thumb svg { width: 100%; height: 100%; display: block; }
+      .item .t {
+        font-family: "Playfair Display", serif; font-size: 15px; line-height: 1.15;
+        margin: 0;
+      }
+      .item .d {
+        margin: 2px 0 0; font-family: "Cormorant Garamond", serif; font-style: italic;
+        font-size: 12.5px; color: var(--body); line-height: 1.25;
+      }
+      .item .row2 { display: flex; align-items: center; gap: 8px; margin-top: 5px; flex-wrap: wrap; }
+      .item .pill {
+        display: inline-block; padding: 2px 5px; border: 1px solid var(--line-2);
+        border-radius: 3px; font-family: "Source Code Pro", monospace; font-size: 6.5px;
+        letter-spacing: 0.07em; text-transform: uppercase; color: var(--gold-deep);
+      }
+      .prod-link {
+        font-family: "Source Code Pro", monospace; font-size: 7px; letter-spacing: 0.04em;
+        color: var(--blue); text-decoration: underline; text-underline-offset: 2px;
+      }
+
+      .bar { margin-top: 12px; height: 4px; border-radius: 999px; background: #ece5d7; overflow: hidden; }
+      .bar > span {
+        display: block; width: 0%; height: 100%; border-radius: inherit;
+        background: linear-gradient(90deg, var(--blue), var(--gold-deep));
+      }
+      .bar-row {
+        display: flex; justify-content: space-between; margin-top: 5px;
+        font-family: "Source Code Pro", monospace; font-size: 7px; color: var(--muted);
+      }
+      .bar-row b { color: var(--blue-deep); font-weight: 600; }
+
+      .field { margin-top: 12px; }
+      .label {
+        display: block; margin-bottom: 5px; font-family: "Source Code Pro", monospace;
+        font-size: 7.5px; letter-spacing: 0.12em; text-transform: uppercase; color: #9a9182;
+      }
+      .input {
+        width: 100%; border: 1px solid var(--line); border-radius: 10px;
+        background: rgba(255, 255, 255, 0.8); padding: 9px 11px;
+        font-family: "Montserrat", sans-serif; font-size: 13px; color: var(--ink); outline: none;
+      }
+      .input::placeholder { color: #b0a792; }
+      .input[readonly] { background: rgba(255, 255, 255, 0.45); color: #7c869a; }
+
+      .presets { display: flex; gap: 6px; margin-top: 6px; }
+      .presets span {
+        flex: 1; text-align: center; padding: 6px 4px; border: 1px solid var(--line);
+        border-radius: 999px; background: rgba(255, 255, 255, 0.6);
+        font-family: "Source Code Pro", monospace; font-size: 6.8px; color: var(--blue-deep);
+      }
+
+      .segmented { display: flex; padding: 3px; gap: 3px; border-radius: 999px; background: #ece5d7; margin-top: 12px; }
+      .segmented button {
+        flex: 1; border: 0; border-radius: 999px; padding: 7px 4px; background: transparent;
+        font-family: "Source Code Pro", monospace; font-size: 7px; letter-spacing: 0.05em;
+        text-transform: uppercase; color: #8a8170; cursor: pointer; transition: 0.18s ease;
+      }
+      .segmented button.on {
+        background: var(--blue); color: #fff; box-shadow: 0 4px 10px rgba(92, 105, 130, 0.25);
+      }
+
+      .methods { display: flex; gap: 6px; flex-wrap: wrap; }
+      .methods span {
+        padding: 6px 10px; border: 1px solid var(--line); border-radius: 999px;
+        background: rgba(255, 255, 255, 0.6); font-family: "Source Code Pro", monospace;
+        font-size: 6.8px; color: var(--blue-deep);
+      }
+      .methods span.on { background: var(--blue); border-color: var(--blue); color: #fff; }
+
+      .cta {
+        display: flex; align-items: center; justify-content: center; gap: 6px; width: 100%;
+        margin-top: 14px; padding: 12px; border: 0; border-radius: 999px;
+        background: var(--blue); color: #fff; font-family: "Montserrat", sans-serif;
+        font-size: 12.5px; font-weight: 500; cursor: pointer;
+      }
+      .cta.gold { background: var(--gold-deep); }
+
+      .fineprint {
+        margin: 9px 0 0; text-align: center; font-family: "Cormorant Garamond", serif;
+        font-style: italic; font-size: 11px; line-height: 1.35; color: #a29a8a;
+      }
+
+      .success { text-align: center; padding-top: 2px; }
+      .success .mark {
+        width: 46px; height: 46px; margin: 0 auto; border-radius: 999px;
+        display: flex; align-items: center; justify-content: center;
+        background: var(--ok-bg); border: 1px solid #bbf7d0; color: var(--ok); font-size: 19px;
+      }
+      .success h4 {
+        margin: 9px 0 0; font-family: "Playfair Display", serif; font-weight: 500; font-size: 21px;
+      }
+      .success p {
+        margin: 7px auto 0; max-width: 260px; font-family: "Cormorant Garamond", serif;
+        font-style: italic; font-size: 13px; line-height: 1.4; color: var(--body);
+      }
+      .success p b { color: #4b566e; }
+
+      .box {
+        margin-top: 13px; padding: 12px; border: 1px solid var(--line); border-radius: 16px;
+        background: rgba(255, 255, 255, 0.72); text-align: left;
+      }
+      .box .lbl {
+        margin: 0; font-family: "Source Code Pro", monospace; font-size: 7.5px;
+        letter-spacing: 0.18em; text-transform: uppercase; color: #94a0b8;
+      }
+      .box .val {
+        margin: 4px 0 0; font-family: "Cormorant Garamond", serif; font-size: 13px;
+        color: #6d7689; line-height: 1.35;
+      }
+
+      .pay-btn {
+        display: flex; align-items: center; justify-content: center; margin-top: 9px;
+        padding: 11px; border-radius: 999px; background: var(--blue); color: #fff;
+        font-size: 12px; font-weight: 500; text-decoration: none;
+      }
+      .qr { display: flex; justify-content: center; margin-top: 10px; }
+      .qr svg { width: 92px; height: 92px; border-radius: 8px; }
+
+      .wa {
+        display: flex; align-items: center; justify-content: center; gap: 6px;
+        width: 100%; margin-top: 8px; padding: 10px; border-radius: 999px;
+        background: var(--wa); color: #fff; font-size: 11.5px; font-weight: 500;
+        text-decoration: none; text-align: center;
+      }
+      .wa small { font-family: "Source Code Pro", monospace; font-size: 8.5px; opacity: 0.85; }
+
+      .divider {
+        height: 1px; margin: 13px 0 0;
+        background: repeating-linear-gradient(90deg, var(--line-2) 0 4px, transparent 4px 8px);
+      }
+
+      .hidden { display: none !important; }
+
+      .legend {
+        max-width: 1180px; margin: 26px auto 0; padding: 16px 18px; border-radius: 16px;
+        border: 1px solid #dfe5f1; background: rgba(255, 255, 255, 0.6);
+        font-family: "Cormorant Garamond", serif; font-size: 15px; line-height: 1.5; color: #6d7689;
+      }
+      .legend b {
+        font-family: "Montserrat", sans-serif; font-size: 11px; letter-spacing: 0.08em;
+        text-transform: uppercase; color: #5f6c88;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="page-head">
+      <p class="eyebrow">Preview only · belum masuk database</p>
+      <h1>Gift tempahan — aliran hybrid</h1>
+      <p class="sub">
+        Tetamu pilih sendiri: “Sumbangan Ikhlas” atau “Kirim Hadiah Sendiri”. Dua-dua berakhir dengan
+        ucapan terima kasih dan langkah seterusnya.
+      </p>
+    </header>
+
+    <main class="grid">
+      <!-- ============ 1. BORANG HYBRID ============ -->
+      <section class="option">
+        <div class="option-label">1 · Borang tempahan <span class="tag">Hybrid</span></div>
+        <div class="phone">
+          <div class="screen">
+            <div class="screen-head">
+              <p class="eyebrow">Boarding info</p>
+              <h2>Gift</h2>
+              <button class="close" type="button" aria-label="Tutup">✕</button>
+            </div>
+            <div class="sheet">
+              <p class="eyebrow-2">Tempahan hadiah</p>
+              <h3>Tempah hadiah</h3>
+
+              <div class="item">
+                <div class="thumb" aria-hidden="true">
+                  <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                      <linearGradient id="mg" x1="0" y1="0" x2="1" y2="1">
+                        <stop offset="0" stop-color="#eef1f6" />
+                        <stop offset="1" stop-color="#dfe4ee" />
+                      </linearGradient>
+                    </defs>
+                    <rect width="80" height="80" fill="url(#mg)" />
+                    <rect x="10" y="21" width="60" height="38" rx="5" fill="#b9c0cc" />
+                    <rect x="15" y="26" width="34" height="28" rx="3" fill="#59637a" />
+                    <rect x="19" y="30" width="26" height="20" rx="2" fill="#3f4759" />
+                    <rect x="54" y="28" width="11" height="4" rx="2" fill="#8b95a7" />
+                    <circle cx="59" cy="38" r="2.6" fill="#8b95a7" />
+                    <circle cx="59" cy="45" r="2.6" fill="#8b95a7" />
+                    <rect x="54" y="51" width="11" height="3.5" rx="1.75" fill="#8b95a7" />
+                  </svg>
+                </div>
+                <div style="min-width: 0">
+                  <p class="t">Microwave TJean</p>
+                  <p class="d">A little wish for our new home.</p>
+                  <div class="row2">
+                    <span class="pill">Group gift</span>
+                    <a class="prod-link" href="#" onclick="return false">Lihat produk ↗</a>
+                  </div>
+                </div>
+              </div>
+
+              <div class="bar"><span style="width: 0%"></span></div>
+              <div class="bar-row"><span><b>RM 0</b> collected</span><span>RM 500 left</span></div>
+
+              <div class="field">
+                <span class="label">Cara bagi hadiah</span>
+                <div class="segmented" id="mode">
+                  <button type="button" class="on" data-mode="cash">Sumbangan Ikhlas</button>
+                  <button type="button" data-mode="self">Kirim Hadiah Sendiri</button>
+                </div>
+              </div>
+
+              <div id="cash-fields">
+                <div class="field">
+                  <span class="label">Jumlah sumbangan</span>
+                  <input class="input" value="RM 250" readonly />
+                  <div class="presets"><span>RM50</span><span>RM100</span><span>RM250</span><span>Penuh</span></div>
+                </div>
+                <div class="field">
+                  <span class="label">Cara bayaran</span>
+                  <div class="methods"><span class="on">Touch ’n Go</span><span>DuitNow QR</span></div>
+                </div>
+              </div>
+
+              <div id="self-fields" class="hidden">
+                <div class="field">
+                  <span class="label">Harga hadiah</span>
+                  <input class="input" value="RM 500" readonly />
+                </div>
+                <div class="box" style="margin-top: 10px">
+                  <p class="lbl">Kirim hadiah sendiri</p>
+                  <p class="val">Beli di Shopee atau kedai, kemudian pos ke alamat pengantin. Alamat dihantar melalui WhatsApp.</p>
+                </div>
+              </div>
+
+              <div class="field">
+                <span class="label">Nama anda</span>
+                <input class="input" placeholder="Contoh: Pakcik Din &amp; Keluarga" readonly />
+              </div>
+
+              <button class="cta" id="hybrid-cta" type="button">Hantar Sumbangan</button>
+              <p class="fineprint" id="hybrid-fineprint">
+                Sumbangan disahkan selepas bayaran diterima.
+              </p>
+            </div>
+          </div>
+        </div>
+        <p class="option-note">
+          <b>Borang hybrid.</b> Gambar produk + pautan “Lihat produk” pada setiap hadiah. Toggle tukar borang tanpa tutup popup.
+        </p>
+      </section>
+
+      <!-- ============ 2. BERJAYA — SUMBANGAN ============ -->
+      <section class="option">
+        <div class="option-label">2 · Selepas bayar <span class="tag">Sumbangan</span></div>
+        <div class="phone">
+          <div class="screen">
+            <div class="screen-head">
+              <p class="eyebrow">Boarding info</p>
+              <h2>Gift</h2>
+              <button class="close" type="button" aria-label="Tutup">✕</button>
+            </div>
+            <div class="sheet">
+              <div class="success">
+                <div class="mark">✓</div>
+                <h4>Terima kasih!</h4>
+                <p>
+                  Sumbangan ikhlas <b>RM 250</b> untuk <b>Microwave TJean</b> telah diterima. Doa dan
+                  sokongan anda amat bermakna buat kami.
+                </p>
+              </div>
+
+              <div class="box">
+                <p class="lbl">Selesaikan bayaran</p>
+                <a class="pay-btn" href="#" onclick="return false">Buka pautan Touch ’n Go</a>
+                <div class="qr">
+                  <svg viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges">
+                    <rect width="21" height="21" fill="#ffffff" />
+                    <g fill="#1f2937">
+                      <rect x="1" y="1" width="6" height="6" />
+                      <rect x="2" y="2" width="2" height="2" fill="#ffffff" />
+                      <rect x="5" y="2" width="1" height="1" fill="#ffffff" />
+                      <rect x="2" y="5" width="1" height="1" fill="#ffffff" />
+                      <rect x="14" y="1" width="6" height="6" />
+                      <rect x="15" y="2" width="2" height="2" fill="#ffffff" />
+                      <rect x="18" y="5" width="1" height="1" fill="#ffffff" />
+                      <rect x="1" y="14" width="6" height="6" />
+                      <rect x="2" y="15" width="2" height="2" fill="#ffffff" />
+                      <rect x="5" y="18" width="1" height="1" fill="#ffffff" />
+                      <rect x="9" y="1" width="1" height="1" />
+                      <rect x="11" y="1" width="1" height="1" />
+                      <rect x="9" y="3" width="1" height="1" />
+                      <rect x="12" y="3" width="1" height="1" />
+                      <rect x="10" y="5" width="1" height="1" />
+                      <rect x="9" y="7" width="1" height="1" />
+                      <rect x="11" y="7" width="1" height="1" />
+                      <rect x="12" y="8" width="1" height="1" />
+                      <rect x="8" y="9" width="2" height="1" />
+                      <rect x="11" y="10" width="2" height="1" />
+                      <rect x="14" y="8" width="1" height="1" />
+                      <rect x="16" y="9" width="1" height="1" />
+                      <rect x="18" y="8" width="1" height="1" />
+                      <rect x="15" y="10" width="1" height="2" />
+                      <rect x="19" y="10" width="1" height="1" />
+                      <rect x="8" y="12" width="1" height="1" />
+                      <rect x="10" y="12" width="1" height="1" />
+                      <rect x="13" y="12" width="1" height="1" />
+                      <rect x="16" y="13" width="1" height="1" />
+                      <rect x="18" y="12" width="1" height="1" />
+                      <rect x="9" y="14" width="1" height="1" />
+                      <rect x="12" y="14" width="1" height="1" />
+                      <rect x="15" y="15" width="1" height="1" />
+                      <rect x="17" y="16" width="2" height="1" />
+                      <rect x="9" y="16" width="1" height="1" />
+                      <rect x="11" y="17" width="1" height="1" />
+                      <rect x="13" y="16" width="1" height="1" />
+                      <rect x="10" y="19" width="1" height="1" />
+                      <rect x="12" y="19" width="1" height="1" />
+                      <rect x="14" y="18" width="2" height="1" />
+                      <rect x="18" y="19" width="1" height="1" />
+                      <rect x="8" y="18" width="1" height="1" />
+                    </g>
+                  </svg>
+                </div>
+                <p class="val" style="margin-top: 8px; text-align: center">
+                  Selepas bayar, tekan “Selesai”. Pengantin akan sahkan sumbangan anda.
+                </p>
+              </div>
+
+              <button class="cta" type="button">Selesai</button>
+              <p class="fineprint">Terima kasih kerana menjadi sebahagian daripada hari bahagia kami.</p>
+            </div>
+          </div>
+        </div>
+        <p class="option-note">
+          <b>Selepas bayar.</b> Popup berjaya dengan ucapan terima kasih, pautan TnG + QR, dan butang “Selesai”.
+        </p>
+      </section>
+
+      <!-- ============ 3. BERJAYA — HADIAH SENDIRI ============ -->
+      <section class="option">
+        <div class="option-label">3 · Selepas hantar <span class="tag">Hadiah sendiri</span></div>
+        <div class="phone">
+          <div class="screen">
+            <div class="screen-head">
+              <p class="eyebrow">Boarding info</p>
+              <h2>Gift</h2>
+              <button class="close" type="button" aria-label="Tutup">✕</button>
+            </div>
+            <div class="sheet">
+              <div class="success">
+                <div class="mark">✓</div>
+                <h4>Terima kasih!</h4>
+                <p>
+                  Tempahan <b>Vacuum 3-in-1</b> telah diterima. Sila hubungi pengantin untuk alamat
+                  dan susunan penghantaran.
+                </p>
+              </div>
+
+              <div class="box">
+                <p class="lbl">Minta alamat penghantaran</p>
+                <a class="wa" href="https://api.whatsapp.com/send/?phone=60189067988&text=Assalamualaikum+*Athirah*%2C+saya+*Kak+Long*.+Saya+telah+memilih+hadiah+*%22Vacuum+3-in-1%22*+dalam+senarai+hadiah+anda+dan+akan+beli+sendiri.+Boleh+kongsi+alamat+penghantaran+untuk+saya+pos%3F+Terima+kasih.&type=phone_number&app_absent=0" target="_blank" rel="noopener noreferrer">
+                  <span>WhatsApp Athirah (Bride)</span>
+                  <small>018-906 7988</small>
+                </a>
+                <a class="wa" href="https://api.whatsapp.com/send/?phone=60133694584&text=Assalamualaikum+*Aidit*%2C+saya+*Kak+Long*.+Saya+telah+memilih+hadiah+*%22Vacuum+3-in-1%22*+dalam+senarai+hadiah+anda+dan+akan+beli+sendiri.+Boleh+kongsi+alamat+penghantaran+untuk+saya+pos%3F+Terima+kasih.&type=phone_number&app_absent=0" target="_blank" rel="noopener noreferrer">
+                  <span>WhatsApp Aidit (Groom)</span>
+                  <small>013-369 4584</small>
+                </a>
+                <p class="val" style="margin-top: 9px">
+                  Alamat rumah tidak dipaparkan di website. Ia hanya diberi melalui WhatsApp.
+                </p>
+              </div>
+
+              <button class="cta" type="button">Selesai</button>
+              <p class="fineprint">Terima kasih kerana sudi memilih hadiah untuk rumah kecil kami.</p>
+            </div>
+          </div>
+        </div>
+        <p class="option-note">
+          <b>Selepas hantar.</b> Ucapan terima kasih + dua butang WhatsApp (Bride &amp; Groom) untuk minta alamat.
+        </p>
+      </section>
+    </main>
+
+    <div class="legend">
+      <b>Nota:</b> Preview statik — belum sentuh app atau database. Bila awak setuju, saya sambungkan: column
+      <i>cara hadiah</i> (sumbangan / hadiah sendiri), simpan pilihan tetamu, WhatsApp ke nombor Bride &amp; Groom,
+      dan popup berjaya untuk kedua-dua aliran.
+    </div>
+
+    <script>
+      const modeButtons = document.querySelectorAll("#mode button");
+      const cashFields = document.getElementById("cash-fields");
+      const selfFields = document.getElementById("self-fields");
+      const cta = document.getElementById("hybrid-cta");
+      const fineprint = document.getElementById("hybrid-fineprint");
+
+      modeButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          modeButtons.forEach((item) => item.classList.remove("on"));
+          button.classList.add("on");
+
+          const selfMode = button.dataset.mode === "self";
+          cashFields.classList.toggle("hidden", selfMode);
+          selfFields.classList.toggle("hidden", !selfMode);
+          cta.textContent = selfMode ? "Hantar & Minta Alamat" : "Hantar Sumbangan";
+          cta.classList.toggle("gold", selfMode);
+          fineprint.textContent = selfMode
+            ? "Pengantin akan WhatsApp alamat untuk penghantaran hadiah."
+            : "Sumbangan disahkan selepas bayaran diterima.";
+        });
+      });
+    </script>
+  </body>
+</html>

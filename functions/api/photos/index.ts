@@ -1,6 +1,27 @@
+type D1PreparedStatement = {
+  bind: (...values: unknown[]) => D1PreparedStatement;
+  all: () => Promise<{ results?: unknown[] }>;
+  run: () => Promise<unknown>;
+  first: () => Promise<{ image_key?: string } | null>;
+};
+
 type Env = {
-  DB: any;
-  PHOTOS: any;
+  DB: { prepare: (query: string) => D1PreparedStatement };
+  PHOTOS: {
+    put: (
+      key: string,
+      value: ArrayBuffer,
+      options?: { httpMetadata?: { contentType?: string } },
+    ) => Promise<unknown>;
+    get: (
+      key: string,
+    ) => Promise<{
+      body: ReadableStream;
+      httpMetadata?: { contentType?: string };
+      httpEtag: string;
+    } | null>;
+    delete: (key: string) => Promise<void>;
+  };
 };
 
 type PhotoRow = {
@@ -66,7 +87,14 @@ export async function onRequestPost(context: {
     const guestName = String(form.get("guest_name") || "Tetamu").trim().slice(0, 120) || "Tetamu";
     const message = String(form.get("message") || "").trim().slice(0, 500) || null;
 
-    await context.env.PHOTOS.put(imageKey, photo.stream(), {
+    // Read the body fully before writing to R2. Some dev runtimes stall when
+    // piping a multipart stream straight into a local R2 binding.
+    const bytes = await photo.arrayBuffer();
+    if (bytes.byteLength === 0) {
+      return json({ error: "The uploaded photo is empty." }, 400);
+    }
+
+    await context.env.PHOTOS.put(imageKey, bytes, {
       httpMetadata: { contentType: photo.type },
     });
 

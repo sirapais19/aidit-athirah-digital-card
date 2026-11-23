@@ -19,6 +19,9 @@ bun.lockb
 .env.*
 !.env.example
 
+# Cloudflare local state (D1 + R2 emulation)
+.wrangler
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

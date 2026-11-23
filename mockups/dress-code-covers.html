@@ -1,0 +1,1084 @@
+<!doctype html>
+<html lang="ms">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>10 design cover Dress Code</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@400;500;600&family=Playfair+Display:wght@400;500;600&family=Source+Code+Pro:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --cream: #f9f7f1;
+        --paper: #f5edda;
+        --line: #e4dccb;
+        --gold: #b79a6a;
+        --gold-deep: #a8895e;
+        --blue: #72809c;
+        --blue-deep: #5c6982;
+        --ivory: #f1e6d0;
+        --dusty: #8fa6c4;
+        --sage: #a9b89b;
+        --ink: #334155;
+        --body: #64748b;
+        --skin: #ecd9bd;
+      }
+
+      * { box-sizing: border-box; }
+
+      body {
+        margin: 0;
+        padding: 32px 20px 64px;
+        background: radial-gradient(circle at 14% 0%, #f4f6fb 0%, #eef0f4 45%, #e6eaf3 100%);
+        font-family: "Montserrat", sans-serif;
+        color: var(--ink);
+        -webkit-font-smoothing: antialiased;
+      }
+
+      .head { max-width: 1180px; margin: 0 auto 26px; text-align: center; }
+      .head .eyebrow {
+        margin: 0;
+        font-family: "Source Code Pro", monospace;
+        font-size: 10px;
+        letter-spacing: 0.28em;
+        text-transform: uppercase;
+        color: #8b95ab;
+      }
+      .head h1 {
+        margin: 8px 0 6px;
+        font-family: "Playfair Display", serif;
+        font-weight: 500;
+        font-size: 30px;
+        color: #44506b;
+      }
+      .head p {
+        margin: 0 auto;
+        max-width: 660px;
+        font-family: "Cormorant Garamond", serif;
+        font-style: italic;
+        font-size: 17px;
+        color: #6d7689;
+      }
+
+      .palette {
+        display: flex;
+        justify-content: center;
+        gap: 14px;
+        margin-top: 14px;
+        flex-wrap: wrap;
+      }
+      .palette span {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        font-family: "Source Code Pro", monospace;
+        font-size: 8px;
+        color: #7a869c;
+        letter-spacing: 0.06em;
+      }
+      .palette i {
+        width: 12px;
+        height: 12px;
+        border-radius: 999px;
+        border: 1.5px solid #fff;
+        box-shadow: 0 0 0 1px rgba(100, 116, 139, 0.18);
+      }
+
+      /* ---------------- grid ---------------- */
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 20px 18px;
+        max-width: 1180px;
+        margin: 0 auto;
+      }
+      @media (max-width: 1080px) { .grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+      @media (max-width: 860px) { .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+      @media (max-width: 640px) { .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px 12px; } }
+
+      .design { display: flex; flex-direction: column; gap: 8px; position: relative; }
+      .chosen {
+        position: absolute;
+        top: -10px;
+        right: 4px;
+        z-index: 2;
+        padding: 3px 8px;
+        border-radius: 999px;
+        background: #44506b;
+        color: #f9f7f1;
+        font-family: "Source Code Pro", monospace;
+        font-size: 7px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        box-shadow: 0 4px 10px rgba(30, 41, 59, 0.25);
+      }
+      .design-label {
+        display: flex;
+        align-items: baseline;
+        gap: 6px;
+        font-family: "Source Code Pro", monospace;
+        font-size: 9px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: #6c7892;
+      }
+      .design-label b {
+        font-weight: 500;
+        color: #a3adc0;
+      }
+      .design-label span {
+        font-family: "Playfair Display", serif;
+        font-size: 14px;
+        letter-spacing: 0;
+        text-transform: none;
+        color: #44506b;
+      }
+
+      .polaroid {
+        display: block;
+        width: 100%;
+        border: 0;
+        padding: 7px 7px 0;
+        border-radius: 6px;
+        background: #fff;
+        box-shadow: 0 12px 26px rgba(30, 41, 59, 0.16);
+        cursor: pointer;
+        transition: transform 0.25s ease, box-shadow 0.25s ease;
+        text-align: center;
+      }
+      .polaroid:hover {
+        transform: translateY(-4px) rotate(-1deg);
+        box-shadow: 0 18px 34px rgba(30, 41, 59, 0.24);
+      }
+      .polaroid:focus-visible { outline: 2px solid var(--blue); outline-offset: 3px; }
+      .cover {
+        position: relative;
+        height: 156px;
+        border-radius: 3px;
+        overflow: hidden;
+        background: linear-gradient(180deg, #fdf8ec, #f3ead7);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .polaroid figcaption {
+        padding: 7px 0 6px;
+        font-family: "Cormorant Garamond", serif;
+        font-style: italic;
+        font-size: 13px;
+        color: #64748b;
+      }
+
+      /* ---------- 01 flat-lay ---------- */
+      .flatlay { position: relative; width: 118px; height: 112px; }
+      .flatlay .cloth {
+        position: absolute;
+        left: 50%;
+        width: 92px;
+        height: 66px;
+        border-radius: 6px;
+        transform-origin: center;
+        box-shadow: 0 4px 10px rgba(90, 76, 56, 0.18), inset 0 0 0 1px rgba(255, 255, 255, 0.35);
+      }
+      .flatlay .c1 { top: 6px; transform: translateX(-50%) rotate(-9deg); background: repeating-linear-gradient(90deg, #f4ead5 0 3px, #efe2c9 3px 6px); }
+      .flatlay .c2 { top: 28px; transform: translateX(-52%) rotate(5deg); background: repeating-linear-gradient(90deg, #c3a97f 0 3px, #b79a6a 3px 6px); }
+      .flatlay .c3 { top: 50px; transform: translateX(-48%) rotate(-4deg); background: repeating-linear-gradient(90deg, #9eb2cc 0 3px, #8fa6c4 3px 6px); }
+      .flatlay .c4 { top: 70px; transform: translateX(-51%) rotate(8deg); background: repeating-linear-gradient(90deg, #b6c4a8 0 3px, #a9b89b 3px 6px); }
+      .flatlay .sprig {
+        position: absolute;
+        right: 4px;
+        top: 10px;
+        width: 26px;
+        height: 34px;
+        border-left: 1px solid #a9b89b;
+        transform: rotate(18deg);
+      }
+      .flatlay .sprig::before,
+      .flatlay .sprig::after {
+        content: "";
+        position: absolute;
+        width: 12px;
+        height: 7px;
+        border-radius: 999px 0 999px 0;
+        background: #a9b89b;
+        transform: rotate(-25deg);
+      }
+      .flatlay .sprig::before { top: 4px; left: -12px; }
+      .flatlay .sprig::after { top: 15px; left: 0; transform: rotate(25deg) scaleX(-1); }
+
+      /* ---------- 02 hanger ---------- */
+      .hanger { width: 124px; height: 118px; }
+      .garment {
+        position: absolute;
+        left: 50%;
+        top: 44px;
+        width: 62px;
+        height: 62px;
+        transform: translateX(-50%);
+        background: linear-gradient(180deg, #f6ecd8, #efe2c8);
+        border: 1px solid #d9c7a3;
+        border-radius: 8px 8px 16px 16px;
+        box-shadow: 0 6px 12px rgba(120, 100, 70, 0.14);
+      }
+      .garment::before {
+        content: "";
+        position: absolute;
+        left: 50%;
+        top: -10px;
+        width: 18px;
+        height: 12px;
+        transform: translateX(-50%);
+        border: 1px solid #d9c7a3;
+        border-bottom: 0;
+        border-radius: 10px 10px 0 0;
+        background: #f6ecd8;
+      }
+      .garment::after {
+        content: "";
+        position: absolute;
+        left: 50%;
+        bottom: 0;
+        width: 62px;
+        height: 8px;
+        transform: translateX(-50%);
+        background: var(--gold);
+        opacity: 0.75;
+        border-radius: 0 0 16px 16px;
+      }
+      .hanger-tag {
+        position: absolute;
+        right: 6px;
+        top: 66px;
+        padding: 4px 6px;
+        border-radius: 999px;
+        background: #fff;
+        border: 1px solid var(--line);
+        font-family: "Source Code Pro", monospace;
+        font-size: 5.6px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--gold-deep);
+        transform: rotate(6deg);
+      }
+
+      /* ---------- 03 suitcase ---------- */
+      .case { position: relative; width: 128px; height: 110px; }
+      .case .handle {
+        position: absolute;
+        left: 50%;
+        top: 2px;
+        width: 34px;
+        height: 16px;
+        transform: translateX(-50%);
+        border: 3px solid #8d7c62;
+        border-bottom: 0;
+        border-radius: 8px 8px 0 0;
+      }
+      .case .body {
+        position: absolute;
+        left: 50%;
+        top: 16px;
+        width: 112px;
+        height: 72px;
+        transform: translateX(-50%);
+        border-radius: 9px;
+        background: linear-gradient(180deg, #cbb894, #b6a17c);
+        box-shadow: 0 8px 16px rgba(90, 76, 56, 0.22), inset 0 0 0 2px rgba(255, 255, 255, 0.25);
+      }
+      .case .clothes {
+        position: absolute;
+        left: 50%;
+        top: 26px;
+        width: 94px;
+        height: 54px;
+        transform: translateX(-50%);
+        border-radius: 6px;
+        background: linear-gradient(180deg, #f4ead5 0 28%, #b79a6a 28% 50%, #8fa6c4 50% 74%, #a9b89b 74%);
+        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.4);
+      }
+      .case .passport {
+        position: absolute;
+        right: 0;
+        bottom: 2px;
+        width: 34px;
+        height: 26px;
+        border-radius: 3px;
+        background: #44506b;
+        border: 2px solid #fff;
+        box-shadow: 0 3px 8px rgba(30, 41, 59, 0.25);
+        transform: rotate(7deg);
+      }
+      .case .passport::before {
+        content: "✈";
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #d9c7a3;
+        font-size: 9px;
+      }
+
+      /* ---------- 04 colour fan ---------- */
+      .fan { position: relative; width: 120px; height: 112px; }
+      .fan .blade {
+        position: absolute;
+        left: 50%;
+        bottom: 12px;
+        width: 30px;
+        height: 78px;
+        border-radius: 6px 6px 4px 4px;
+        transform-origin: 50% 100%;
+        box-shadow: 0 3px 8px rgba(60, 70, 90, 0.18), inset 0 0 0 1px rgba(255, 255, 255, 0.4);
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+        padding-bottom: 5px;
+      }
+      .fan .blade code {
+        font-family: "Source Code Pro", monospace;
+        font-size: 4.2px;
+        color: rgba(40, 45, 60, 0.55);
+        writing-mode: vertical-rl;
+        letter-spacing: 0.04em;
+      }
+      .fan .b1 { transform: translateX(-50%) rotate(-34deg); background: var(--ivory); }
+      .fan .b2 { transform: translateX(-50%) rotate(-18deg); background: var(--gold); }
+      .fan .b3 { transform: translateX(-50%) rotate(-2deg); background: var(--dusty); }
+      .fan .b4 { transform: translateX(-50%) rotate(14deg); background: var(--sage); }
+      .fan .pin {
+        position: absolute;
+        left: 50%;
+        bottom: 9px;
+        width: 10px;
+        height: 10px;
+        transform: translateX(-50%);
+        border-radius: 999px;
+        background: #6b5a44;
+        border: 2px solid #fff;
+      }
+
+      /* ---------- 05 passport page ---------- */
+      .passport-page {
+        position: relative;
+        width: 116px;
+        height: 110px;
+        border-radius: 4px;
+        background: #fbf4e2;
+        border: 1px solid #e0d2b5;
+        box-shadow: inset 0 0 0 4px rgba(255, 255, 255, 0.5), 0 4px 10px rgba(90, 76, 56, 0.16);
+        overflow: hidden;
+      }
+      .passport-page .lines {
+        position: absolute;
+        inset: 18px 14px;
+        background: repeating-linear-gradient(180deg, rgba(140, 120, 90, 0.25) 0 1px, transparent 1px 13px);
+      }
+      .stamp {
+        position: absolute;
+        border: 1.5px dashed var(--gold);
+        border-radius: 999px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        font-family: "Source Code Pro", monospace;
+        color: var(--gold-deep);
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+      }
+      .stamp.s1 {
+        width: 54px;
+        height: 54px;
+        left: 10px;
+        top: 14px;
+        font-size: 5px;
+        transform: rotate(-14deg);
+        border-color: var(--blue);
+        color: var(--blue-deep);
+      }
+      .stamp.s2 {
+        width: 58px;
+        height: 58px;
+        right: 8px;
+        bottom: 12px;
+        font-size: 6px;
+        transform: rotate(9deg);
+        background: rgba(183, 154, 106, 0.08);
+      }
+      .stamp.s2 b { display: block; font-size: 7px; }
+
+      /* ---------- 06 boarding pass ---------- */
+      .ticket {
+        position: relative;
+        width: 128px;
+        height: 100px;
+        border-radius: 6px;
+        background: #fff;
+        border: 1px solid var(--line);
+        box-shadow: 0 5px 12px rgba(90, 76, 56, 0.16);
+        padding: 8px 9px;
+        text-align: left;
+      }
+      .ticket .airline {
+        font-family: "Source Code Pro", monospace;
+        font-size: 5.2px;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: var(--blue);
+      }
+      .ticket .dest {
+        margin-top: 2px;
+        font-family: "Playfair Display", serif;
+        font-size: 11px;
+        color: #44506b;
+      }
+      .ticket .dashline {
+        margin: 6px 0 5px;
+        border-top: 1px dashed #dccfb8;
+      }
+      .ticket .attire {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+      .ticket .attire span {
+        width: 11px;
+        height: 11px;
+        border-radius: 999px;
+        border: 1px solid #fff;
+        box-shadow: 0 0 0 0.5px rgba(100, 116, 139, 0.2);
+      }
+      .ticket .attire small {
+        margin-left: auto;
+        font-family: "Source Code Pro", monospace;
+        font-size: 4.8px;
+        letter-spacing: 0.08em;
+        color: #94a0b8;
+      }
+      .ticket .barcode {
+        display: flex;
+        gap: 1.5px;
+        align-items: flex-end;
+        height: 14px;
+        margin-top: 6px;
+      }
+      .ticket .barcode i {
+        display: block;
+        width: 1.5px;
+        background: #8a94a8;
+        border-radius: 1px;
+      }
+
+      /* ---------- 07 couple illustration ---------- */
+      .couple { width: 132px; height: 126px; }
+
+      /* ---------- 08 tags ---------- */
+      .tags { position: relative; width: 132px; height: 110px; }
+      .tag {
+        position: absolute;
+        width: 56px;
+        padding: 7px 6px 6px;
+        border-radius: 6px;
+        border: 1px solid var(--line);
+        background: linear-gradient(180deg, #fdf8ec, #f5edda);
+        box-shadow: 0 6px 14px rgba(90, 76, 56, 0.16);
+        text-align: left;
+      }
+      .tag::before {
+        content: "";
+        position: absolute;
+        left: 50%;
+        top: -8px;
+        width: 9px;
+        height: 9px;
+        border-radius: 999px;
+        border: 1px solid #c9b99d;
+        background: #f9f7f1;
+        transform: translateX(-50%);
+      }
+      .tag small {
+        display: block;
+        font-family: "Montserrat", sans-serif;
+        font-size: 5.2px;
+        font-weight: 600;
+        color: #4b566e;
+        line-height: 1.15;
+        margin-top: 3px;
+      }
+      .tag .dots { display: flex; }
+      .tag .dot {
+        width: 11px;
+        height: 11px;
+        border-radius: 999px;
+        border: 1px solid #fff;
+        box-shadow: 0 0 0 0.5px rgba(100, 116, 139, 0.2);
+      }
+      .tag .dot + .dot { margin-left: -4px; }
+      .tag.t1 { left: 2px; top: 14px; transform: rotate(-9deg); }
+      .tag.t2 { left: 38px; top: 4px; transform: rotate(1deg); z-index: 2; }
+      .tag.t3 { left: 74px; top: 16px; transform: rotate(10deg); }
+
+      /* ---------- 09 moodboard ---------- */
+      .mood { width: 124px; height: 112px; display: grid; grid-template-columns: 1fr 1fr; gap: 4px; }
+      .mood div { border-radius: 4px; overflow: hidden; position: relative; }
+      .mood .m1 { background: repeating-linear-gradient(90deg, #f4ead5 0 3px, #eadcc1 3px 6px); }
+      .mood .m2 {
+        background: radial-gradient(circle at 50% 40%, #f6e9d3 0 22%, #b79a6a 23% 30%, #a9b89b 31% 60%, #8fa6c4 61%);
+      }
+      .mood .m3 { background: linear-gradient(160deg, #8fa6c4, #b3c2d7); }
+      .mood .m3::after {
+        content: "Venue";
+        position: absolute;
+        inset: auto 0 2px 0;
+        text-align: center;
+        font-family: "Source Code Pro", monospace;
+        font-size: 4.6px;
+        letter-spacing: 0.08em;
+        color: rgba(255, 255, 255, 0.85);
+        text-transform: uppercase;
+      }
+      .mood .m4 { background: linear-gradient(180deg, #f6ecd8, #a9b89b); }
+
+      /* ---------- 10 packing list ---------- */
+      .packing {
+        width: 122px;
+        padding: 8px 9px;
+        border-radius: 5px;
+        background: #fff;
+        border: 1px solid var(--line);
+        box-shadow: 0 5px 12px rgba(90, 76, 56, 0.14);
+        text-align: left;
+      }
+      .packing h6 {
+        margin: 0 0 6px;
+        font-family: "Source Code Pro", monospace;
+        font-size: 5.4px;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: var(--gold-deep);
+      }
+      .packing .line {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        padding: 3px 0;
+        border-top: 1px dashed #eee6d6;
+        font-family: "Montserrat", sans-serif;
+        font-size: 5.6px;
+        color: #5b6478;
+      }
+      .packing .line:first-of-type { border-top: 0; }
+      .packing .box {
+        width: 7px;
+        height: 7px;
+        border: 1px solid #c9b99d;
+        border-radius: 1.5px;
+        flex: 0 0 auto;
+      }
+      .packing .box.on { background: #b79a6a; border-color: #b79a6a; }
+      .packing .dot {
+        margin-left: auto;
+        width: 8px;
+        height: 8px;
+        border-radius: 999px;
+        border: 1px solid #fff;
+        box-shadow: 0 0 0 0.5px rgba(100, 116, 139, 0.2);
+      }
+
+      /* ---------------- modal ---------------- */
+      .overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 50;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        background: rgba(25, 34, 50, 0.62);
+        backdrop-filter: blur(4px);
+      }
+      .overlay.open { display: flex; }
+      .modal {
+        width: 100%;
+        max-width: 380px;
+        max-height: 90svh;
+        overflow-y: auto;
+        border-radius: 26px;
+        border: 1px solid rgba(255, 255, 255, 0.85);
+        background: var(--cream);
+        padding: 18px 18px 20px;
+        box-shadow: 0 28px 70px rgba(20, 28, 40, 0.4);
+      }
+      .modal-head {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 10px;
+      }
+      .modal-head p {
+        margin: 0;
+        font-family: "Source Code Pro", monospace;
+        font-size: 8px;
+        letter-spacing: 0.24em;
+        text-transform: uppercase;
+        color: #94a0b8;
+      }
+      .modal-head h2 {
+        margin: 5px 0 0;
+        font-family: "Playfair Display", serif;
+        font-weight: 500;
+        font-size: 24px;
+        color: #44506b;
+      }
+      .modal-head .close {
+        width: 30px;
+        height: 30px;
+        border: 0;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.8);
+        color: #6b7690;
+        font-size: 14px;
+        cursor: pointer;
+      }
+      .cover-name {
+        margin: 3px 0 0;
+        font-family: "Cormorant Garamond", serif;
+        font-style: italic;
+        font-size: 12.5px;
+        color: #94a0b8;
+      }
+
+      .group {
+        display: flex;
+        align-items: center;
+        gap: 11px;
+        margin-top: 12px;
+        padding: 9px;
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        background: rgba(255, 255, 255, 0.66);
+      }
+      .group .illo {
+        width: 74px;
+        height: 88px;
+        flex: 0 0 74px;
+        border-radius: 10px;
+        background: linear-gradient(180deg, #fdf8ec, #f1e7d4);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+      }
+      .group .illo svg { width: 66px; height: 78px; }
+      .group .meta { min-width: 0; flex: 1; }
+      .group .meta h4 {
+        margin: 0;
+        font-family: "Playfair Display", serif;
+        font-weight: 500;
+        font-size: 15px;
+        color: #44506b;
+      }
+      .group .meta .sw {
+        display: flex;
+        gap: 5px;
+        margin-top: 6px;
+      }
+      .group .meta .sw i {
+        width: 18px;
+        height: 18px;
+        border-radius: 999px;
+        border: 2px solid #fff;
+        box-shadow: 0 0 0 1px rgba(100, 116, 139, 0.2);
+      }
+      .group .meta code {
+        display: block;
+        margin-top: 5px;
+        font-family: "Source Code Pro", monospace;
+        font-size: 6.6px;
+        color: #a2988a;
+        letter-spacing: 0.02em;
+      }
+      .group .meta p {
+        margin: 4px 0 0;
+        font-family: "Cormorant Garamond", serif;
+        font-style: italic;
+        font-size: 11.5px;
+        color: #7a869c;
+      }
+      .guest-note {
+        margin: 12px 0 0;
+        padding-top: 9px;
+        border-top: 1px dashed var(--line);
+        text-align: center;
+        font-family: "Cormorant Garamond", serif;
+        font-style: italic;
+        font-size: 12px;
+        color: #8a8170;
+      }
+
+      .legend {
+        max-width: 1180px;
+        margin: 28px auto 0;
+        padding: 15px 18px;
+        border-radius: 16px;
+        border: 1px solid #dfe5f1;
+        background: rgba(255, 255, 255, 0.62);
+        font-family: "Cormorant Garamond", serif;
+        font-size: 15px;
+        line-height: 1.5;
+        color: #6d7689;
+      }
+      .legend b {
+        font-family: "Montserrat", sans-serif;
+        font-size: 11px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: #5f6c88;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="head">
+      <p class="eyebrow">Preview only · warna contoh</p>
+      <h1>10 design cover — Dress Code</h1>
+      <p>Cover <b>03 · Beg pakaian</b> dipilih. Popup bawah dah ditambah satu card khas untuk tetamu.</p>
+      <div class="palette">
+        <span><i style="background: #f1e6d0"></i> Ivory #F1E6D0</span>
+        <span><i style="background: #b79a6a"></i> Gold #B79A6A</span>
+        <span><i style="background: #8fa6c4"></i> Dusty blue #8FA6C4</span>
+        <span><i style="background: #a9b89b"></i> Sage #A9B89B</span>
+      </div>
+    </header>
+
+    <main class="grid" id="grid">
+      <!-- 01 -->
+      <div class="design">
+        <div class="design-label"><b>01</b><span>Flat-lay kain</span></div>
+        <button class="polaroid" type="button" data-name="Flat-lay kain">
+          <div class="cover">
+            <div class="flatlay">
+              <span class="cloth c1"></span>
+              <span class="cloth c2"></span>
+              <span class="cloth c3"></span>
+              <span class="cloth c4"></span>
+              <span class="sprig"></span>
+            </div>
+          </div>
+          <figcaption>Dress code</figcaption>
+        </button>
+      </div>
+
+      <!-- 02 -->
+      <div class="design">
+        <div class="design-label"><b>02</b><span>Penyangkut baju</span></div>
+        <button class="polaroid" type="button" data-name="Penyangkut baju">
+          <div class="cover">
+            <div class="hanger">
+              <svg viewBox="0 0 124 118" xmlns="http://www.w3.org/2000/svg" style="position:absolute; inset:0">
+                <path d="M62 26v-6c0-4 3-7 7-7s7 3 7 7" fill="none" stroke="#a8895e" stroke-width="2.2" stroke-linecap="round" />
+                <path d="M62 26 20 52c-4 2-3 8 2 8h80c5 0 6-6 2-8L62 26Z" fill="none" stroke="#8d7c62" stroke-width="2.6" stroke-linejoin="round" />
+              </svg>
+              <div class="garment"></div>
+              <span class="hanger-tag">Dress code</span>
+            </div>
+          </div>
+          <figcaption>Dress code</figcaption>
+        </button>
+      </div>
+
+      <!-- 03 -->
+      <div class="design">
+        <div class="design-label"><b>03</b><span>Beg pakaian</span></div>
+        <span class="chosen">Pilihan awak</span>
+        <button class="polaroid" type="button" data-name="Beg pakaian terbuka">
+          <div class="cover">
+            <div class="case">
+              <span class="handle"></span>
+              <span class="body"></span>
+              <span class="clothes"></span>
+              <span class="passport"></span>
+            </div>
+          </div>
+          <figcaption>Dress code</figcaption>
+        </button>
+      </div>
+
+      <!-- 04 -->
+      <div class="design">
+        <div class="design-label"><b>04</b><span>Kipas warna</span></div>
+        <button class="polaroid" type="button" data-name="Kipas warna">
+          <div class="cover">
+            <div class="fan">
+              <span class="blade b1"><code>#F1E6D0</code></span>
+              <span class="blade b2"><code>#B79A6A</code></span>
+              <span class="blade b3"><code>#8FA6C4</code></span>
+              <span class="blade b4"><code>#A9B89B</code></span>
+              <span class="pin"></span>
+            </div>
+          </div>
+          <figcaption>Dress code</figcaption>
+        </button>
+      </div>
+
+      <!-- 05 -->
+      <div class="design">
+        <div class="design-label"><b>05</b><span>Halaman passport</span></div>
+        <button class="polaroid" type="button" data-name="Halaman passport">
+          <div class="cover">
+            <div class="passport-page">
+              <div class="lines"></div>
+              <span class="stamp s1">Aidit<br />&amp; Athirah</span>
+              <span class="stamp s2"><b>Dress</b><br />Code</span>
+            </div>
+          </div>
+          <figcaption>Dress code</figcaption>
+        </button>
+      </div>
+
+      <!-- 06 -->
+      <div class="design">
+        <div class="design-label"><b>06</b><span>Boarding pass</span></div>
+        <button class="polaroid" type="button" data-name="Boarding pass attire">
+          <div class="cover">
+            <div class="ticket">
+              <div class="airline">Wedding Air · Attire</div>
+              <div class="dest">Dress Code</div>
+              <div class="dashline"></div>
+              <div class="attire">
+                <span style="background: #f1e6d0"></span>
+                <span style="background: #b79a6a"></span>
+                <span style="background: #8fa6c4"></span>
+                <span style="background: #a9b89b"></span>
+                <small>Colours</small>
+              </div>
+              <div class="barcode" aria-hidden="true"></div>
+            </div>
+          </div>
+          <figcaption>Dress code</figcaption>
+        </button>
+      </div>
+
+      <!-- 07 -->
+      <div class="design">
+        <div class="design-label"><b>07</b><span>Siluet couple</span></div>
+        <button class="polaroid" type="button" data-name="Siluet couple">
+          <div class="cover">
+            <svg class="couple" viewBox="0 0 132 126" xmlns="http://www.w3.org/2000/svg">
+              <!-- bride -->
+              <circle cx="44" cy="34" r="10" fill="#ecd9bd" />
+              <path d="M44 12c-12 0-19 9-19 21 0 6 2 10 5 13l-3 12h34l-3-12c3-3 5-7 5-13 0-12-7-21-19-21Z" fill="#f1e6d0" stroke="#b79a6a" stroke-width="1.4" />
+              <path d="M25 58h38l8 56H17Z" fill="#f1e6d0" stroke="#b79a6a" stroke-width="1.4" />
+              <rect x="25" y="80" width="38" height="6" fill="#b79a6a" />
+              <!-- groom -->
+              <circle cx="90" cy="36" r="10" fill="#ecd9bd" />
+              <rect x="78" y="25" width="24" height="6" rx="2.5" fill="#44506b" />
+              <path d="M72 58h36v56H72Z" fill="#f1e6d0" stroke="#b79a6a" stroke-width="1.4" />
+              <rect x="72" y="88" width="36" height="9" fill="#b79a6a" />
+              <path d="M72 58l-8 16 8 4Z" fill="#f1e6d0" stroke="#b79a6a" stroke-width="1.2" />
+              <path d="M108 58l8 16-8 4Z" fill="#f1e6d0" stroke="#b79a6a" stroke-width="1.2" />
+            </svg>
+          </div>
+          <figcaption>Dress code</figcaption>
+        </button>
+      </div>
+
+      <!-- 08 -->
+      <div class="design">
+        <div class="design-label"><b>08</b><span>Luggage tag</span></div>
+        <button class="polaroid" type="button" data-name="Luggage tag trio">
+          <div class="cover">
+            <div class="tags">
+              <span class="tag t1">
+                <span class="dots"><span class="dot" style="background: #f1e6d0"></span><span class="dot" style="background: #b79a6a"></span></span>
+                <small>Pengantin</small>
+              </span>
+              <span class="tag t2">
+                <span class="dots"><span class="dot" style="background: #8fa6c4"></span></span>
+                <small>Keluarga P</small>
+              </span>
+              <span class="tag t3">
+                <span class="dots"><span class="dot" style="background: #a9b89b"></span></span>
+                <small>Keluarga L</small>
+              </span>
+            </div>
+          </div>
+          <figcaption>Dress code</figcaption>
+        </button>
+      </div>
+
+      <!-- 09 -->
+      <div class="design">
+        <div class="design-label"><b>09</b><span>Moodboard</span></div>
+        <button class="polaroid" type="button" data-name="Moodboard">
+          <div class="cover">
+            <div class="mood">
+              <div class="m1"></div>
+              <div class="m2"></div>
+              <div class="m3"></div>
+              <div class="m4"></div>
+            </div>
+          </div>
+          <figcaption>Dress code</figcaption>
+        </button>
+      </div>
+
+      <!-- 10 -->
+      <div class="design">
+        <div class="design-label"><b>10</b><span>Packing list</span></div>
+        <button class="polaroid" type="button" data-name="Packing list">
+          <div class="cover">
+            <div class="packing">
+              <h6>Dress code</h6>
+              <div class="line"><span class="box"></span>Pengantin<span class="dot" style="background: #f1e6d0"></span></div>
+              <div class="line"><span class="box on"></span>Keluarga P<span class="dot" style="background: #8fa6c4"></span></div>
+              <div class="line"><span class="box"></span>Keluarga L<span class="dot" style="background: #a9b89b"></span></div>
+            </div>
+          </div>
+          <figcaption>Dress code</figcaption>
+        </button>
+      </div>
+    </main>
+
+    <div class="legend">
+      <b>Nota:</b> Belum ubah app. Semua cover ni guna warna contoh. Bila awak pilih satu, saya buat versi final dengan warna sebenar dan sambungkan klik ke popup Dress Code.
+    </div>
+
+    <!-- ---------------- modal ---------------- -->
+    <div class="overlay" id="overlay" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <div class="modal">
+        <div class="modal-head">
+          <div>
+            <p>Boarding info · Dress code</p>
+            <h2 id="modal-title">Dress Code</h2>
+            <p class="cover-name" id="cover-name">Cover 01</p>
+          </div>
+          <button class="close" type="button" id="close" aria-label="Tutup">✕</button>
+        </div>
+
+        <div class="group">
+          <div class="illo">
+            <svg viewBox="0 0 120 150" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="34" cy="42" r="10" fill="#ecd9bd" />
+              <path d="M34 20c-12 0-19 9-19 21 0 6 2 10 5 13l-3 10h34l-3-10c3-3 5-7 5-13 0-12-7-21-19-21Z" fill="#f1e6d0" stroke="#b79a6a" stroke-width="1.3" />
+              <path d="M15 64h38l8 66H7Z" fill="#f1e6d0" stroke="#b79a6a" stroke-width="1.3" />
+              <rect x="15" y="88" width="38" height="7" fill="#b79a6a" />
+              <circle cx="84" cy="44" r="10" fill="#ecd9bd" />
+              <rect x="72" y="32" width="24" height="6" rx="2.5" fill="#44506b" />
+              <path d="M66 64h36v66H66Z" fill="#f1e6d0" stroke="#b79a6a" stroke-width="1.3" />
+              <rect x="66" y="96" width="36" height="10" fill="#b79a6a" />
+            </svg>
+          </div>
+          <div class="meta">
+            <h4>Pengantin</h4>
+            <div class="sw">
+              <i style="background: #f1e6d0"></i>
+              <i style="background: #b79a6a"></i>
+            </div>
+            <code>#F1E6D0 · #B79A6A</code>
+            <p>Ivory &amp; Gold</p>
+          </div>
+        </div>
+
+        <div class="group">
+          <div class="illo">
+            <svg viewBox="0 0 120 150" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="42" cy="46" r="9" fill="#ecd9bd" />
+              <path d="M42 26c-10 0-16 8-16 18 0 5 2 9 4 11l-2 8h28l-2-8c2-2 4-6 4-11 0-10-6-18-16-18Z" fill="#8fa6c4" stroke="#6f88aa" stroke-width="1.2" />
+              <path d="M26 64h32l6 58H20Z" fill="#8fa6c4" stroke="#6f88aa" stroke-width="1.2" />
+              <circle cx="84" cy="50" r="9" fill="#ecd9bd" />
+              <path d="M84 32c-9 0-15 7-15 16 0 4 2 7 4 9l-2 7h26l-2-7c2-2 4-5 4-9 0-9-6-16-15-16Z" fill="#8fa6c4" stroke="#6f88aa" stroke-width="1.2" />
+              <path d="M69 66h30l5 56H64Z" fill="#8fa6c4" stroke="#6f88aa" stroke-width="1.2" />
+            </svg>
+          </div>
+          <div class="meta">
+            <h4>Keluarga perempuan</h4>
+            <div class="sw"><i style="background: #8fa6c4"></i></div>
+            <code>#8FA6C4</code>
+            <p>Dusty blue</p>
+          </div>
+        </div>
+
+        <div class="group">
+          <div class="illo">
+            <svg viewBox="0 0 120 150" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="42" cy="48" r="9" fill="#ecd9bd" />
+              <rect x="32" y="37" width="20" height="5" rx="2" fill="#44506b" />
+              <path d="M28 66h28v56H28Z" fill="#a9b89b" stroke="#8a9a7c" stroke-width="1.2" />
+              <rect x="28" y="96" width="28" height="8" fill="#8a9a7c" />
+              <circle cx="84" cy="48" r="9" fill="#ecd9bd" />
+              <rect x="74" y="37" width="20" height="5" rx="2" fill="#44506b" />
+              <path d="M70 66h28v56H70Z" fill="#a9b89b" stroke="#8a9a7c" stroke-width="1.2" />
+              <rect x="70" y="96" width="28" height="8" fill="#8a9a7c" />
+            </svg>
+          </div>
+          <div class="meta">
+            <h4>Keluarga lelaki</h4>
+            <div class="sw"><i style="background: #a9b89b"></i></div>
+            <code>#A9B89B</code>
+            <p>Sage green</p>
+          </div>
+        </div>
+
+        <div class="group">
+          <div class="illo">
+            <svg viewBox="0 0 120 150" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="40" cy="44" r="9" fill="#ecd9bd" />
+              <path d="M40 24c-10 0-16 8-16 18 0 4 1 8 4 10l-2 7h28l-2-7c3-2 4-6 4-10 0-10-6-18-16-18Z" fill="#e7dccb" stroke="#c9b99d" stroke-width="1.2" />
+              <path d="M24 62h32l5 58H19Z" fill="#c9a98a" stroke="#a8895e" stroke-width="1.2" />
+              <circle cx="86" cy="48" r="9" fill="#ecd9bd" />
+              <path d="M76 66h20l4 54H72Z" fill="#8c6f5a" stroke="#6f5746" stroke-width="1.2" />
+              <path d="M76 66l-5 14 5 3Z" fill="#8c6f5a" stroke="#6f5746" stroke-width="1" />
+              <path d="M96 66l5 14-5 3Z" fill="#8c6f5a" stroke="#6f5746" stroke-width="1" />
+            </svg>
+          </div>
+          <div class="meta">
+            <h4>Tetamu</h4>
+            <div class="sw">
+              <i style="background: #e7dccb"></i>
+              <i style="background: #c9a98a"></i>
+              <i style="background: #8c6f5a"></i>
+            </div>
+            <code>BEBAS</code>
+            <p>Bebas &amp; selesa</p>
+          </div>
+        </div>
+
+        <p class="guest-note">Elakkan putih/ivory agar tidak sama dengan pengantin.</p>
+      </div>
+    </div>
+
+    <script>
+      const overlay = document.getElementById("overlay");
+      const coverName = document.getElementById("cover-name");
+
+      document.querySelectorAll(".polaroid").forEach((button, index) => {
+        button.addEventListener("click", () => {
+          coverName.textContent = `Cover ${String(index + 1).padStart(2, "0")} · ${button.dataset.name}`;
+          overlay.classList.add("open");
+        });
+      });
+
+      const close = () => overlay.classList.remove("open");
+      document.getElementById("close").addEventListener("click", close);
+      overlay.addEventListener("click", (event) => {
+        if (event.target === overlay) close();
+      });
+      window.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") close();
+      });
+
+      // add barcode bars to ticket cover
+      document.querySelectorAll(".barcode").forEach((bar) => {
+        for (let i = 0; i < 26; i += 1) {
+          const line = document.createElement("i");
+          line.style.height = `${6 + ((i * 5) % 9)}px`;
+          bar.appendChild(line);
+        }
+      });
+    </script>
+  </body>
+</html>

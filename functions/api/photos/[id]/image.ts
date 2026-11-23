@@ -1,6 +1,19 @@
+type D1PreparedStatement = {
+  bind: (...values: unknown[]) => D1PreparedStatement;
+  first: () => Promise<{ image_key?: string } | null>;
+};
+
 type Env = {
-  DB: any;
-  PHOTOS: any;
+  DB: { prepare: (query: string) => D1PreparedStatement };
+  PHOTOS: {
+    get: (
+      key: string,
+    ) => Promise<{
+      body: ReadableStream;
+      httpMetadata?: { contentType?: string };
+      httpEtag: string;
+    } | null>;
+  };
 };
 
 export async function onRequestGet(context: {

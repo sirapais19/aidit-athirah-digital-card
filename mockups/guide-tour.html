@@ -1,0 +1,803 @@
+<!doctype html>
+<html lang="ms">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Panduan Jemputan — preview</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@400;500;600&family=Playfair+Display:wght@400;500;600&family=Source+Code+Pro:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --cream: #f9f7f1;
+        --line: #e4dccb;
+        --line-2: #dccfb8;
+        --gold: #b79a6a;
+        --gold-deep: #a8895e;
+        --blue: #72809c;
+        --blue-deep: #5c6982;
+        --ink: #334155;
+        --body: #64748b;
+        --popup: #c7d0e4;
+        --page: #eef0f4;
+      }
+
+      * { box-sizing: border-box; }
+
+      body {
+        margin: 0;
+        padding: 30px 22px 60px;
+        background: radial-gradient(circle at 12% 0%, #f4f6fb 0%, #eef0f4 45%, #e4e8f1 100%);
+        font-family: "Montserrat", sans-serif;
+        color: var(--ink);
+        -webkit-font-smoothing: antialiased;
+      }
+
+      .head { max-width: 1120px; margin: 0 auto 26px; text-align: center; }
+      .head .eyebrow {
+        margin: 0;
+        font-family: "Source Code Pro", monospace;
+        font-size: 10px;
+        letter-spacing: 0.28em;
+        text-transform: uppercase;
+        color: #8b95ab;
+      }
+      .head h1 {
+        margin: 8px 0 6px;
+        font-family: "Playfair Display", serif;
+        font-weight: 500;
+        font-size: 30px;
+        color: #44506b;
+      }
+      .head p {
+        margin: 0 auto;
+        max-width: 640px;
+        font-family: "Cormorant Garamond", serif;
+        font-style: italic;
+        font-size: 17px;
+        color: #6d7689;
+      }
+
+      .wrap {
+        display: grid;
+        grid-template-columns: 430px minmax(0, 1fr);
+        gap: 34px;
+        max-width: 1120px;
+        margin: 0 auto;
+        align-items: start;
+      }
+      @media (max-width: 900px) {
+        .wrap { grid-template-columns: 1fr; max-width: 430px; }
+      }
+
+      /* ---------------- phone ---------------- */
+      .phone {
+        position: relative;
+        border-radius: 36px;
+        padding: 10px;
+        background: linear-gradient(180deg, #cfd7e7, #b9c4da);
+        box-shadow: 0 24px 50px rgba(55, 66, 92, 0.24), inset 0 1px 0 rgba(255, 255, 255, 0.55);
+      }
+      .screen {
+        position: relative;
+        height: 730px;
+        border-radius: 28px;
+        overflow: hidden;
+        background: #e9ecf3;
+      }
+      .screen-head {
+        padding: 16px 18px 10px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .screen-head .meta {
+        margin: 0;
+        font-family: "Source Code Pro", monospace;
+        font-size: 8px;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: #7d89a1;
+      }
+      .screen-head .brand {
+        margin: 3px 0 0;
+        font-family: "Playfair Display", serif;
+        font-size: 19px;
+        color: #44506b;
+      }
+      .screen-head .badge {
+        width: 34px;
+        height: 34px;
+        border-radius: 999px;
+        background: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #7d89a1;
+        box-shadow: 0 6px 14px rgba(70, 80, 110, 0.12);
+      }
+
+      .stage {
+        position: absolute;
+        inset: 68px 0 0 0;
+      }
+      .scene {
+        position: absolute;
+        inset: 0;
+        display: none;
+        justify-content: center;
+        align-items: flex-start;
+        padding: 26px 18px 0;
+      }
+      .scene.active { display: flex; }
+
+      .card {
+        position: relative;
+        z-index: 5;
+        width: 250px;
+        border-radius: 22px;
+        border: 1px solid rgba(255, 255, 255, 0.9);
+        background: var(--cream);
+        box-shadow:
+          0 0 0 999px rgba(25, 34, 50, 0.72),
+          0 18px 36px rgba(20, 28, 40, 0.28);
+        outline: 2px solid rgba(255, 255, 255, 0.95);
+        outline-offset: 6px;
+        padding: 16px;
+        color: var(--ink);
+      }
+      .card .kicker {
+        margin: 0;
+        font-family: "Source Code Pro", monospace;
+        font-size: 7px;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        color: #94a0b8;
+      }
+      .card h4 {
+        margin: 5px 0 0;
+        font-family: "Playfair Display", serif;
+        font-weight: 500;
+        font-size: 19px;
+        color: #44506b;
+      }
+      .card p.small {
+        margin: 6px 0 0;
+        font-family: "Cormorant Garamond", serif;
+        font-size: 12.5px;
+        line-height: 1.35;
+        color: var(--body);
+      }
+
+      .dashed { border-top: 1px dashed var(--line-2); margin: 12px 0; }
+
+      .rsvp-line {
+        display: flex;
+        justify-content: space-between;
+        gap: 8px;
+        align-items: flex-start;
+      }
+      .rsvp-line .date {
+        font-family: "Playfair Display", serif;
+        font-size: 13px;
+        color: #44506b;
+        white-space: nowrap;
+      }
+      .barcode {
+        display: flex;
+        align-items: flex-end;
+        gap: 2px;
+        height: 26px;
+        margin-top: 12px;
+        justify-content: center;
+      }
+      .barcode span {
+        display: block;
+        width: 2px;
+        background: #8a94a8;
+        border-radius: 1px;
+      }
+
+      .photo {
+        height: 116px;
+        border-radius: 14px;
+        background:
+          linear-gradient(140deg, #8d99ad 0%, #b9c1ce 45%, #d8d3c6 100%);
+        position: relative;
+        overflow: hidden;
+      }
+      .photo::after {
+        content: "";
+        position: absolute;
+        inset: 40% -10% auto -10%;
+        height: 90px;
+        background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.35), transparent 70%);
+      }
+      .photo .pin {
+        position: absolute;
+        left: 10px;
+        bottom: 10px;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 4px 8px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.88);
+        font-family: "Source Code Pro", monospace;
+        font-size: 6.5px;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: #5f6c88;
+      }
+
+      .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+      .grid2 .tile {
+        height: 52px;
+        border-radius: 9px;
+        background: linear-gradient(135deg, #d8dee9, #c2cad8);
+      }
+      .grid2 .tile:nth-child(2) { background: linear-gradient(135deg, #e4dccb, #cbbfa6); }
+      .grid2 .tile:nth-child(3) { background: linear-gradient(135deg, #cdd6e3, #aeb9ca); }
+      .grid2 .tile:nth-child(4) { background: linear-gradient(135deg, #dfd6c6, #c7b9a0); }
+
+      .film {
+        display: flex;
+        gap: 6px;
+      }
+      .film span {
+        flex: 1;
+        height: 58px;
+        border-radius: 9px;
+        background: linear-gradient(150deg, #ccd4e1, #a9b4c6);
+      }
+      .film span:nth-child(2) { background: linear-gradient(150deg, #e3d9c6, #c8b99f); }
+      .film span:nth-child(3) { background: linear-gradient(150deg, #c3ccdb, #9fabbd); }
+
+      .quote {
+        margin: 0;
+        font-family: "Cormorant Garamond", serif;
+        font-style: italic;
+        font-size: 14px;
+        line-height: 1.4;
+        color: #5d687c;
+      }
+      .quote + .who {
+        margin: 8px 0 0;
+        font-family: "Source Code Pro", monospace;
+        font-size: 7px;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: #94a0b8;
+      }
+
+      .quick {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+      }
+      .quick .ic {
+        width: 42px;
+        height: 42px;
+        flex: 0 0 42px;
+        border-radius: 999px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--blue);
+        color: #fff;
+        font-size: 16px;
+      }
+      .quick h5 {
+        margin: 0;
+        font-family: "Playfair Display", serif;
+        font-weight: 500;
+        font-size: 16px;
+        color: #44506b;
+      }
+      .quick p {
+        margin: 3px 0 0;
+        font-family: "Cormorant Garamond", serif;
+        font-style: italic;
+        font-size: 12px;
+        color: var(--body);
+      }
+
+      .pill {
+        display: inline-block;
+        margin-top: 10px;
+        padding: 4px 9px;
+        border-radius: 999px;
+        border: 1px solid var(--line);
+        background: #fff;
+        font-family: "Source Code Pro", monospace;
+        font-size: 7px;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: var(--blue-deep);
+      }
+
+      /* ---------------- tooltip ---------------- */
+      .tip {
+        position: absolute;
+        z-index: 20;
+        left: 12px;
+        right: 12px;
+        bottom: 12px;
+        background: var(--cream);
+        border: 1px solid rgba(255, 255, 255, 0.85);
+        border-radius: 22px;
+        padding: 15px 16px 14px;
+        box-shadow: 0 22px 45px rgba(20, 28, 40, 0.35);
+      }
+      .tip-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+      }
+      .tip-head .count {
+        font-family: "Source Code Pro", monospace;
+        font-size: 8.5px;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: #94a0b8;
+      }
+      .tip-head .close {
+        border: 0;
+        background: transparent;
+        font-size: 10px;
+        color: #7c879c;
+        cursor: pointer;
+      }
+      .tip h3 {
+        margin: 7px 0 0;
+        font-family: "Playfair Display", serif;
+        font-weight: 500;
+        font-size: 21px;
+        color: var(--blue);
+        line-height: 1.15;
+      }
+      .tip .detail {
+        margin: 7px 0 0;
+        font-family: "Montserrat", sans-serif;
+        font-size: 11.5px;
+        line-height: 1.55;
+        color: #5f6a7e;
+      }
+      .tip-actions {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        margin-top: 13px;
+      }
+      .tip-actions button {
+        border-radius: 999px;
+        padding: 8px 16px;
+        font-family: "Montserrat", sans-serif;
+        font-size: 11px;
+        cursor: pointer;
+        transition: 0.18s ease;
+      }
+      .tip-actions .back {
+        border: 1px solid #dde3ee;
+        background: transparent;
+        color: #64708a;
+      }
+      .tip-actions .back:disabled { opacity: 0.4; cursor: default; }
+      .tip-actions .next {
+        border: 0;
+        background: var(--blue);
+        color: #fff;
+        font-weight: 500;
+      }
+      .tip-actions .next:hover { background: #64728e; }
+
+      /* ---------------- side list ---------------- */
+      .list-head {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 10px;
+      }
+      .list-head h2 {
+        margin: 0;
+        font-family: "Playfair Display", serif;
+        font-weight: 500;
+        font-size: 22px;
+        color: #44506b;
+      }
+      .list-head span {
+        font-family: "Source Code Pro", monospace;
+        font-size: 9px;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: #94a0b8;
+      }
+      .steps { display: grid; gap: 8px; }
+      .step {
+        display: grid;
+        grid-template-columns: 34px 1fr;
+        gap: 10px;
+        text-align: left;
+        padding: 11px 13px;
+        border-radius: 14px;
+        border: 1px solid rgba(255, 255, 255, 0.9);
+        background: rgba(255, 255, 255, 0.66);
+        cursor: pointer;
+        transition: 0.18s ease;
+      }
+      .step:hover { background: rgba(255, 255, 255, 0.92); }
+      .step.on {
+        border-color: rgba(114, 128, 156, 0.45);
+        background: #fff;
+        box-shadow: 0 10px 24px rgba(70, 80, 110, 0.12);
+      }
+      .step .num {
+        font-family: "Source Code Pro", monospace;
+        font-size: 10px;
+        letter-spacing: 0.08em;
+        color: #a3adc0;
+        padding-top: 2px;
+      }
+      .step.on .num { color: var(--blue); }
+      .step h4 {
+        margin: 0;
+        font-family: "Playfair Display", serif;
+        font-weight: 500;
+        font-size: 15px;
+        color: #44506b;
+      }
+      .step p {
+        margin: 3px 0 0;
+        font-size: 10.5px;
+        line-height: 1.45;
+        color: #6d7689;
+      }
+
+      .note {
+        max-width: 1120px;
+        margin: 26px auto 0;
+        padding: 15px 18px;
+        border-radius: 16px;
+        border: 1px solid #dfe5f1;
+        background: rgba(255, 255, 255, 0.6);
+        font-family: "Cormorant Garamond", serif;
+        font-size: 15px;
+        line-height: 1.5;
+        color: #6d7689;
+      }
+      .note b {
+        font-family: "Montserrat", sans-serif;
+        font-size: 11px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: #5f6c88;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="head">
+      <p class="eyebrow">Preview only · belum ubah app</p>
+      <h1>Panduan Jemputan — semua card</h1>
+      <p>Klik “Seterusnya” atau pilih mana-mana langkah di sebelah kanan untuk tengok guide setiap modul.</p>
+    </header>
+
+    <main class="wrap">
+      <section class="phone">
+        <div class="screen">
+          <div class="screen-head">
+            <div>
+              <p class="meta">8:36 / WA Business</p>
+              <p class="brand">Wedding Pass</p>
+            </div>
+            <div class="badge">✈</div>
+          </div>
+
+          <div class="stage">
+            <!-- 1 RSVP -->
+            <div class="scene active" data-scene="rsvp">
+              <div class="card">
+                <p class="kicker">Boarding pass</p>
+                <h4>RSVP</h4>
+                <p class="small">Loving family to celebration hall.</p>
+                <div class="dashed"></div>
+                <div class="rsvp-line">
+                  <span class="small" style="margin: 0">Please reply before</span>
+                  <span class="date">17 Dec 2026</span>
+                </div>
+                <div class="barcode" aria-hidden="true"></div>
+              </div>
+            </div>
+
+            <!-- 2 Venue -->
+            <div class="scene" data-scene="venue">
+              <div class="card">
+                <p class="kicker">Lokasi majlis</p>
+                <div class="photo" style="margin-top: 8px">
+                  <span class="pin">◎ Moara Hall</span>
+                </div>
+                <h4 style="font-size: 17px">Moara Hall</h4>
+                <p class="small">Kota Bharu, Kelantan</p>
+                <span class="pill">Google Maps / Waze</span>
+              </div>
+            </div>
+
+            <!-- 3 Calendar -->
+            <div class="scene" data-scene="calendar">
+              <div class="card">
+                <p class="kicker">Boarding ticket</p>
+                <h4>Simpan Tarikh</h4>
+                <p class="small" style="margin-top: 8px">Thursday</p>
+                <p style="margin: 2px 0 0; font-family: 'Playfair Display', serif; font-size: 19px; color: #44506b">
+                  24 December 2026
+                </p>
+                <p class="small">11:00 AM — 4:00 PM</p>
+                <span class="pill">+ Add to Calendar</span>
+              </div>
+            </div>
+
+            <!-- 4 Journey -->
+            <div class="scene" data-scene="journey">
+              <div class="card">
+                <p class="kicker">Our route to forever</p>
+                <h4>Journey</h4>
+                <div class="film" style="margin-top: 10px">
+                  <span></span><span></span><span></span>
+                </div>
+                <p class="small">Dari pertama bertemu hingga hari bahagia.</p>
+                <span class="pill">Buka journey</span>
+              </div>
+            </div>
+
+            <!-- 5 Gallery -->
+            <div class="scene" data-scene="gallery">
+              <div class="card">
+                <p class="kicker">Wedding moments</p>
+                <h4>Galeri Foto</h4>
+                <div class="grid2" style="margin-top: 10px">
+                  <div class="tile"></div><div class="tile"></div>
+                  <div class="tile"></div><div class="tile"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 6 Wishes -->
+            <div class="scene" data-scene="wishes">
+              <div class="card">
+                <p class="kicker">From our guests</p>
+                <blockquote class="quote">“Barakallahu lakuma wa baraka ‘alaikuma…”</blockquote>
+                <p class="who">— Pakcik Din &amp; Keluarga</p>
+                <div class="dashed"></div>
+                <span class="pill">Tulis ucapan</span>
+              </div>
+            </div>
+
+            <!-- 7 Gift -->
+            <div class="scene" data-scene="gift">
+              <div class="card">
+                <div class="quick">
+                  <span class="ic">🎁</span>
+                  <div>
+                    <h5>Gift</h5>
+                    <p>Senarai hadiah perkahwinan</p>
+                  </div>
+                </div>
+                <div class="dashed"></div>
+                <p class="small">Sumbangan Ikhlas atau Kirim Hadiah Sendiri.</p>
+                <span class="pill">Belum ditempah (7)</span>
+              </div>
+            </div>
+
+            <!-- 8 Salam Kaut -->
+            <div class="scene" data-scene="salamkaut">
+              <div class="card">
+                <div class="quick">
+                  <span class="ic">♥</span>
+                  <div>
+                    <h5>Salam Kaut</h5>
+                    <p>Duit salam</p>
+                  </div>
+                </div>
+                <div class="dashed"></div>
+                <p class="small">Masukkan nama &amp; jumlah, bayar melalui TnG atau QR.</p>
+              </div>
+            </div>
+
+            <!-- 9 Contact -->
+            <div class="scene" data-scene="contact">
+              <div class="card">
+                <div class="quick">
+                  <span class="ic">✆</span>
+                  <div>
+                    <h5>Contact</h5>
+                    <p>Hubungi keluarga pengantin</p>
+                  </div>
+                </div>
+                <div class="dashed"></div>
+                <p class="small">Aidit · Athirah — WhatsApp atau telefon terus.</p>
+              </div>
+            </div>
+
+            <!-- 10 Photos -->
+            <div class="scene" data-scene="photos">
+              <div class="card">
+                <div class="quick">
+                  <span class="ic">▣</span>
+                  <div>
+                    <h5>Photos</h5>
+                    <p>Foto tetamu</p>
+                  </div>
+                </div>
+                <div class="dashed"></div>
+                <p class="small">Ambil gambar sepanjang majlis dan muat naik ke galeri.</p>
+              </div>
+            </div>
+
+            <div class="tip" id="tip">
+              <div class="tip-head">
+                <span class="count" id="tip-count">Panduan Jemputan · 01 / 10</span>
+                <button class="close" type="button" id="tip-close">Tutup</button>
+              </div>
+              <h3 id="tip-title">--</h3>
+              <p class="detail" id="tip-detail">--</p>
+              <div class="tip-actions">
+                <button class="back" type="button" id="tip-prev">Kembali</button>
+                <button class="next" type="button" id="tip-next">Seterusnya</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <aside>
+        <div class="list-head">
+          <h2>10 langkah</h2>
+          <span>Klik untuk lompat</span>
+        </div>
+        <div class="steps" id="step-list"></div>
+      </aside>
+    </main>
+
+    <div class="note">
+      <b>Nota:</b> Ini preview statik. Teks, susunan spotlight dan langkah boleh diubah sebelum masuk ke app.
+      Guide sekarang hanya ada 5 langkah (RSVP, Ucapan, Lokasi, Gift, Salam Kaut) — cadangan ini tambah
+      <i>Calendar, Journey, Gallery, Contact</i> dan <i>Photos</i>, serta kemas kini teks Gift untuk aliran hybrid.
+    </div>
+
+    <script>
+      const steps = [
+        {
+          key: "rsvp",
+          title: "Sahkan Kehadiran (RSVP)",
+          detail:
+            "Tekan pas masuk ini untuk sahkan kehadiran. Isi nama, pilih Hadir atau Tidak Hadir, bilangan tetamu, kemudian tekan Hantar.",
+        },
+        {
+          key: "venue",
+          title: "Lokasi Majlis",
+          detail:
+            "Tekan gambar dewan untuk lihat alamat penuh. Pilih Google Maps atau Waze untuk terus ke Moara Hall, Kota Bharu.",
+        },
+        {
+          key: "calendar",
+          title: "Simpan Tarikh",
+          detail:
+            "Tekan butang kalendar untuk tambah majlis ke Google Calendar — jadi anda tak terlepas tarikh 24 Disember 2026.",
+        },
+        {
+          key: "journey",
+          title: "Journey Kami",
+          detail:
+            "Ikuti perjalanan kami dari pertama bertemu hingga hari bahagia. Tekan butang Journey untuk buka galeri kenangan.",
+        },
+        {
+          key: "gallery",
+          title: "Galeri Foto",
+          detail:
+            "Tekan pasport ini untuk buka galeri foto kenangan kami. Semua gambar majlis ada di dalam.",
+        },
+        {
+          key: "wishes",
+          title: "Ucapan & Doa",
+          detail:
+            "Tulis ucapan dalam borang RSVP, kemudian tekan Hantar. Ucapan anda akan dipaparkan di ruangan ini.",
+        },
+        {
+          key: "gift",
+          title: "Hadiah Perkahwinan",
+          detail:
+            "Lihat gambar dan pautan produk. Pilih Sumbangan Ikhlas (bayar TnG/QR) atau Kirim Hadiah Sendiri (pos ke alamat melalui WhatsApp).",
+        },
+        {
+          key: "salamkaut",
+          title: "Salam Kaut",
+          detail:
+            "Nak beri sumbangan ikhlas? Tekan card Salam Kaut, masukkan nama dan jumlah, kemudian bayar melalui TnG atau QR.",
+        },
+        {
+          key: "contact",
+          title: "Hubungi Keluarga",
+          detail:
+            "Perlu bertanya sesuatu? Tekan card Contact untuk WhatsApp atau telefon Aidit dan Athirah terus.",
+        },
+        {
+          key: "photos",
+          title: "Foto Tetamu",
+          detail:
+            "Kongsi foto anda sepanjang majlis. Tekan card Photos, ambil gambar dan muat naik ke galeri tetamu.",
+        },
+      ];
+
+      const scenes = Array.from(document.querySelectorAll(".scene"));
+      const list = document.getElementById("step-list");
+      const tipCount = document.getElementById("tip-count");
+      const tipTitle = document.getElementById("tip-title");
+      const tipDetail = document.getElementById("tip-detail");
+      const prev = document.getElementById("tip-prev");
+      const next = document.getElementById("tip-next");
+
+      let index = 0;
+
+      steps.forEach((step, i) => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "step";
+        button.innerHTML = `
+          <span class="num">${String(i + 1).padStart(2, "0")}</span>
+          <span>
+            <h4>${step.title}</h4>
+            <p>${step.detail}</p>
+          </span>
+        `;
+        button.addEventListener("click", () => show(i));
+        list.appendChild(button);
+      });
+
+      const stepButtons = Array.from(list.children);
+
+      // fake barcode
+      document.querySelectorAll(".barcode").forEach((bar) => {
+        for (let i = 0; i < 30; i += 1) {
+          const line = document.createElement("span");
+          line.style.height = `${10 + ((i * 7) % 16)}px`;
+          bar.appendChild(line);
+        }
+      });
+
+      function show(i) {
+        index = Math.max(0, Math.min(steps.length - 1, i));
+        const step = steps[index];
+
+        scenes.forEach((scene) => {
+          scene.classList.toggle("active", scene.dataset.scene === step.key);
+        });
+        stepButtons.forEach((button, j) => {
+          button.classList.toggle("on", j === index);
+        });
+
+        tipCount.textContent = `Panduan Jemputan · ${String(index + 1).padStart(2, "0")} / ${String(steps.length).padStart(2, "0")}`;
+        tipTitle.textContent = step.title;
+        tipDetail.textContent = step.detail;
+        prev.disabled = index === 0;
+        next.textContent = index === steps.length - 1 ? "Selesai" : "Seterusnya";
+      }
+
+      prev.addEventListener("click", () => show(index - 1));
+      next.addEventListener("click", () => {
+        if (index === steps.length - 1) {
+          show(0);
+          return;
+        }
+        show(index + 1);
+      });
+      document.getElementById("tip-close").addEventListener("click", () => show(index));
+
+      show(0);
+    </script>
+  </body>
+</html>

@@ -19,24 +19,28 @@ import {
   Plane,
   Route,
   Send,
+  Shirt,
   Users,
   X,
 } from "lucide-react";
 import MemoryJourney from "@/components/wedding/MemoryJourney";
 import GuestPhotoQR from "@/components/wedding/GuestPhotoQR";
 import GiftRegistry from "@/components/wedding/GiftRegistry";
+import DressCodePanel from "@/components/wedding/DressCode";
 import WeddingLogo from "@/components/wedding/WeddingLogo";
 import { timelineFlightCode, weddingTimelineEvents } from "@/data/weddingTimeline";
+import { weddingContacts as contacts } from "@/data/weddingContacts";
 import moment1 from "@/assets/moment-1.jpeg";
 import moment13 from "@/assets/moment-13.jpeg";
 import moment2 from "@/assets/moment-2.jpeg";
 import moment3 from "@/assets/moment-3.jpeg";
 import moment4 from "@/assets/moment-4.jpeg";
 import moment5 from "@/assets/moment-5.jpeg";
-import venueImg from "@/assets/venue.jpg";
+import venueImg from "@/assets/venue-gazebo.jpg";
+import dressCodeCover from "@/assets/dress-code-cover-trim.png";
 import weddingSong from "@/assets/river-flows-in-you.mp3";
 
-type InfoKey = "calendar" | "location" | "rsvp" | "gallery" | "gift" | "salamkaut" | "contact" | "journey" | "photos";
+type InfoKey = "calendar" | "location" | "rsvp" | "gallery" | "gift" | "salamkaut" | "dresscode" | "contact" | "journey" | "photos";
 
 const quickCards: Array<{
   id: InfoKey;
@@ -48,6 +52,7 @@ const quickCards: Array<{
   { id: "location", title: "Location", caption: "Maps and Waze", icon: MapPin },
   { id: "rsvp", title: "RSVP", caption: "Confirm seats", icon: MailCheck },
   { id: "gallery", title: "Moments", caption: "Our photos", icon: Images },
+  { id: "dresscode", title: "Dress Code", caption: "Warna pakaian", icon: Shirt },
   { id: "gift", title: "Gift", caption: "Group gift", icon: Gift },
   { id: "salamkaut", title: "Salam Kaut", caption: "Duit salam", icon: Heart },
   { id: "contact", title: "Contact", caption: "Ask family", icon: Phone },
@@ -57,11 +62,6 @@ const quickCards: Array<{
 const gallery = [moment1, moment2, moment3, moment4, moment5];
 
 const paymentUrl = "https://payment.tngdigital.com.my/sc/bDLob4bj0L";
-
-const contacts = [
-  { side: "Groom", name: "Aidit", phone: "+60133694584", displayPhone: "013-369 4584" },
-  { side: "Bride", name: "Athirah", phone: "+60189067988", displayPhone: "018-906 7988" },
-];
 
 const calendarDetails = "20261224T030000Z/20261224T080000Z";
 const calendarText = encodeURIComponent("Aidit & Athirah Wedding Reception");
@@ -200,6 +200,7 @@ const Index = () => {
                   <button
                     type="button"
                     onClick={() => setActiveInfo("gallery")}
+                    data-tour-target="gallery"
                     className="group min-h-[168px] rounded-[20px] bg-[#74819d] p-4 text-center text-white shadow-sm transition-transform duration-300 hover:-translate-y-0.5 sm:min-h-[178px]"
                   >
                     <p className="font-serif text-sm italic text-white/80">Wedding</p>
@@ -238,6 +239,7 @@ const Index = () => {
                 <button
                   type="button"
                   onClick={() => setActiveInfo("calendar")}
+                  data-tour-target="calendar"
                   className="mt-3 min-h-20 w-full rounded-[22px] border border-[#d7dbea] bg-[#c7d0e4] px-4 py-4 text-center shadow-md transition-transform duration-300 hover:-translate-y-0.5 sm:px-5"
                 >
                   <p className="font-display text-xl text-slate-700">Calendar</p>
@@ -248,26 +250,49 @@ const Index = () => {
 
                 <BoardingTicket guestName={guestName} />
 
-                <div data-tour-target="venue" className="relative mt-4 overflow-hidden rounded-[26px] border border-slate-200 bg-white p-4">
+                <div className="relative mt-4 overflow-hidden rounded-[26px] border border-slate-200 bg-white p-4">
                   <div className="absolute right-5 top-6 text-[#72809c]">
                     <Plane className="h-6 w-6 rotate-45" />
                   </div>
-                  <div className="flex gap-3">
+                  <div className="flex gap-1.5 min-[400px]:gap-2.5">
                     <button
                       type="button"
                       onClick={() => setActiveInfo("journey")}
-                      className="group w-28 shrink-0 rotate-[-7deg] rounded-md bg-white p-1 shadow-lg transition-transform duration-300 hover:rotate-[-3deg]"
+                      className="group w-[94px] shrink-0 rotate-[-7deg] rounded-md bg-white p-1 shadow-lg transition-transform duration-300 hover:rotate-[-3deg] min-[400px]:w-[108px]"
                     >
-                      <img src={moment13} alt="Journey moment" className="h-24 w-full rounded-sm object-cover" />
+                      <img
+                        src={moment13}
+                        alt="Journey moment"
+                        className="aspect-[3/2] w-full rounded-sm object-cover"
+                      />
                       <p className="py-1 font-serif text-xs italic text-slate-500">Journey</p>
                     </button>
                     <button
                       type="button"
                       onClick={() => setActiveInfo("location")}
-                      className="group mt-8 w-28 shrink-0 rotate-[6deg] rounded-md bg-white p-1 shadow-lg transition-transform duration-300 hover:rotate-[2deg]"
+                      data-tour-target="venueCard"
+                      className="group mt-6 w-[78px] shrink-0 rotate-[6deg] rounded-md bg-white p-1 shadow-lg transition-transform duration-300 hover:rotate-[2deg] min-[400px]:mt-7 min-[400px]:w-[88px]"
                     >
-                      <img src={venueImg} alt="Venue preview" className="h-24 w-full rounded-sm object-cover" />
+                      <img
+                        src={venueImg}
+                        alt="Venue preview"
+                        className="h-[70px] w-full rounded-sm object-cover min-[400px]:h-[78px]"
+                      />
                       <p className="py-1 font-serif text-xs italic text-slate-500">Venue</p>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setActiveInfo("dresscode")}
+                      data-tour-target="dresscodeCard"
+                      className="group mt-3 w-[78px] shrink-0 rotate-[9deg] rounded-md bg-white p-1 shadow-lg transition-transform duration-300 hover:rotate-[3deg] min-[400px]:w-[88px]"
+                      aria-label="Buka dress code"
+                    >
+                      <img
+                        src={dressCodeCover}
+                        alt="Dress code"
+                        className="h-[70px] w-full rounded-sm bg-white object-contain min-[400px]:h-[78px]"
+                      />
+                      <p className="py-1 font-serif text-xs italic text-slate-500">Dress code</p>
                     </button>
                   </div>
 
@@ -283,6 +308,7 @@ const Index = () => {
                     <button
                       type="button"
                       onClick={() => setActiveInfo("journey")}
+                      data-tour-target="journey"
                       className="group inline-flex shrink-0 items-center gap-1.5 rounded-full border border-[#d7dbea] bg-[#eef1f7] px-3.5 py-2 text-[11px] font-medium text-[#64728e] transition-colors hover:bg-[#e3e8f2]"
                       aria-label="Buka memory journey"
                     >
@@ -309,7 +335,7 @@ const Index = () => {
                         key={card.id}
                         type="button"
                         onClick={() => setActiveInfo(card.id)}
-                        data-tour-target={card.id === "gift" || card.id === "salamkaut" ? card.id : undefined}
+                        data-tour-target={card.id}
                         className="group min-h-[100px] rounded-[20px] border border-slate-200 bg-white p-4 text-left shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#f4f6fb]"
                       >
                         <span className="mb-3 flex h-10 w-10 items-center justify-center rounded-full bg-[#72809c] text-white transition-transform duration-300 group-hover:scale-105">
@@ -351,6 +377,7 @@ const Index = () => {
                 setSubmitted(false);
               }}
               onSubmitted={addRsvpEntry}
+              onNavigate={setActiveInfo}
             />
             <AnimatePresence>
               {activeInfo === "journey" && (
@@ -400,27 +427,68 @@ const guideSteps = [
   {
     target: "rsvp",
     title: "Sahkan Kehadiran (RSVP)",
-    detail: "Tekan pas masuk ini untuk sahkan kehadiran. Isi nama, pilih sama ada hadir atau tidak, masukkan bilangan tetamu, kemudian tekan Hantar.",
+    detail:
+      "Tekan pas masuk ini untuk sahkan kehadiran. Isi nama, pilih Hadir atau Tidak Hadir, bilangan tetamu, kemudian tekan Hantar.",
+  },
+  {
+    target: "venueCard",
+    title: "Lokasi Majlis (Venue)",
+    detail:
+      "Tekan gambar Venue untuk lihat alamat penuh. Pilih Google Maps atau Waze untuk terus ke Moara Hall, Kota Bharu.",
+  },
+  {
+    target: "dresscodeCard",
+    title: "Panduan Pakaian",
+    detail:
+      "Tekan gambar Dress code untuk lihat panduan pakaian keluarga pengantin dan tetamu.",
+  },
+  {
+    target: "calendar",
+    title: "Simpan Tarikh",
+    detail:
+      "Tekan butang kalendar untuk tambah majlis ke Google Calendar — jadi anda tak terlepas tarikh 24 Disember 2026.",
+  },
+  {
+    target: "journey",
+    title: "Journey Kami",
+    detail:
+      "Ikuti perjalanan kami dari pertama bertemu hingga hari bahagia. Tekan butang Journey untuk buka galeri kenangan.",
+  },
+  {
+    target: "gallery",
+    title: "Galeri Foto",
+    detail:
+      "Tekan pasport ini untuk buka galeri foto kenangan kami. Semua gambar majlis ada di dalam.",
   },
   {
     target: "wishes",
-    title: "Kirim Ucapan",
-    detail: "Untuk kirim ucapan, tulis mesej di ruangan Ucapan dalam borang RSVP, kemudian tekan Hantar. Ucapan yang dihantar akan dipaparkan di sini.",
-  },
-  {
-    target: "venue",
-    title: "Lokasi Majlis",
-    detail: "Tekan gambar dewan untuk melihat alamat majlis. Pilih Google Maps atau Waze untuk panduan perjalanan ke Moara Hall.",
+    title: "Ucapan & Doa",
+    detail:
+      "Tulis ucapan dalam borang RSVP, kemudian tekan Hantar. Ucapan anda akan dipaparkan di ruangan ini.",
   },
   {
     target: "gift",
     title: "Hadiah Perkahwinan",
-    detail: "Tekan Hadiah untuk melihat senarai hadiah dan membuat sumbangan. Pautan Touch ’n Go dan kod QR bayaran ada di dalam.",
+    detail:
+      "Lihat gambar dan pautan produk. Pilih Sumbangan Ikhlas (bayar TnG/QR) atau Kirim Hadiah Sendiri (pos ke alamat melalui WhatsApp).",
   },
   {
     target: "salamkaut",
     title: "Salam Kaut",
-    detail: "Tekan Salam Kaut, masukkan nama dan jumlah sumbangan. Kemudian, guna pautan Touch ’n Go atau imbas kod QR untuk membuat bayaran.",
+    detail:
+      "Nak beri sumbangan ikhlas? Tekan card Salam Kaut, masukkan nama dan jumlah, kemudian bayar melalui TnG atau QR.",
+  },
+  {
+    target: "contact",
+    title: "Hubungi Keluarga",
+    detail:
+      "Perlu bertanya sesuatu? Tekan card Contact untuk WhatsApp atau telefon Aidit dan Athirah terus.",
+  },
+  {
+    target: "photos",
+    title: "Foto Tetamu",
+    detail:
+      "Kongsi foto anda sepanjang majlis. Tekan card Photos, ambil gambar dan muat naik ke galeri tetamu.",
   },
 ] as const;
 
@@ -453,12 +521,12 @@ const InvitationGuideTour = ({ onClose }: { onClose: () => void }) => {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [onClose]);
 
-  const width = Math.min(320, window.innerWidth - 32);
+  const width = Math.min(340, window.innerWidth - 32);
   const left = spotlight
     ? Math.max(16, Math.min(window.innerWidth - width - 16, spotlight.left + spotlight.width / 2 - width / 2))
     : 16;
   const top = spotlight
-    ? Math.max(16, Math.min(window.innerHeight - 210, spotlight.top > window.innerHeight * 0.58 ? spotlight.top - 190 : spotlight.bottom + 18))
+    ? Math.max(16, Math.min(window.innerHeight - 250, spotlight.top > window.innerHeight * 0.58 ? spotlight.top - 230 : spotlight.bottom + 18))
     : 90;
 
   return (
@@ -503,8 +571,8 @@ const InvitationGuideTour = ({ onClose }: { onClose: () => void }) => {
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: -8, scale: 0.98 }}
           transition={{ duration: 0.22 }}
-          className="fixed rounded-[24px] border border-white/80 bg-[#f9f7f1] p-5 text-slate-700 shadow-[0_24px_80px_rgba(20,28,40,.35)]"
-          style={{ top, left, width }}
+          className="fixed overflow-y-auto overscroll-contain rounded-[24px] border border-white/80 bg-[#f9f7f1] p-5 text-slate-700 shadow-[0_24px_80px_rgba(20,28,40,.35)]"
+          style={{ top, left, width, maxHeight: "calc(100vh - 32px)" }}
         >
           <div className="flex items-center justify-between">
             <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-slate-400">
@@ -1356,12 +1424,14 @@ const InfoPopup = ({
   submitted,
   onClose,
   onSubmitted,
+  onNavigate,
 }: {
   activeCard?: (typeof quickCards)[number];
   activeInfo: InfoKey | null;
   submitted: boolean;
   onClose: () => void;
   onSubmitted: (entry: RsvpEntry) => void;
+  onNavigate: (info: InfoKey) => void;
 }) => (
   <AnimatePresence>
     {activeInfo && activeCard && (
@@ -1388,12 +1458,15 @@ const InfoPopup = ({
           >
             <X className="h-4 w-4" />
           </button>
-          <div className="overflow-y-auto overscroll-contain px-5 pb-[calc(1.5rem+env(safe-area-inset-bottom))] pt-5 [&::-webkit-scrollbar-track]:bg-transparent">
+          <div
+            key={activeInfo}
+            className="overflow-y-auto overscroll-contain px-5 pb-[calc(1.5rem+env(safe-area-inset-bottom))] pt-5 [&::-webkit-scrollbar-track]:bg-transparent"
+          >
             <p className="font-mono text-[10px] uppercase tracking-[0.24em] text-slate-500">
               {activeInfo === "photos" ? "Guest camera" : "Boarding info"}
             </p>
             <h2 className="mt-2 font-display text-2xl">{activeCard.title}</h2>
-            <div className="mt-5">{renderPopup(activeInfo, submitted, onSubmitted)}</div>
+            <div className="mt-5">{renderPopup(activeInfo, submitted, onSubmitted, onNavigate)}</div>
           </div>
         </motion.div>
       </motion.div>
@@ -1627,6 +1700,7 @@ function renderPopup(
   activeInfo: InfoKey,
   submitted: boolean,
   onSubmitted: (entry: RsvpEntry) => void,
+  onNavigate: (info: InfoKey) => void,
 ) {
   switch (activeInfo) {
     case "calendar":
@@ -1700,8 +1774,15 @@ function renderPopup(
           ))}
         </div>
       );
+    case "dresscode":
+      return <DressCodePanel />;
     case "gift":
-      return <GiftRegistry paymentUrl={paymentUrl} />;
+      return (
+        <GiftRegistry
+          paymentUrl={paymentUrl}
+          onOpenSalamKaut={() => onNavigate("salamkaut")}
+        />
+      );
     case "salamkaut":
       return <SalamKaut />;
     case "contact":

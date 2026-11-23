@@ -33,6 +33,17 @@ The **Photos** QR opens `/photos` on the current site origin, so printed QR code
 
 Photo records are immediately visible in the gallery. To remove a photo, delete its D1 row and the matching R2 object.
 
+### Local photo API (wrangler)
+
+Guest photos need the Pages Function API. You can run it locally with wrangler; D1 and R2 are emulated locally, so no Cloudflare account is needed:
+
+1. `npm run photos:db:init` — creates the `guest_photos` table in the local D1 database.
+2. `npm run photos:dev` — starts the API on `http://127.0.0.1:8788` with the local `PHOTOS` (R2) and `DB` (D1) bindings.
+3. In `.env`, set `VITE_PHOTO_API_URL=http://127.0.0.1:8788`, then restart `npm run dev` (the app runs on port 8080).
+4. If `dist/` does not exist yet, run `npm run build` once before `npm run photos:dev`.
+
+Local data lives in `.wrangler/state` (gitignored). Delete that folder and re-run step 1 to reset the gallery. The bindings are declared in `wrangler.toml`; production bindings are still managed in the Cloudflare dashboard.
+
 ## Gift registry
 
 1. Run [`supabase/gift_registry.sql`](supabase/gift_registry.sql) in the Supabase SQL Editor.
@@ -41,10 +52,21 @@ Photo records are immediately visible in the gallery. To remove a photo, delete 
    - `title`, `description`, `category`
    - `icon` — `coffee`, `plate`, `blender`, `bed`, `luggage`, `camera`, `sparkles`, or `gift`
    - `target_amount`, `gift_mode` (`group`, `reserve`, or `cash`)
+   - `image_url` — optional product photo (any public image URL)
+   - `product_url` — optional link, e.g. the Shopee listing (shown as “Lihat produk”)
    - `quantity`, `sort_order`, `is_active`
-3. Guests reserve gifts from the **Gift** card. New reservations are saved as `confirmed` in `gift_reservations` and count immediately toward registry totals.
+3. Guests reserve gifts from the **Gift** card. They choose **Sumbangan Ikhlas** (money via TnG/QR) or **Kirim Hadiah Sendiri** (buy the item and ask for the address over WhatsApp). New reservations are saved as `pending` in `gift_reservations` with `gift_method` (`cash` or `self`).
+   - Run [`supabase/gift_reservation_methods.sql`](supabase/gift_reservation_methods.sql) once on existing projects to add the `gift_method` column.
+   - Run [`supabase/gift_confirmation_flow.sql`](supabase/gift_confirmation_flow.sql) so guests can only submit `pending` rows.
+   - Run [`supabase/gift_pending_count.sql`](supabase/gift_pending_count.sql) so the registry exposes `pending_count`. While a gift has a pending reservation it is locked (**Dalam proses**) and other guests cannot book it.
+4. After the bride/groom receive the WhatsApp proof, confirm the reservation in **Table Editor → `gift_reservations`** (set `status` to `confirmed`) or run:
+   ```sql
+   update public.gift_reservations set status = 'confirmed' where id = '<reservation-id>';
+   ```
+   Only confirmed rows count toward `collected`. Once a gift is fully funded it shows **Fully funded** and moves into the **Sudah ditempah** filter automatically. If a reservation is rejected, set `status` to `cancelled` (or delete the row) so the gift becomes available again.
+5. Gifts the couple already owns (no need for guests to buy): run [`supabase/gift_items_setup.sql`](supabase/gift_items_setup.sql) once, then tick `is_claimed` for those rows in **Table Editor → `gift_items`**. They stay in the list with a “Sudah ditempah” badge and guests can no longer reserve them. No fake reservation row is needed.
 
-> The registry uses category icons as product visuals. If you want real product photos, add an `image_url` column and update the gift card in `src/components/wedding/GiftRegistry.tsx`.
+> The registry uses category icons as product visuals when `image_url` is empty. Add an image URL to a gift to show the real product photo.
 
 ### Existing Supabase project reports `PGRST205` for `gift_reservations`
 
