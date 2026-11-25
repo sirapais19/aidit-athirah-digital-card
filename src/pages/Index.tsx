@@ -25,6 +25,7 @@ import {
 } from "lucide-react";
 import MemoryJourney from "@/components/wedding/MemoryJourney";
 import GuestPhotoQR from "@/components/wedding/GuestPhotoQR";
+import MomentsGallery from "@/components/wedding/MomentsGallery";
 import GiftRegistry from "@/components/wedding/GiftRegistry";
 import DressCodePanel from "@/components/wedding/DressCode";
 import WeddingLogo from "@/components/wedding/WeddingLogo";
@@ -615,10 +616,10 @@ const MalayInvitationCard = () => (
 
     <div className="relative">
       <p className="font-mono text-[8px] uppercase tracking-[0.22em] text-[#a8895e]">
-        Walimatulurus · 24.12.2026
+        Perkahwinan · 24.12.2026
       </p>
       <h2 className="mt-1 font-display text-xl leading-snug text-[#5c6982]">
-        JEMPUTAN WALIMATULURUS
+        JEMPUTAN PERKAHWINAN
       </h2>
       <div className="mx-auto mt-3 h-px w-12 bg-gradient-to-r from-transparent via-[#c9a86a] to-transparent" />
 
@@ -641,7 +642,7 @@ const MalayInvitationCard = () => (
 
       <p className="mt-3 font-serif text-[13.5px] leading-relaxed text-slate-600">
         dengan segala hormatnya menjemput Dato’/Datin/Tuan/Puan/Encik/Cik ke majlis
-        walimatulurus anakanda kami
+        perkahwinan anakanda kami
       </p>
 
       <div className="relative mt-4 overflow-hidden rounded-[16px] border border-[#c9a86a]/25 bg-[#f9f7f1]/80 px-3 py-4">
@@ -1731,7 +1732,11 @@ function renderPopup(
     case "location":
       return (
         <div className="space-y-4 text-center">
-          <img src={venueImg} alt="Wedding venue" className="h-40 w-full rounded-[18px] object-cover" />
+          <img
+            src={venueImg}
+            alt="Wedding venue"
+            className="aspect-[736/650] w-full rounded-[18px] object-cover"
+          />
           <h3 className="font-display text-xl">Moara Hall</h3>
           <p className="text-sm leading-relaxed text-slate-600">
             Lot 418, Hujung Tanjung, Pulau Belanga,<br />
@@ -1762,18 +1767,7 @@ function renderPopup(
     case "rsvp":
       return <RsvpForm submitted={submitted} onSubmitted={onSubmitted} />;
     case "gallery":
-      return (
-        <div className="grid grid-cols-2 gap-3">
-          {gallery.map((image, index) => (
-            <img
-              key={image}
-              src={image}
-              alt={`Wedding moment ${index + 1}`}
-              className={`${index === 0 ? "col-span-2 h-44" : "h-32"} w-full rounded-[18px] object-cover`}
-            />
-          ))}
-        </div>
-      );
+      return <MomentsGallery images={gallery} />;
     case "dresscode":
       return <DressCodePanel />;
     case "gift":
