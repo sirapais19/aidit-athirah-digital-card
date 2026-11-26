@@ -55,7 +55,7 @@ const quickCards: Array<{
   { id: "gallery", title: "Moments", caption: "Our photos", icon: Images },
   { id: "dresscode", title: "Dress Code", caption: "Warna pakaian", icon: Shirt },
   { id: "gift", title: "Gift", caption: "Group gift", icon: Gift },
-  { id: "salamkaut", title: "Salam Kaut", caption: "Duit salam", icon: Heart },
+  { id: "salamkaut", title: "Tokens of Love", caption: "From the heart", icon: Heart },
   { id: "contact", title: "Contact", caption: "Ask family", icon: Phone },
   { id: "photos", title: "Photos", caption: "Scan & share", icon: Camera },
 ];
@@ -337,7 +337,7 @@ const Index = () => {
                         type="button"
                         onClick={() => setActiveInfo(card.id)}
                         data-tour-target={card.id}
-                        className="group min-h-[100px] rounded-[20px] border border-slate-200 bg-white p-4 text-left shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#f4f6fb]"
+                        className="group flex min-h-[100px] flex-col items-start justify-start rounded-[20px] border border-slate-200 bg-white p-4 text-left shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#f4f6fb]"
                       >
                         <span className="mb-3 flex h-10 w-10 items-center justify-center rounded-full bg-[#72809c] text-white transition-transform duration-300 group-hover:scale-105">
                           <Icon className="h-4 w-4" />
@@ -475,9 +475,9 @@ const guideSteps = [
   },
   {
     target: "salamkaut",
-    title: "Salam Kaut",
+    title: "Tokens of Love",
     detail:
-      "Nak beri sumbangan ikhlas? Tekan card Salam Kaut, masukkan nama dan jumlah, kemudian bayar melalui TnG atau QR.",
+      "Ingin menitipkan tanda kasih atau sumbangan ikhlas? Tekan card Tokens of Love, masukkan nama dan jumlah, kemudian bayar melalui TnG atau QR.",
   },
   {
     target: "contact",
@@ -683,7 +683,7 @@ const MalayInvitationCard = () => (
         </div>
         <div className="flex items-start justify-between gap-3">
           <span className="font-mono text-[6.5px] uppercase tracking-[0.14em] text-[#a29a8a]">Masa</span>
-          <span className="text-right font-serif text-[13px] leading-snug text-slate-600">12.00 tengah hari</span>
+          <span className="text-right font-serif text-[13px] leading-snug text-slate-600">11.00 pagi</span>
         </div>
         <div className="flex items-start justify-between gap-3">
           <span className="font-mono text-[6.5px] uppercase tracking-[0.14em] text-[#a29a8a]">Tempat</span>
@@ -1310,7 +1310,7 @@ const SalamKaut = () => {
       .insert({
         name: finalName,
         amount: String(safeAmount),
-        message: "Salam Kaut",
+        message: "Wedding Contribution",
       })
       .then(({ error }) => {
         if (error) console.error("Failed to save salam kaut:", error.message);
@@ -1326,7 +1326,7 @@ const SalamKaut = () => {
     <div className="space-y-4">
       <div className="rounded-[20px] bg-white/65 p-4">
         <p className="font-serif text-lg italic leading-relaxed text-slate-600">
-          Salam Kaut — contribute any amount from the heart (ikhlas).
+          Your presence and prayers are the greatest gift. Any token of love from the heart (ikhlas) is deeply appreciated.
         </p>
       </div>
 
@@ -1392,12 +1392,12 @@ const SalamKaut = () => {
           className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-slate-700 px-4 py-3 text-sm font-medium text-white transition-colors hover:bg-slate-800"
         >
           <Heart className="h-4 w-4" />
-          Send Salam Kaut
+          Send Token of Love
         </button>
 
         {submitted && (
           <p className="mt-3 rounded-xl bg-emerald-50 px-4 py-3 text-center text-sm text-emerald-700">
-            Thank you. Your salam kaut has been added.
+            Thank you so much for your kind blessing and contribution.
           </p>
         )}
       </form>

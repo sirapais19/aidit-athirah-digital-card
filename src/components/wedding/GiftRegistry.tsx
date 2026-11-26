@@ -612,7 +612,7 @@ const GiftRegistry = ({
             className="mb-3 flex w-full items-center justify-center gap-1.5 rounded-full border border-[#c9a86a]/50 bg-[#f5edda] px-4 py-2.5 font-mono text-[7px] uppercase tracking-[0.12em] text-[#a8895e] transition-colors hover:bg-[#efe4cd]"
           >
             <Heart className="h-3 w-3" />
-            Nak bagi cash gift? Buka Salam Kaut
+            Ingin titipkan tanda kasih? Buka Tokens of Love
           </button>
         )}
         <p className="font-serif text-[11.5px] italic leading-relaxed text-[#9a9182]">
