@@ -2,7 +2,22 @@ const allowedOrigins = new Set([
   "https://invitationcard-tau.vercel.app",
   "https://aidit-athirah-digital-card.pages.dev",
   "http://localhost:8080",
+  "http://127.0.0.1:8080",
 ]);
+
+const isAllowedOrigin = (origin: string) => {
+  if (!origin) return false;
+  if (allowedOrigins.has(origin)) return true;
+  try {
+    const { protocol, hostname } = new URL(origin);
+    return (
+      protocol === "https:" &&
+      (hostname.endsWith(".vercel.app") || hostname.endsWith(".pages.dev"))
+    );
+  } catch {
+    return false;
+  }
+};
 
 export async function onRequest(context: {
   request: Request;
@@ -16,7 +31,7 @@ export async function onRequest(context: {
     Vary: "Origin",
   });
 
-  if (allowedOrigins.has(origin)) {
+  if (isAllowedOrigin(origin)) {
     headers.set("Access-Control-Allow-Origin", origin);
   }
 
