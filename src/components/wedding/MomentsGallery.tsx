@@ -40,7 +40,7 @@ const MomentsGallery = ({ images }: { images: string[] }) => {
     setLoading(true);
     setError("");
 
-    void fetch(`${photoApiUrl}/api/photos`)
+    void fetch(`${photoApiUrl}/api/photos`, { cache: "no-store" })
       .then(async (response) => {
         if (!response.ok) throw new Error(`Photo API returned ${response.status}`);
         return (await response.json()) as { photos: GuestPhoto[] };
@@ -76,6 +76,8 @@ const MomentsGallery = ({ images }: { images: string[] }) => {
     setRefreshKey((key) => key + 1);
   };
 
+  const allGuestImagesFailed = guestPhotos.length > 0 && visibleGuestPhotos.length === 0;
+
   return (
     <div className="space-y-5">
       <section>
@@ -89,7 +91,9 @@ const MomentsGallery = ({ images }: { images: string[] }) => {
                 ? "Memuatkan gambar…"
                 : visibleGuestPhotos.length > 0
                   ? `${visibleGuestPhotos.length} gambar dikongsi`
-                  : "Belum ada gambar"}
+                  : allGuestImagesFailed
+                    ? "Gambar gagal dimuatkan"
+                    : "Belum ada gambar"}
             </p>
           </div>
           <button
@@ -115,7 +119,10 @@ const MomentsGallery = ({ images }: { images: string[] }) => {
           <div className="mt-3 rounded-[20px] bg-white/60 px-5 py-6 text-center">
             <Camera className="mx-auto h-6 w-6 text-[#72809c]/70" />
             <p className="mt-2 text-sm font-medium text-slate-600">
-              {error || "Gambar yang tetamu kongsi akan muncul di sini."}
+              {error ||
+                (allGuestImagesFailed
+                  ? "Gambar tetamu belum dapat dimuatkan. Sila tekan Refresh."
+                  : "Gambar yang tetamu kongsi akan muncul di sini.")}
             </p>
             <Link
               to="/photos"

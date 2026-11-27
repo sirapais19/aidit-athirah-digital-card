@@ -154,7 +154,7 @@ const GuestPhotos = () => {
     setGalleryLoading(true);
     setGalleryError("");
 
-    void fetch(`${photoApiUrl}/api/photos`)
+    void fetch(`${photoApiUrl}/api/photos`, { cache: "no-store" })
       .then(async (response) => {
         if (!response.ok) throw new Error(`Photo API returned ${response.status}`);
         return (await response.json()) as { photos: GuestPhoto[] };
