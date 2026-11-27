@@ -724,7 +724,19 @@ const PassportCover = ({ guestName, onOpen }: { guestName: string; onOpen: () =>
       transition={{ duration: 0.7 }}
       className="relative z-10 w-full max-w-[330px] text-center"
     >
-      <div className="rounded-[30px] border border-white/80 bg-[#f9f7f1] p-4 shadow-[0_24px_90px_rgba(80,88,110,0.22)] sm:p-5">
+      <div
+        role="button"
+        tabIndex={0}
+        aria-label="Open wedding invitation"
+        onClick={onOpen}
+        onKeyDown={(event) => {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            onOpen();
+          }
+        }}
+        className="cursor-pointer rounded-[30px] border border-white/80 bg-[#f9f7f1] p-4 shadow-[0_24px_90px_rgba(80,88,110,0.22)] outline-none transition-transform hover:scale-[1.01] focus-visible:ring-2 focus-visible:ring-[#72809c] focus-visible:ring-offset-4 sm:p-5"
+      >
         <div className="rounded-[24px] bg-[#72809c] px-6 py-7 text-white sm:py-8">
           <p className="rounded-t-xl bg-white/14 py-2 font-mono text-[10px] uppercase tracking-[0.28em] text-white/75">
             Wedding Pass
