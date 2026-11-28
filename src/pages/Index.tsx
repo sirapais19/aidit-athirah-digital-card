@@ -64,13 +64,13 @@ const gallery = [moment1, moment2, moment3, moment4, moment5];
 
 const paymentUrl = "https://payment.tngdigital.com.my/sc/bDLob4bj0L";
 
-const calendarDetails = "20261224T030000Z/20261224T080000Z";
+const calendarDetails = "20261224T043000Z/20261224T080000Z";
 const calendarText = encodeURIComponent("Aidit & Athirah Wedding Reception");
 const calendarLocation = encodeURIComponent("Moara Hall, Kota Bharu, Kelantan");
 const calendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${calendarText}&dates=${calendarDetails}&location=${calendarLocation}`;
 const mapUrl = "https://maps.app.goo.gl/pxRuAqg48ZSom6Cr9";
 const wazeUrl = "https://ul.waze.com/ul?place=ChIJS5t3JtmxtjERS174U4EmYdE&ll=6.13278620%2C102.31163470&navigate=yes&utm_campaign=live_map&utm_source=waze_website&utm_medium=lm_share_location";
-const weddingDateMs = new Date("2026-12-24T11:00:00+08:00").getTime();
+const weddingDateMs = new Date("2026-12-24T12:30:00+08:00").getTime();
 const salamKautStorageKey = "forever-pass-salamkaut-v1";
 const invitationGuideStorageKey = "forever-pass-guide-shown-v1";
 
@@ -245,7 +245,7 @@ const Index = () => {
                 >
                   <p className="font-display text-xl text-slate-700">Calendar</p>
                   <p className="mx-auto mt-1 max-w-[280px] font-mono text-[9px] uppercase tracking-[0.16em] text-slate-500 sm:text-[10px] sm:tracking-[0.2em]">
-                    Thursday, 24 December 2026 / 11:00 AM - 4:00 PM
+                    Thursday, 24 December 2026 / 12:30 PM - 4:00 PM
                   </p>
                 </button>
 
@@ -683,7 +683,7 @@ const MalayInvitationCard = () => (
         </div>
         <div className="flex items-start justify-between gap-3">
           <span className="font-mono text-[6.5px] uppercase tracking-[0.14em] text-[#a29a8a]">Masa</span>
-          <span className="text-right font-serif text-[13px] leading-snug text-slate-600">11.00 pagi</span>
+          <span className="text-right font-serif text-[13px] leading-snug text-slate-600">12.30 tengah hari</span>
         </div>
         <div className="flex items-start justify-between gap-3">
           <span className="font-mono text-[6.5px] uppercase tracking-[0.14em] text-[#a29a8a]">Tempat</span>
@@ -893,15 +893,30 @@ const Timeline = () => (
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.45, delay: index * 0.05 }}
-          className={`relative grid grid-cols-[58px_1fr_46px] overflow-hidden rounded-[15px] border border-[#e4dccb] bg-[#fffdf8] shadow-[0_12px_28px_rgba(90,95,110,0.08)] ${
+          className={`relative grid grid-cols-[64px_1fr_46px] overflow-hidden rounded-[15px] border border-[#e4dccb] bg-[#fffdf8] shadow-[0_12px_28px_rgba(90,95,110,0.08)] ${
             index % 2 === 0 ? "-rotate-[0.35deg]" : "rotate-[0.45deg]"
           }`}
         >
           <div className="border-r border-dashed border-[#d8d0be] bg-[#f3eee3]/60 px-1 py-4 text-center">
-            <p className="font-mono text-[13px] font-semibold leading-none text-[#72809c]">
+            <p
+              className={`font-mono font-semibold leading-none text-[#72809c] ${
+                event.timeEnd ? "text-[12px]" : "text-[13px]"
+              }`}
+            >
               {event.time}
             </p>
-            <p className="mt-1 font-mono text-[7px] uppercase tracking-[0.16em] text-[#a29a8a]">
+            {event.timeEnd && (
+              <>
+                <span
+                  className="mx-auto my-1 block h-px w-4 bg-[#c9cfdb]"
+                  aria-hidden="true"
+                />
+                <p className="font-mono text-[11px] font-medium leading-none text-[#8a94a8]">
+                  {event.timeEnd}
+                </p>
+              </>
+            )}
+            <p className="mt-1.5 font-mono text-[7px] uppercase tracking-[0.16em] text-[#a29a8a]">
               {event.period}
             </p>
           </div>
@@ -940,8 +955,8 @@ const Timeline = () => (
             </p>
           </div>
 
-          <span className="pointer-events-none absolute -top-1.5 left-[57px] h-3 w-3 rounded-full border border-[#e4dccb] bg-[#f9f7f1]" />
-          <span className="pointer-events-none absolute -bottom-1.5 left-[57px] h-3 w-3 rounded-full border border-[#e4dccb] bg-[#f9f7f1]" />
+          <span className="pointer-events-none absolute -top-1.5 left-[63px] h-3 w-3 rounded-full border border-[#e4dccb] bg-[#f9f7f1]" />
+          <span className="pointer-events-none absolute -bottom-1.5 left-[63px] h-3 w-3 rounded-full border border-[#e4dccb] bg-[#f9f7f1]" />
         </motion.article>
       ))}
     </div>
@@ -1720,7 +1735,7 @@ function renderPopup(
       return (
         <div className="space-y-4 text-center">
           <p className="font-mono text-xs uppercase tracking-[0.18em]">Thursday, 24 December 2026</p>
-          <p className="text-sm text-slate-600">11:00 AM - 4:00 PM</p>
+          <p className="text-sm text-slate-600">12:30 PM - 4:00 PM</p>
           <div className="grid grid-cols-2 gap-3">
             <a
               href={calendarUrl}
